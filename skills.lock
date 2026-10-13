@@ -1,0 +1,527 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "generated_at": "2026-10-13T12:00:00Z",
+  "orchestrator": "Desty 3.2",
+  "organization": "Nexus Partners",
+  "creator": "Hop-Syder",
+  "security_scanner": "NVIDIA/SkillSpector",
+  "policy": {
+    "strict_locking": true,
+    "auto_update": false,
+    "min_security_score": 85,
+    "target_directory": ".agents/skills"
+  },
+  "skills": {
+    "spec-driven-development": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/spec-driven-development",
+      "entrypoint": "skills/spec-driven-development/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 98,
+      "scan_status": "APPROVED",
+      "category": "product"
+    },
+    "idea-refine": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/idea-refine",
+      "entrypoint": "skills/idea-refine/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 96,
+      "scan_status": "APPROVED",
+      "category": "product"
+    },
+    "interview-me": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/interview-me",
+      "entrypoint": "skills/interview-me/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 95,
+      "scan_status": "APPROVED",
+      "category": "product"
+    },
+    "doubt-driven-development": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/doubt-driven-development",
+      "entrypoint": "skills/doubt-driven-development/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 94,
+      "scan_status": "APPROVED",
+      "category": "product"
+    },
+    "planning-and-task-breakdown": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/planning-and-task-breakdown",
+      "entrypoint": "skills/planning-and-task-breakdown/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 97,
+      "scan_status": "APPROVED",
+      "category": "workflow"
+    },
+    "constraint-driven-development": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/constraint-driven-development",
+      "entrypoint": "skills/constraint-driven-development/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 95,
+      "scan_status": "APPROVED",
+      "category": "workflow"
+    },
+    "documentation-and-adrs": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/documentation-and-adrs",
+      "entrypoint": "skills/documentation-and-adrs/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 99,
+      "scan_status": "APPROVED",
+      "category": "architecture"
+    },
+    "context-engineering": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/context-engineering",
+      "entrypoint": "skills/context-engineering/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 96,
+      "scan_status": "APPROVED",
+      "category": "architecture"
+    },
+    "api-and-interface-design": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/api-and-interface-design",
+      "entrypoint": "skills/api-and-interface-design/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 98,
+      "scan_status": "APPROVED",
+      "category": "engineering"
+    },
+    "frontend-ui-engineering": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/frontend-ui-engineering",
+      "entrypoint": "skills/frontend-ui-engineering/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 97,
+      "scan_status": "APPROVED",
+      "category": "engineering"
+    },
+    "incremental-implementation": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/incremental-implementation",
+      "entrypoint": "skills/incremental-implementation/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 99,
+      "scan_status": "APPROVED",
+      "category": "engineering"
+    },
+    "source-driven-development": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/source-driven-development",
+      "entrypoint": "skills/source-driven-development/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 94,
+      "scan_status": "APPROVED",
+      "category": "engineering"
+    },
+    "test-driven-development": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/test-driven-development",
+      "entrypoint": "skills/test-driven-development/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 99,
+      "scan_status": "APPROVED",
+      "category": "testing"
+    },
+    "browser-testing-with-devtools": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/browser-testing-with-devtools",
+      "entrypoint": "skills/browser-testing-with-devtools/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 95,
+      "scan_status": "APPROVED",
+      "category": "testing"
+    },
+    "debugging-and-error-recovery": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/debugging-and-error-recovery",
+      "entrypoint": "skills/debugging-and-error-recovery/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 96,
+      "scan_status": "APPROVED",
+      "category": "engineering"
+    },
+    "code-review-and-quality": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/code-review-and-quality",
+      "entrypoint": "skills/code-review-and-quality/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 98,
+      "scan_status": "APPROVED",
+      "category": "qa"
+    },
+    "code-simplification": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/code-simplification",
+      "entrypoint": "skills/code-simplification/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 97,
+      "scan_status": "APPROVED",
+      "category": "engineering"
+    },
+    "security-and-hardening": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/security-and-hardening",
+      "entrypoint": "skills/security-and-hardening/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 99,
+      "scan_status": "APPROVED",
+      "category": "security"
+    },
+    "performance-optimization": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/performance-optimization",
+      "entrypoint": "skills/performance-optimization/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 96,
+      "scan_status": "APPROVED",
+      "category": "performance"
+    },
+    "git-workflow-and-versioning": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/git-workflow-and-versioning",
+      "entrypoint": "skills/git-workflow-and-versioning/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 98,
+      "scan_status": "APPROVED",
+      "category": "devops"
+    },
+    "ci-cd-and-automation": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/ci-cd-and-automation",
+      "entrypoint": "skills/ci-cd-and-automation/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 97,
+      "scan_status": "APPROVED",
+      "category": "devops"
+    },
+    "shipping-and-launch": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/shipping-and-launch",
+      "entrypoint": "skills/shipping-and-launch/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 98,
+      "scan_status": "APPROVED",
+      "category": "devops"
+    },
+    "observability-and-instrumentation": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/observability-and-instrumentation",
+      "entrypoint": "skills/observability-and-instrumentation/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 96,
+      "scan_status": "APPROVED",
+      "category": "devops"
+    },
+    "deprecation-and-migration": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/deprecation-and-migration",
+      "entrypoint": "skills/deprecation-and-migration/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 94,
+      "scan_status": "APPROVED",
+      "category": "devops"
+    },
+    "using-agent-skills": {
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/using-agent-skills",
+      "entrypoint": "skills/using-agent-skills/SKILL.md",
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "last_scan": "2026-10-13",
+      "scan_score": 99,
+      "scan_status": "APPROVED",
+      "category": "meta"
+    },
+    "subagent-driven-development": {
+      "repo": "obra/superpowers",
+      "path": "skills/subagent-driven-development",
+      "entrypoint": "skills/subagent-driven-development/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 99,
+      "scan_status": "APPROVED",
+      "category": "orchestration"
+    },
+    "dispatching-parallel-agents": {
+      "repo": "obra/superpowers",
+      "path": "skills/dispatching-parallel-agents",
+      "entrypoint": "skills/dispatching-parallel-agents/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 97,
+      "scan_status": "APPROVED",
+      "category": "orchestration"
+    },
+    "writing-plans": {
+      "repo": "obra/superpowers",
+      "path": "skills/writing-plans",
+      "entrypoint": "skills/writing-plans/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 98,
+      "scan_status": "APPROVED",
+      "category": "orchestration"
+    },
+    "executing-plans": {
+      "repo": "obra/superpowers",
+      "path": "skills/executing-plans",
+      "entrypoint": "skills/executing-plans/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 98,
+      "scan_status": "APPROVED",
+      "category": "orchestration"
+    },
+    "brainstorming": {
+      "repo": "obra/superpowers",
+      "path": "skills/brainstorming",
+      "entrypoint": "skills/brainstorming/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 96,
+      "scan_status": "APPROVED",
+      "category": "workflow"
+    },
+    "verification-before-completion": {
+      "repo": "obra/superpowers",
+      "path": "skills/verification-before-completion",
+      "entrypoint": "skills/verification-before-completion/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 99,
+      "scan_status": "APPROVED",
+      "category": "qa"
+    },
+    "systematic-debugging": {
+      "repo": "obra/superpowers",
+      "path": "skills/systematic-debugging",
+      "entrypoint": "skills/systematic-debugging/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 97,
+      "scan_status": "APPROVED",
+      "category": "engineering"
+    },
+    "requesting-code-review": {
+      "repo": "obra/superpowers",
+      "path": "skills/requesting-code-review",
+      "entrypoint": "skills/requesting-code-review/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 98,
+      "scan_status": "APPROVED",
+      "category": "engineering"
+    },
+    "receiving-code-review": {
+      "repo": "obra/superpowers",
+      "path": "skills/receiving-code-review",
+      "entrypoint": "skills/receiving-code-review/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 96,
+      "scan_status": "APPROVED",
+      "category": "engineering"
+    },
+    "using-git-worktrees": {
+      "repo": "obra/superpowers",
+      "path": "skills/using-git-worktrees",
+      "entrypoint": "skills/using-git-worktrees/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 97,
+      "scan_status": "APPROVED",
+      "category": "devops"
+    },
+    "finishing-a-development-branch": {
+      "repo": "obra/superpowers",
+      "path": "skills/finishing-a-development-branch",
+      "entrypoint": "skills/finishing-a-development-branch/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 98,
+      "scan_status": "APPROVED",
+      "category": "devops"
+    },
+    "using-superpowers": {
+      "repo": "obra/superpowers",
+      "path": "skills/using-superpowers",
+      "entrypoint": "skills/using-superpowers/SKILL.md",
+      "commit": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+      "last_scan": "2026-10-13",
+      "scan_score": 99,
+      "scan_status": "APPROVED",
+      "category": "meta"
+    },
+    "doc-coauthoring": {
+      "repo": "anthropics/skills",
+      "path": "skills/doc-coauthoring",
+      "entrypoint": "skills/doc-coauthoring/SKILL.md",
+      "commit": "9fa6b21c43141f22b79a83832c32cf976eef57d6",
+      "last_scan": "2026-10-13",
+      "scan_score": 96,
+      "scan_status": "APPROVED",
+      "category": "product"
+    },
+    "frontend-design": {
+      "repo": "anthropics/skills",
+      "path": "skills/frontend-design",
+      "entrypoint": "skills/frontend-design/SKILL.md",
+      "commit": "9fa6b21c43141f22b79a83832c32cf976eef57d6",
+      "last_scan": "2026-10-13",
+      "scan_score": 97,
+      "scan_status": "APPROVED",
+      "category": "design"
+    },
+    "canvas-design": {
+      "repo": "anthropics/skills",
+      "path": "skills/canvas-design",
+      "entrypoint": "skills/canvas-design/SKILL.md",
+      "commit": "9fa6b21c43141f22b79a83832c32cf976eef57d6",
+      "last_scan": "2026-10-13",
+      "scan_score": 95,
+      "scan_status": "APPROVED",
+      "category": "design"
+    },
+    "brand-guidelines": {
+      "repo": "anthropics/skills",
+      "path": "skills/brand-guidelines",
+      "entrypoint": "skills/brand-guidelines/SKILL.md",
+      "commit": "9fa6b21c43141f22b79a83832c32cf976eef57d6",
+      "last_scan": "2026-10-13",
+      "scan_score": 96,
+      "scan_status": "APPROVED",
+      "category": "design"
+    },
+    "webapp-testing": {
+      "repo": "anthropics/skills",
+      "path": "skills/webapp-testing",
+      "entrypoint": "skills/webapp-testing/SKILL.md",
+      "commit": "9fa6b21c43141f22b79a83832c32cf976eef57d6",
+      "last_scan": "2026-10-13",
+      "scan_score": 97,
+      "scan_status": "APPROVED",
+      "category": "testing"
+    },
+    "skill-creator": {
+      "repo": "anthropics/skills",
+      "path": "skills/skill-creator",
+      "entrypoint": "skills/skill-creator/SKILL.md",
+      "commit": "9fa6b21c43141f22b79a83832c32cf976eef57d6",
+      "last_scan": "2026-10-13",
+      "scan_score": 99,
+      "scan_status": "APPROVED",
+      "category": "qa"
+    },
+    "xlsx": {
+      "repo": "anthropics/skills",
+      "path": "skills/xlsx",
+      "entrypoint": "skills/xlsx/SKILL.md",
+      "commit": "9fa6b21c43141f22b79a83832c32cf976eef57d6",
+      "last_scan": "2026-10-13",
+      "scan_score": 95,
+      "scan_status": "APPROVED",
+      "category": "data"
+    },
+    "security-threat-model": {
+      "repo": "trailofbits/skills",
+      "path": "skills/security-threat-model",
+      "entrypoint": "skills/security-threat-model/SKILL.md",
+      "commit": "5a47e1992014bcf088a209867909ebdf7a5223c9",
+      "last_scan": "2026-10-13",
+      "scan_score": 99,
+      "scan_status": "APPROVED",
+      "category": "security"
+    },
+    "security-best-practices": {
+      "repo": "trailofbits/skills",
+      "path": "skills/security-best-practices",
+      "entrypoint": "skills/security-best-practices/SKILL.md",
+      "commit": "5a47e1992014bcf088a209867909ebdf7a5223c9",
+      "last_scan": "2026-10-13",
+      "scan_score": 98,
+      "scan_status": "APPROVED",
+      "category": "security"
+    },
+    "differential-review": {
+      "repo": "trailofbits/skills",
+      "path": "skills/differential-review",
+      "entrypoint": "skills/differential-review/SKILL.md",
+      "commit": "5a47e1992014bcf088a209867909ebdf7a5223c9",
+      "last_scan": "2026-10-13",
+      "scan_score": 99,
+      "scan_status": "APPROVED",
+      "category": "security"
+    },
+    "security-awareness": {
+      "repo": "trailofbits/skills",
+      "path": "skills/security-awareness",
+      "entrypoint": "skills/security-awareness/SKILL.md",
+      "commit": "5a47e1992014bcf088a209867909ebdf7a5223c9",
+      "last_scan": "2026-10-13",
+      "scan_score": 96,
+      "scan_status": "APPROVED",
+      "category": "security"
+    },
+    "security-ownership-map": {
+      "repo": "trailofbits/skills",
+      "path": "skills/security-ownership-map",
+      "entrypoint": "skills/security-ownership-map/SKILL.md",
+      "commit": "5a47e1992014bcf088a209867909ebdf7a5223c9",
+      "last_scan": "2026-10-13",
+      "scan_score": 95,
+      "scan_status": "APPROVED",
+      "category": "security"
+    },
+    "postgres-best-practices": {
+      "repo": "supabase/agent-skills",
+      "path": "skills/postgres-best-practices",
+      "entrypoint": "skills/postgres-best-practices/SKILL.md",
+      "commit": "c47f63110a12e32a4980bb6e19c011e0ef821102",
+      "last_scan": "2026-10-13",
+      "scan_score": 96,
+      "scan_status": "APPROVED",
+      "category": "data"
+    },
+    "vercel-deploy": {
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/vercel-deploy",
+      "entrypoint": "skills/vercel-deploy/SKILL.md",
+      "commit": "812b9c3f1917b204e1281fa02c89281e09dfa981",
+      "last_scan": "2026-10-13",
+      "scan_score": 95,
+      "scan_status": "APPROVED",
+      "category": "devops"
+    }
+  }
+}
