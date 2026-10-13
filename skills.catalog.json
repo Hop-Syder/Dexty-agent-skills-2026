@@ -1,0 +1,388 @@
+{
+  "_meta": {
+    "description": "Catalogue de tous les skills disponibles pour le super-agent Desty 3.5",
+    "version": "1.0.0",
+    "updated": "2026-10-13",
+    "author": "@hopsyder (Hop-Syder) — Nexus Partners",
+    "sources": {
+      "AO": "https://github.com/addyosmani/agent-skills",
+      "AN": "https://github.com/anthropics/skills",
+      "SP": "https://github.com/obra/superpowers",
+      "TOB": "https://github.com/trailofbits/skills",
+      "VL": "https://github.com/vercel-labs/agent-skills",
+      "NV": "https://github.com/NVIDIA/SkillSpector"
+    }
+  },
+  "skills": [
+    {
+      "id": "idea-refine",
+      "agent": "product-manager",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/idea-refine",
+      "tags": ["planning", "product", "ideation", "spec"],
+      "description": "Raffiner et clarifier une idée de projet avant de la spécifier",
+      "triggers": ["idée", "concept", "brainstorm", "vision", "startup", "product", "mvp", "saas", "app"]
+    },
+    {
+      "id": "spec-driven-development",
+      "agent": "product-manager",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/spec-driven-development",
+      "tags": ["planning", "spec", "requirements", "product"],
+      "description": "Écrire et maintenir une spec technique avant de coder",
+      "triggers": ["spec", "requirements", "fonctionnalités", "features", "user stories", "backlog", "roadmap"]
+    },
+    {
+      "id": "planning-and-task-breakdown",
+      "agent": "product-manager",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/planning-and-task-breakdown",
+      "tags": ["planning", "tasks", "breakdown", "agile"],
+      "description": "Découper un projet en tâches actionnables et planifiées",
+      "triggers": ["planning", "tasks", "découpage", "sprint", "agile", "scrum", "kanban", "estimation"]
+    },
+    {
+      "id": "documentation-and-adrs",
+      "agent": "product-manager",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/documentation-and-adrs",
+      "tags": ["docs", "adr", "decisions", "architecture"],
+      "description": "Documenter les décisions d'architecture (ADR) et maintenir la documentation",
+      "triggers": ["documentation", "docs", "adr", "architecture", "décisions", "wiki", "readme"]
+    },
+    {
+      "id": "doc-coauthoring",
+      "agent": "product-manager",
+      "source": "AN",
+      "repo": "anthropics/skills",
+      "path": "skills/doc-coauthoring",
+      "tags": ["docs", "collaboration", "review", "writing"],
+      "description": "Co-rédiger des documents de spécification avec l'utilisateur",
+      "triggers": ["rédaction", "écriture", "co-authoring", "guide", "spécification", "cahier des charges"]
+    },
+    {
+      "id": "frontend-ui-engineering",
+      "agent": "workflow-ux-owner",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/frontend-ui-engineering",
+      "tags": ["frontend", "ui", "react", "components"],
+      "description": "Construire des interfaces et composants frontend propres et accessibles",
+      "triggers": ["frontend", "ui", "composant", "react", "nextjs", "vue", "tailwind", "css", "interface", "web"]
+    },
+    {
+      "id": "api-and-interface-design",
+      "agent": "workflow-ux-owner",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/api-and-interface-design",
+      "tags": ["api", "design", "rest", "graphql", "contracts"],
+      "description": "Concevoir des APIs propres, typées et rétrocompatibles",
+      "triggers": ["api", "rest", "graphql", "endpoint", "contrat", "schema", "zod", "trpc", "fastapi"]
+    },
+    {
+      "id": "brand-guidelines",
+      "agent": "workflow-ux-owner",
+      "source": "AN",
+      "repo": "anthropics/skills",
+      "path": "skills/brand-guidelines",
+      "tags": ["design", "brand", "identity", "style"],
+      "description": "Appliquer et respecter une charte graphique et une identité de marque",
+      "triggers": ["marque", "charte", "brand", "logo", "couleurs", "typography", "design system"]
+    },
+    {
+      "id": "frontend-design",
+      "agent": "workflow-ux-owner",
+      "source": "AN",
+      "repo": "anthropics/skills",
+      "path": "skills/frontend-design",
+      "tags": ["design", "ui", "layout", "visual"],
+      "description": "Design visuel soigné pour les interfaces web",
+      "triggers": ["design", "maquette", "look", "visuel", "ui/ux", "wireframe", "style", "dashboard"]
+    },
+    {
+      "id": "canvas-design",
+      "agent": "workflow-ux-owner",
+      "source": "AN",
+      "repo": "anthropics/skills",
+      "path": "skills/canvas-design",
+      "tags": ["design", "canvas", "infographics", "layout"],
+      "description": "Concevoir des layouts et visuels interactifs sur canvas",
+      "triggers": ["canvas", "infographie", "graphe", "visuel", "landing page", "hero", "bannière"]
+    },
+    {
+      "id": "react-best-practices",
+      "agent": "workflow-ux-owner",
+      "source": "VL",
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/react-best-practices",
+      "tags": ["react", "nextjs", "patterns", "performance"],
+      "description": "Appliquer les bonnes pratiques React et Next.js de Vercel",
+      "triggers": ["react", "nextjs", "next.js", "hooks", "server components", "rsc", "suspense"]
+    },
+    {
+      "id": "composition-patterns",
+      "agent": "workflow-ux-owner",
+      "source": "VL",
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/composition-patterns",
+      "tags": ["react", "architecture", "patterns", "clean-code"],
+      "description": "Patterns de composition avancés pour applications React",
+      "triggers": ["composition", "patterns", "clean code", "refactor", "solid", "dry"]
+    },
+    {
+      "id": "security-and-hardening",
+      "agent": "security-lead",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/security-and-hardening",
+      "tags": ["security", "hardening", "owasp", "auth"],
+      "description": "Durcissement applicatif : headers, CSP, validation, secrets",
+      "triggers": ["sécurité", "security", "auth", "authentification", "jwt", "session", "cors", "csp", "owasp"]
+    },
+    {
+      "id": "security-threat-model",
+      "agent": "security-lead",
+      "source": "TOB",
+      "repo": "trailofbits/skills",
+      "path": "skills/security-threat-model",
+      "tags": ["security", "threats", "audit", "stride"],
+      "description": "Modélisation des menaces et analyse des surfaces d'attaque",
+      "triggers": ["menaces", "threats", "attaque", "vulnérabilité", "audit", "production", "public", "rgpd"]
+    },
+    {
+      "id": "security-best-practices",
+      "agent": "security-lead",
+      "source": "TOB",
+      "repo": "trailofbits/skills",
+      "path": "skills/security-best-practices",
+      "tags": ["security", "practices", "defensive", "guidelines"],
+      "description": "Pratiques de sécurité éprouvées par Trail of Bits",
+      "triggers": ["sécurité", "best practices", "règles", "standard", "iso", "soc2", "conformité"]
+    },
+    {
+      "id": "differential-review",
+      "agent": "security-lead",
+      "source": "TOB",
+      "repo": "trailofbits/skills",
+      "path": "skills/differential-review",
+      "tags": ["security", "code-review", "diff", "audit"],
+      "description": "Revue différentielle ciblée sur les changements de code sensibles",
+      "triggers": ["review", "pr", "pull request", "diff", "merge", "audit diff"]
+    },
+    {
+      "id": "security-awareness",
+      "agent": "security-lead",
+      "source": "TOB",
+      "repo": "trailofbits/skills",
+      "path": "skills/security-awareness",
+      "tags": ["security", "awareness", "hygiene", "team"],
+      "description": "Sensibilisation et hygiène de sécurité pour l'équipe",
+      "triggers": ["hygiène", "sensibilisation", "passwords", "secrets", "api keys", "tokens"]
+    },
+    {
+      "id": "security-ownership-map",
+      "agent": "security-lead",
+      "source": "TOB",
+      "repo": "trailofbits/skills",
+      "path": "skills/security-ownership-map",
+      "tags": ["security", "ownership", "responsibilities", "audit"],
+      "description": "Cartographie des responsabilités de sécurité par module",
+      "triggers": ["responsabilités", "ownership", "rôles", "équipe", "modules"]
+    },
+    {
+      "id": "incremental-implementation",
+      "agent": "build-dev-lead",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/incremental-implementation",
+      "tags": ["build", "implementation", "dev", "atomic"],
+      "description": "Implémentation atomique par petits pas sûrs et testés",
+      "triggers": ["build", "code", "dev", "implémentation", "feature", "tâche", "commit"]
+    },
+    {
+      "id": "test-driven-development",
+      "agent": "build-dev-lead",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/test-driven-development",
+      "tags": ["testing", "tdd", "tests", "quality"],
+      "description": "Cycle Red-Green-Refactor pour un code fiable dès le départ",
+      "triggers": ["test", "tests", "tdd", "jest", "pytest", "vitest", "couverture", "unitaire"]
+    },
+    {
+      "id": "requesting-code-review",
+      "agent": "build-dev-lead",
+      "source": "SP",
+      "repo": "obra/superpowers",
+      "path": "skills/requesting-code-review",
+      "tags": ["review", "collaboration", "pr", "quality"],
+      "description": "Préparer une demande de revue claire pour un juge indépendant",
+      "triggers": ["revue", "review", "pr", "pull request", "merge request", "évaluation"]
+    },
+    {
+      "id": "code-simplification",
+      "agent": "build-dev-lead",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/code-simplification",
+      "tags": ["refactor", "clean-code", "simplicity", "yagni"],
+      "description": "Simplifier le code, éliminer la sur-ingénierie et le code mort",
+      "triggers": ["refactor", "simplification", "clean code", "dette", "lisibilité", "yagni"]
+    },
+    {
+      "id": "debugging-and-error-recovery",
+      "agent": "build-dev-lead",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/debugging-and-error-recovery",
+      "tags": ["debug", "errors", "troubleshooting", "fix"],
+      "description": "Diagnostic méthodique et correction d'erreurs sans régression",
+      "triggers": ["bug", "debug", "erreur", "crash", "exception", "incident", "fix"]
+    },
+    {
+      "id": "ci-cd-and-automation",
+      "agent": "devops-release",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/ci-cd-and-automation",
+      "tags": ["devops", "ci-cd", "github-actions", "automation"],
+      "description": "Automatiser builds, tests et vérifications dans GitHub Actions",
+      "triggers": ["ci", "cd", "ci/cd", "pipeline", "github actions", "actions", "automation", "workflow"]
+    },
+    {
+      "id": "shipping-and-launch",
+      "agent": "devops-release",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/shipping-and-launch",
+      "tags": ["deploy", "launch", "release", "production"],
+      "description": "Checklists et protocole de mise en production sans coupure",
+      "triggers": ["deploy", "déploiement", "prod", "production", "launch", "release", "mise en prod"]
+    },
+    {
+      "id": "observability-and-instrumentation",
+      "agent": "devops-release",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/observability-and-instrumentation",
+      "tags": ["devops", "monitoring", "telemetry", "logs"],
+      "description": "Instrumenter l'application : logs structurés, métriques, traces",
+      "triggers": ["logs", "monitoring", "métriques", "observabilité", "sentry", "datadog", "opentelemetry"]
+    },
+    {
+      "id": "performance-optimization",
+      "agent": "devops-release",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/performance-optimization",
+      "tags": ["performance", "speed", "web-vitals", "optimization"],
+      "description": "Optimiser les Core Web Vitals, temps de réponse et bundles",
+      "triggers": ["performance", "vitesse", "lenteur", "latence", "web vitals", "lighthouse", "cache"]
+    },
+    {
+      "id": "vercel-deploy",
+      "agent": "devops-release",
+      "source": "VL",
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/vercel-deploy",
+      "tags": ["deploy", "vercel", "nextjs", "cloud"],
+      "description": "Déploiement optimisé sur Vercel avec preview environments",
+      "triggers": ["vercel", "serverless", "edge", "preview"]
+    },
+    {
+      "id": "skill-creator",
+      "agent": "qa-evaluator",
+      "source": "AN",
+      "repo": "anthropics/skills",
+      "path": "skills/skill-creator",
+      "tags": ["skills", "evals", "creation", "testing"],
+      "description": "Créer, tester et mesurer des skills d'agents avec des evals",
+      "triggers": ["skill", "custom skill", "créer skill", "eval", "évaluation", "test skill"]
+    },
+    {
+      "id": "code-review-and-quality",
+      "agent": "qa-evaluator",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/code-review-and-quality",
+      "tags": ["review", "quality", "standards", "judge"],
+      "description": "Grille de qualité de code sur 5 axes pour le juge QA",
+      "triggers": ["qualité", "code quality", "notation", "grille", "standards", "lint"]
+    },
+    {
+      "id": "subagent-driven-development",
+      "agent": "orchestrator",
+      "source": "SP",
+      "repo": "obra/superpowers",
+      "path": "skills/subagent-driven-development",
+      "tags": ["orchestration", "subagents", "delegation", "multi-agent"],
+      "description": "Déléguer des tâches à des sous-agents avec portes de revue",
+      "triggers": ["subagents", "sous-agents", "délégation", "multi-agent", "orchestration"]
+    },
+    {
+      "id": "dispatching-parallel-agents",
+      "agent": "orchestrator",
+      "source": "SP",
+      "repo": "obra/superpowers",
+      "path": "skills/dispatching-parallel-agents",
+      "tags": ["orchestration", "parallel", "concurrency"],
+      "description": "Lancer des sous-agents en parallèle sur des tâches indépendantes",
+      "triggers": ["parallèle", "parallel", "concurrence", "multitâche"]
+    },
+    {
+      "id": "writing-plans",
+      "agent": "orchestrator",
+      "source": "SP",
+      "repo": "obra/superpowers",
+      "path": "skills/writing-plans",
+      "tags": ["planning", "roadmap", "execution"],
+      "description": "Écrire des plans d'exécution pas à pas détaillés",
+      "triggers": ["plan", "planification", "étapes", "steps", "roadmap"]
+    },
+    {
+      "id": "executing-plans",
+      "agent": "orchestrator",
+      "source": "SP",
+      "repo": "obra/superpowers",
+      "path": "skills/executing-plans",
+      "tags": ["execution", "run", "tasks"],
+      "description": "Exécuter un plan méthodiquement sans sauter d'étape",
+      "triggers": ["exécuter", "run", "suivi", "avancement"]
+    },
+    {
+      "id": "using-superpowers",
+      "agent": "orchestrator",
+      "source": "SP",
+      "repo": "obra/superpowers",
+      "path": "skills/using-superpowers",
+      "tags": ["meta", "activation", "framework"],
+      "description": "Ancre qui active les skills Superpowers au besoin",
+      "triggers": ["superpowers", "framework", "activation"]
+    },
+    {
+      "id": "xlsx",
+      "agent": "data-ml",
+      "source": "AN",
+      "repo": "anthropics/skills",
+      "path": "skills/xlsx",
+      "tags": ["data", "excel", "sheets", "csv"],
+      "description": "Lire, créer et manipuler des fichiers tableurs",
+      "triggers": ["excel", "xlsx", "tableur", "csv", "data", "données", "export"]
+    },
+    {
+      "id": "postgres-best-practices",
+      "agent": "data-ml",
+      "source": "Supabase",
+      "repo": "supabase/agent-skills",
+      "path": "skills/postgres-best-practices",
+      "tags": ["database", "postgres", "sql", "supabase"],
+      "description": "Bonnes pratiques de modélisation, requêtage et indexation PostgreSQL",
+      "triggers": ["postgres", "postgresql", "sql", "supabase", "base de données", "bdd", "prisma", "drizzle"]
+    }
+  ]
+}
