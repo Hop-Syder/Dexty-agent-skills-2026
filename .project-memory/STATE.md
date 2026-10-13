@@ -2,10 +2,10 @@
 *Relu à chaque réveil. Mis à jour à chaque fin de session.*
 
 - **Dernière session** : 2026-10-13
-- **Stockage mémoire** : unset
-- **Tâche en cours** : configuration initiale
+- **Stockage mémoire** : fichiers Markdown/JSON (flat-file)
+- **Tâche en cours** : MAP.md rempli, projet configuré
 - **Prochaines étapes** :
-  1. Remplir MAP.md avec la vision du projet
-  2. Lancer la première session pour choisir le stockage (fichiers ou db)
-  3. Lancer la première tâche
+  1. Installer les skills référencés dans `skills.lock` via `skills-sync.sh`
+  2. Lancer le premier scan de sécurité SkillSpector
+  3. Tester l'onboarding (`onboard.sh`) sur un projet réel
 - **Bloquants actuels** : aucun
