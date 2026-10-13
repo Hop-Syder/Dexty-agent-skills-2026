@@ -1,221 +1,136 @@
-<!-- README — Dexty · @hopsyder — Nexus Partners -->
-
 <div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/dexty-logo-white.svg" />
+    <img src="assets/dexty-logo.svg" alt="Dexty Agent Skills Logo" width="380" />
+  </picture>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/dexty-logo-white.svg" />
-  <img src="assets/dexty-logo.svg" alt="Dexty" width="260" />
-</picture>
+  <h3>Un framework open source d'agents de code à mémoire persistante</h3>
 
-### L’équipe d’agents qui se souvient.
+  <p>
+    <b>Sélection contextuelle</b> · <b>Verrouillage déterministe (SHA-1 & SHA-256)</b> · <b>Mémoire projet relue à chaque session</b> · <b>Évaluation QA indépendante</b>
+  </p>
 
-<a href="assets/dexty-presentation.mp4">
-  <img src="assets/dexty-teaser.gif" alt="Présentation animée de Dexty : 8 agents, onboarding en 7 questions, mémoire de projet" width="800" />
-</a>
-
-<sub>▶ <a href="assets/dexty-presentation.mp4">Voir la présentation complète (60 s, avec son)</a></sub>
-
-<br /><br />
-
-<a href="https://github.com/Hop-Syder/fullstack-agent-skills-2026/stargazers"><img src="https://img.shields.io/github/stars/Hop-Syder/fullstack-agent-skills-2026?style=flat-square&color=E39A2D&labelColor=10232E&logo=github" alt="Stars" /></a>
-<a href="docs/EVALUATION.md"><img src="https://img.shields.io/badge/architecture-89%2F100-E39A2D?style=flat-square&labelColor=10232E" alt="Architecture 89/100" /></a>
-<a href="skills.lock"><img src="https://img.shields.io/badge/skills.lock-51%20skills%20fig%C3%A9s-E39A2D?style=flat-square&labelColor=10232E" alt="51 skills figés" /></a>
-<a href="https://github.com/NVIDIA/SkillSpector"><img src="https://img.shields.io/badge/scan-SkillSpector-E39A2D?style=flat-square&labelColor=10232E" alt="Scan SkillSpector" /></a>
-
+  <p>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/licence-AGPL--3.0-blue.svg" alt="Licence AGPL-3.0" /></a>
+    <a href="VERSION"><img src="https://img.shields.io/badge/version-3.5.1-10232E.svg" alt="Version 3.5.1" /></a>
+    <a href="skills.catalog.json"><img src="https://img.shields.io/badge/skills_catalogue-37_v%C3%A9rifi%C3%A9s-E39A2D.svg" alt="37 skills dans le catalogue" /></a>
+    <a href="agents/"><img src="https://img.shields.io/badge/agents-8_sp%C3%A9cialis%C3%A9s-orange.svg" alt="8 agents" /></a>
+  </p>
 </div>
 
-<!--
-  Vidéo complète jouable directement dans la page (optionnel) :
-  1. Ouvre ce README en édition sur github.com.
-  2. Glisse-dépose assets/dexty-presentation.mp4 dans l'éditeur.
-  3. GitHub insère une ligne https://github.com/user-attachments/assets/… : garde-la seule sur sa ligne, ici.
-  GitHub affiche alors un lecteur (lecture au clic : GitHub n'autorise pas la lecture automatique).
--->
+## Le problème
 
----
+Les agents de code actuels (Claude Code, Codex, Cursor, VS Code Copilot) sont efficaces sur un prompt isolé, mais rencontrent **4 limites structurelles** sur des projets de longue durée :
 
-## Pourquoi Dexty
+1. **Amnésie de session** — À chaque réveil, l'agent repart de zéro, oublie les choix d'architecture et ignore ce qui a déjà été refusé.
+2. **Gaspillage de tokens** — Charger des dizaines de skills génériques sature la fenêtre de contexte et dilue l'attention du modèle.
+3. **Mises à jour sauvages** — Télécharger un skill tiers sur `main` sans contrôle d'intégrité expose le projet aux régressions et aux injections de prompt.
+4. **Auto-évaluation biaisée** — L'agent qui produit le code est le même qui juge son travail.
 
-Les agents de code ont quatre défauts qui coûtent cher sur un vrai projet :
+## La solution Dexty 3.5.1
 
-| Défaut | Ce qui se passe | La réponse de Dexty |
-|---|---|---|
-| **Amnésie de session** | Ce qui a été refusé, arbitré ou validé est oublié à la session suivante. | Une mémoire de projet relue à chaque démarrage. |
-| **Gaspillage de tokens** | L’agent charge des dépôts entiers d’outils inutiles pour le problème posé. | Un onboarding qui ne garde que les skills utiles. |
-| **Mises à jour sauvages** | Les skills changent en amont et le comportement de l’agent dérive. | Chaque skill est figé sur un commit précis. |
-| **Auto-évaluation** | L’agent qui écrit le code se note lui-même et ne voit pas ses failles. | Un agent QA séparé, qui n’a pas codé. |
+**Dexty Agent Skills** structure le cycle de développement autour de 4 mécanismes vérifiables :
 
-Dexty est conçu par **[Nexus Partners](https://nexus-partners.xyz/)**, sous la direction de **[@Hop-Syder](https://github.com/Hop-Syder)**.
+- **Mémoire persistante (`.project-memory/`)** — Livrée sous forme de templates vierges (`MAP.md`, `STATE.md`, `REFUSALS.md`, `ERRORS.md`, `DECISIONS.md`, `SUCCESSES.md`), remplie lors de l'onboarding et relue automatiquement au démarrage de session via `.claude/hooks/memory-wake.sh`.
+- **Sélection contextuelle (`tools/onboard.sh`)** — Un questionnaire en 7 questions sélectionne entre 14 et 26 skills pertinents parmi les 37 du catalogue (`skills.catalog.json`).
+- **Verrouillage déterministe (`tools/skills-sync.sh`)** — Génère `.agents/skills.lock` avec le commit SHA amont (40 caractères) et l'empreinte cryptographique `SHA-256` de chaque skill. Tout échec de téléchargement, d'empreinte ou de politique de sécurité provoque un arrêt franc (`exit 1`), sans jamais fabriquer de fichier de substitution.
+- **Juge QA séparé (`agents/06-qa-evaluator.md`)** — Sépare strictement les rôles d'exécution et d'évaluation selon la grille de [`docs/EVALUATION.md`](docs/EVALUATION.md).
 
----
+## Les 8 agents spécialisés
 
-## Ce qui rend Dexty différent
-
-**1. Un onboarding sur mesure en 7 questions.** Dexty analyse ta stack, ton horizon et la sensibilité de tes données, puis sélectionne uniquement les skills nécessaires. Exemple : 26 skills sur 37 pour un SaaS Next.js + Supabase.
-
-**2. Un lock déterministe.** [`skills.lock`](skills.lock) fige chaque skill sur un commit SHA exact. Aucune mise à jour silencieuse.
-
-**3. Un garde-fou de sécurité.** Tout skill tiers passe par [NVIDIA SkillSpector](https://github.com/NVIDIA/SkillSpector) avant installation (injection de prompt, exfiltration, permissions).
-
-**4. Un juge séparé de l’exécutant.** L’agent QA note la qualité et la conformité du travail sans y avoir participé.
-
-**5. Une mémoire qui garde la vision.** Au démarrage, l’agent relit [`.project-memory/`](.project-memory/), annonce où on en est, et refuse ce qui sort de la vision du projet tant que tu ne l’as pas convaincu.
-
----
-
-## Les 8 agents
-
-| # | Agent | Mission | Fiche |
-|---|---|---|---|
-| ① | **Product Manager** | Cadrage du besoin, spécifications, découpage en tâches, décisions d’architecture (ADR) | [`01-product-manager.md`](agents/01-product-manager.md) |
-| ② | **Workflow / UX Owner** | Parcours utilisateur, design tokens, enchaînement des écrans, contrats d’API côté front | [`02-workflow-ux-owner.md`](agents/02-workflow-ux-owner.md) |
-| ③ | **Security Lead** | Modèle de menaces STRIDE, durcissement du code, contrôle des permissions des agents | [`03-security-lead.md`](agents/03-security-lead.md) |
-| ④ | **Build / Dev Lead** | Développement incrémental, TDD, simplification, débogage | [`04-build-dev-lead.md`](agents/04-build-dev-lead.md) |
-| ⑤ | **DevOps / Release** | CI/CD, conteneurs durcis, observabilité | [`05-devops-release.md`](agents/05-devops-release.md) |
-| ⑥ | **QA / Evaluator** | Mesure indépendante de la qualité et de la conformité | [`06-qa-evaluator.md`](agents/06-qa-evaluator.md) |
-| ⑦ | **Data / ML** | Données tabulaires, PostgreSQL, modèles ML/NLP, suivi de dérive | [`07-data-ml.md`](agents/07-data-ml.md) |
-| ⑧ | **Project Memory** | Mémoire du projet, rappel des décisions passées, protection de la vision | [`08-project-memory.md`](agents/08-project-memory.md) |
-
-Chaque agent principal délègue à des sous-agents spécialisés. La correspondance complète agent → skills est dans [`docs/MAPPING.md`](docs/MAPPING.md).
-
----
-
-## La chaîne des skills : rien ne bouge sans toi
-
-```mermaid
-flowchart LR
-  A["skills.lock<br/>commits figés"] --> B["skills-sync.sh<br/>installation locale + scan"]
-  B --> C["skills-check.sh<br/>compare avec l’amont"]
-  C --> D["Veille hebdomadaire<br/>PR avec diff et score"]
-  D -->|"tu valides"| A
-```
-
-- Un skill est téléchargé une seule fois, puis utilisé en local. Jamais d’appel à GitHub pendant le travail.
-- Aucun skill n’est installé sans scan de sécurité réussi.
-- Aucune mise à jour n’est appliquée sans ta validation dans une Pull Request.
-- Seuls les skills inscrits dans le lock sont chargés.
-
----
+| Agent | Fiche | Rôle principal | Mémoire & outils consultés |
+| :--- | :--- | :--- | :--- |
+| **① Product Manager** | [`agents/01-product-manager.md`](agents/01-product-manager.md) | Spécifications, périmètre MVP & décisions (ADR) | `.project-memory/MAP.md`, `DECISIONS.md` |
+| **② Workflow / UX Owner** | [`agents/02-workflow-ux-owner.md`](agents/02-workflow-ux-owner.md) | Parcours utilisateur, composants UI & contrats d'API | `skills.catalog.json` |
+| **③ Security Lead** | [`agents/03-security-lead.md`](agents/03-security-lead.md) | Modélisation des menaces, revue de diffs & garde-fous | `.project-memory/ERRORS.md`, `REFUSALS.md` |
+| **④ Build / Dev Lead** | [`agents/04-build-dev-lead.md`](agents/04-build-dev-lead.md) | Implémentation incrémentale, TDD & débogage | `.agents/skills.lock` |
+| **⑤ DevOps / Release** | [`agents/05-devops-release.md`](agents/05-devops-release.md) | CI/CD, observabilité, performance & déploiement | `.github/workflows/skills-update.yml` |
+| **⑥ QA / Evaluator** | [`agents/06-qa-evaluator.md`](agents/06-qa-evaluator.md) | Évaluation indépendante (le juge ne code jamais) | `docs/EVALUATION.md`, `ERRORS.md` |
+| **⑦ Data / ML** | [`agents/07-data-ml.md`](agents/07-data-ml.md) | Modélisation SQL/PostgreSQL, données tabulaires & pipelines | `skills.catalog.json` |
+| **⑧ Project Memory** | [`agents/08-project-memory.md`](agents/08-project-memory.md) | Gardien de la vision et reprise de session | `.project-memory/*`, `.claude/hooks/memory-wake.sh` |
 
 ## Démarrage rapide
 
-**1. Récupérer Dexty**
-
 ```bash
-git clone https://github.com/Hop-Syder/fullstack-agent-skills-2026.git ~/fullstack-agent-skills-2026
-```
+# 1. Cloner le dépôt Dexty
+git clone https://github.com/Hop-Syder/Dexty-agent-skills-2026.git ~/Dexty-agent-skills-2026
 
-**2. L’installer dans ton projet et lancer l’onboarding**
+# 2. Installer Dexty dans votre projet et lancer l'onboarding (7 questions)
+~/Dexty-agent-skills-2026/install.sh /chemin/vers/mon-projet --onboard
 
-```bash
-~/fullstack-agent-skills-2026/install.sh /chemin/vers/mon-projet --onboard
-```
-
-Les 7 questions :
-
-1. Nom du projet
-2. Description courte
-3. Stack technique (ex. Next.js + Postgres + Tailwind)
-4. Fonctionnalités prioritaires (auth, dashboard, paiement, API…)
-5. Horizon : MVP, produit soigné ou entreprise
-6. Exposition publique sur Internet (renforce la sécurité)
-7. Données sensibles (active les skills d’audit Trail of Bits)
-
-**3. Démarrer**
-
-```bash
+# 3. Ouvrir votre projet avec Claude Code (ou Cursor / Codex / VS Code)
 cd /chemin/vers/mon-projet
-claude   # ou codex, cursor, VS Code
+claude
 ```
 
-L’agent Project Memory se réveille, charge la carte du projet (`MAP.md`), affiche où on en est et veille sur la vision.
-
-Guide détaillé par outil (Claude Code, VS Code, Codex, OpenClaw…) : [`INSTALL.md`](INSTALL.md).
-
----
-
-## Évaluation de l’architecture
-
-Notée sur 100 selon la grille de [`docs/EVALUATION.md`](docs/EVALUATION.md) :
-
-| Axe | Note | Justification |
-|---|---:|---|
-| Couverture du cycle | 20/20 | Définir → planifier → coder → vérifier → relire → livrer, plus Data/ML et mémoire |
-| Séparation des rôles | 20/20 | Le juge QA est distinct de l’exécutant. Aucun doublon. |
-| Traçabilité des skills | 18/20 | Sources vérifiées. 2 skills Data/ML encore à sourcer. |
-| Orchestration | 17/20 | Délégation multi-agents fondée sur obra/superpowers |
-| Évaluabilité | 14/20 | Grille et agent QA en place. L’évaluation en conditions réelles viendra avec l’installation des skills. |
-| **Total** | **89/100** | **Architecture solide, prête à passer à l’implémentation** |
-
-Les 11 points restants se gagnent en installant les skills et en évaluant l’agent sur de vrais projets.
-
----
+Guide détaillé par outil : [`INSTALL.md`](INSTALL.md).
 
 ## Organisation du dépôt
 
 ```text
-fullstack-agent-skills-2026/
-├── README.md                 # cette page
-├── AGENTS.md                 # instructions lues par tous les agents de code
-├── CLAUDE.md                 # import d’AGENTS.md pour Claude Code
-├── INSTALL.md                # guide d’installation par outil
-├── install.sh                # installation dans un projet (n’écrase rien)
-├── skills.catalog.json       # catalogue des 37 skills et de leurs déclencheurs
-├── skills.lock               # skills figés : commit, date et score de scan
+Dexty-agent-skills-2026/
+├── VERSION                 # version unique du framework (3.5.1)
+├── LICENSE                 # licence GNU AGPL-3.0
+├── README.md               # présentation et architecture
+├── AGENTS.md               # instructions de session universelles
+├── CLAUDE.md               # point d'entrée Claude Code (@AGENTS.md)
+├── INSTALL.md              # guide d'installation par éditeur/CLI
+├── install.sh              # installateur idempotent (--onboard / --skip-onboard)
+├── skills.catalog.json     # catalogue des 37 skills (commit SHA + SHA-256)
 ├── tools/
-│   ├── onboard.sh            # les 7 questions et la sélection des skills
-│   ├── skills-sync.sh        # installation locale + scan SkillSpector
-│   └── skills-check.sh       # vérification des mises à jour en amont
+│   ├── onboard.sh          # questionnaire en 7 étapes → MAP.md + .agents/skills.lock
+│   ├── skills-sync.sh      # installation atomique + vérification SHA-256 / SkillSpector
+│   └── skills-check.sh     # comparaison des commits amont par chemin (statut UNKNOWN hors-ligne)
+├── .claude/
+│   ├── settings.json       # déclaration du hook SessionStart
+│   ├── commands/resume.md  # commande /resume
+│   └── hooks/memory-wake.sh# réveil mémoire et détection de nouveau projet
 ├── .github/workflows/
-│   ├── skills-update.yml     # veille hebdomadaire + PR automatique
-│   └── sdlc-pipeline.yaml    # pipeline de livraison multi-agents
-├── agents/                   # fiches des 8 agents
+│   └── skills-update.yml   # suite de tests CI (T1-T12b) + veille amont hebdomadaire
+├── agents/                 # 8 fiches d'agents (01 à 08)
 ├── docs/
-│   ├── MAPPING.md            # agents → skills
-│   ├── SOURCES.md            # dépôts sources vérifiés
-│   └── EVALUATION.md         # grille de notation sur 100
-├── assets/                   # logo, icônes, vidéo et GIF de présentation
-├── .project-memory/          # mémoire du projet (MAP, STATE, REFUSALS…)
-└── skills/                   # skills de référence
+│   ├── MAPPING.md          # cartographie agents → skills
+│   ├── SOURCES.md          # dépôts amont documentés
+│   └── EVALUATION.md       # grille d'évaluation architecturale (Niveau 1 : 89/100 sur papier)
+├── skills/                 # 37 résumés opérationnels vendored (vérifiés par SHA-256)
+├── tests/
+│   └── run_audit_tests.sh  # suite de tests automatisés de non-régression (T1 à T12b)
+├── assets/                 # logos SVG/PNG (Piste A), benchmark SVG et vidéo MP4 1080p
+└── .project-memory/        # templates vierges copiés dans les nouveaux projets
 ```
 
----
-
-## Benchmark — Version 3.5.0 (2026-10-13)
+## Vérification et tests automatisés
 
 <div align="center">
-  <img src="assets/benchmark-v3.5.0.svg" alt="Benchmark Dexty 3.5.0" width="800" />
+  <img src="assets/benchmark-v3.5.1.svg" alt="État de vérification Dexty 3.5.1" width="800" />
 </div>
 
-<br />
+Pour exécuter la suite de tests de sécurité et de non-régression en local (14 tests couvrant les scénarios `T1` à `T12b` en bac à sable isolé) :
 
-| Métrique | Résultat | Détail |
-|----------|---------|--------|
-| **Skills dans le catalogue** | 37 | Couvrant 8 agents spécialisés |
-| **Skills installables (lock)** | 51 | Après sélection contextuelle (onboarding) |
-| **Onboarding → sélection** | ✅ OK | 7 questions → sélection automatique (14–26 skills selon le projet) |
-| **skills-sync.sh** | ✅ OK | Installation locale + scan (SkillSpector si disponible) |
-| **Mémoire projet** | ✅ OK | MAP, STATE, REFUSALS, ERRORS, DECISIONS — relus à chaque session |
-| **Protection MAP.md** | ✅ OK | L'onboarding ne l'écrase plus si déjà renseigné |
-| **Licence** | AGPL-3.0 | Protection IP + possibilité de dual licensing |
-| **Score architecture** | 89/100 | Voir [`docs/EVALUATION.md`](docs/EVALUATION.md) |
-| **Version des agents** | Desty 3.5 | Cohérence vérifiée dans les 8 fiches |
+```bash
+bash tests/run_audit_tests.sh
+```
 
-### Changelog v3.5.0
+| Vérification | Résultat | Preuve / Mécanisme |
+| :--- | :--- | :--- |
+| **Cohérence catalogue ↔ `skills/`** | **37 / 37** | Invariant vérifié par `tests/run_audit_tests.sh` (`commit` + `sha256` présents sur chaque entrée) |
+| **Parcours `install.sh --onboard` (`T1`, `T4`)** | **Testé** | Génère `.agents/skills.lock` et initialise `.project-memory/MAP.md` avec les réponses du projet |
+| **Idempotence & hook (`T2`, `T3`, `T12b`)** | **Testé** | Aucune duplication de `AGENTS.md` ; `.claude/settings.json` copié ; template vierge détecté au réveil |
+| **Protection contre injections (`T5`, `T11`)** | **Testé** | Aucun `os.system` (`subprocess.run(..., shell=False)`) ; passage par `os.environ` et heredoc quoté |
+| **Intégrité supply-chain (`T6`, `T7a`, `T7b`)** | **Testé** | Aucun faux `SKILL.md` en cas d'échec réseau ; refus des scores bas ou dépôts non vérifiés avec `exit 1` |
+| **Honnêteté du checker (`T8`, `T8b`)** | **Testé** | Compare le SHA verrouillé ; retourne `UNKNOWN` (`exit 2`) hors-ligne et `UNPINNED` (`exit 2`) sans commit |
+| **Évaluation architecturale (Niveau 1)** | **89 / 100** | Grille conceptuelle documentée dans [`docs/EVALUATION.md`](docs/EVALUATION.md) |
 
-- ✅ Licence AGPL-3.0 ajoutée
-- ✅ MAP.md : vision, périmètre, architecture, principes non négociables
-- 🐛 Fix : `onboard.sh` n'écrase plus MAP.md si déjà renseigné
-- 🐛 Fix : version "Desty 3.2" → "Desty 3.5" dans tous les agents et docs
-- 🐛 Fix : `selected_at` utilise la date du jour au lieu d'un hardcode
-- ✅ `skills-sync.sh` : 51 skills synchronisés avec succès
-- ✅ Onboarding testé : sélection contextuelle fonctionnelle (14 à 26 skills selon le stack)
+### Changelog v3.5.1 (Remédiation d'audit)
 
----
+- **Sécurité P0 (`AUD-001` à `AUD-004`)** : suppression totale du fallback générant de faux `SKILL.md` « APPROVED » ; vérification stricte d'empreinte `SHA-256` ; remplacement de tous les appels `os.system` par `subprocess.run(..., shell=False)` avec validation regex ; élimination de l'interpolation Python dans `tools/onboard.sh` via `os.environ`.
+- **CI/CD P0 (`AUD-005`, `AUD-018`)** : workflow unifié dans `.github/workflows/skills-update.yml` avec actions épinglées par SHA et exécution automatique de `tests/run_audit_tests.sh`.
+- **Mémoire & Installation P1 (`AUD-006` à `AUD-008`, `AUD-015`, `AUD-021`)** : support effectif de `--onboard` dans `install.sh`, copie de `.claude/settings.json`, idempotence de `AGENTS.md`, templates `.project-memory/` vierges avec marqueur unifié `DEXTY_TEMPLATE_UNCONFIGURED`, et suppression du lock global pré-armé.
+- **Unification & Checker P1 (`AUD-009` à `AUD-014`, `AUD-016`, `AUD-017`)** : alignement strict `skills.catalog.json` ↔ `skills/` (37/37 skills avec `commit` et `sha256`), statut `UNKNOWN` (`exit 2`) en cas d'erreur réseau dans `tools/skills-check.sh`, et écriture atomique (`tempfile` + `os.replace`).
 
-## Sources et remerciements
+## Sources et crédits amont
 
-Dexty s’appuie sur le travail open source de :
+Les 37 résumés opérationnels du dossier `skills/` sont des adaptations condensées pour Dexty 3.5.1 basées sur les dépôts open source suivants :
 
 - [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — Addy Osmani
 - [obra/superpowers](https://github.com/obra/superpowers) — Jesse Vincent
@@ -223,14 +138,12 @@ Dexty s’appuie sur le travail open source de :
 - [trailofbits/skills](https://github.com/trailofbits/skills) — Trail of Bits
 - [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) — Vercel Labs
 - [supabase/agent-skills](https://github.com/supabase/agent-skills) — Supabase
-- [NVIDIA/SkillSpector](https://github.com/NVIDIA/SkillSpector) — NVIDIA (scanner de sécurité)
-
----
+- [NVIDIA/SkillSpector](https://github.com/NVIDIA/SkillSpector) — NVIDIA (scanner de sécurité externe)
 
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/dexty-mark-white.svg" />
-    <img src="assets/dexty-mark.svg" alt="" width="40" />
+    <img src="assets/dexty-mark.svg" alt="Dexty Mark" width="40" />
   </picture><br />
   <sub>Conçu et maintenu par <b><a href="https://github.com/Hop-Syder">ISMAEL CHRISTIAN DAOUDA ABASSI (@Hop-Syder)</a></b> · <b><a href="https://nexus-partners.xyz/">Nexus Partners</a></b></sub>
 </div>

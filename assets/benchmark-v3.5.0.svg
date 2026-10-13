@@ -1,109 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0d1b2a"/>
-      <stop offset="100%" stop-color="#1b2d45"/>
-    </linearGradient>
-    <linearGradient id="bar-gold" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#E39A2D"/>
-      <stop offset="100%" stop-color="#F5C563"/>
-    </linearGradient>
-    <linearGradient id="bar-green" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#2ECC71"/>
-      <stop offset="100%" stop-color="#58D68D"/>
-    </linearGradient>
-    <linearGradient id="bar-blue" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#3498DB"/>
-      <stop offset="100%" stop-color="#5DADE2"/>
-    </linearGradient>
-    <filter id="shadow" x="-2%" y="-2%" width="104%" height="108%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
-    </filter>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 220" width="800" height="220">
+  <rect width="800" height="220" rx="12" fill="#10232E"/>
+  <text x="32" y="44" fill="#F3F5F4" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700">Dexty 3.5.1 — État de vérification technique (Post-Audit)</text>
+  <text x="32" y="68" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="13">Vérifié par bash tests/run_audit_tests.sh · Licence GNU AGPL-3.0 · Nexus Partners</text>
 
-  <!-- Background -->
-  <rect width="800" height="520" rx="16" fill="url(#bg)"/>
+  <rect x="32" y="92" width="170" height="96" rx="8" fill="#183242" stroke="#E39A2D" stroke-width="1.5"/>
+  <text x="48" y="130" fill="#E39A2D" font-family="system-ui, sans-serif" font-size="26" font-weight="700">37 / 37</text>
+  <text x="48" y="154" fill="#F3F5F4" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Skills alignés</text>
+  <text x="48" y="172" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">Catalogue = Vendors (SHA-256)</text>
 
-  <!-- Title -->
-  <text x="400" y="42" text-anchor="middle" fill="#F5C563" font-size="22" font-weight="700" letter-spacing="1">⚡ DEXTY 3.5 — BENCHMARK</text>
-  <text x="400" y="64" text-anchor="middle" fill="#8899AA" font-size="13">v3.5.0 · 2026-10-13 · @hopsyder · Nexus Partners</text>
+  <rect x="220" y="92" width="170" height="96" rx="8" fill="#183242" stroke="#22C55E" stroke-width="1.5"/>
+  <text x="236" y="130" fill="#22C55E" font-family="system-ui, sans-serif" font-size="26" font-weight="700">14 / 14</text>
+  <text x="236" y="154" fill="#F3F5F4" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Tests d'audit T0-T12b</text>
+  <text x="236" y="172" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">Suite CI reproductible</text>
 
-  <!-- Horizontal bars chart -->
-  <!-- Labels column -->
-  <text x="28" y="112" fill="#CCD6E0" font-size="13" font-weight="600">Architecture</text>
-  <text x="28" y="162" fill="#CCD6E0" font-size="13" font-weight="600">Skills catalogue</text>
-  <text x="28" y="212" fill="#CCD6E0" font-size="13" font-weight="600">Skills installés</text>
-  <text x="28" y="262" fill="#CCD6E0" font-size="13" font-weight="600">Agents opérationnels</text>
-  <text x="28" y="312" fill="#CCD6E0" font-size="13" font-weight="600">Onboarding</text>
-  <text x="28" y="362" fill="#CCD6E0" font-size="13" font-weight="600">Mémoire projet</text>
-  <text x="28" y="412" fill="#CCD6E0" font-size="13" font-weight="600">Sécurité (AGPL)</text>
+  <rect x="408" y="92" width="170" height="96" rx="8" fill="#183242" stroke="#E39A2D" stroke-width="1.5"/>
+  <text x="424" y="130" fill="#E39A2D" font-family="system-ui, sans-serif" font-size="26" font-weight="700">8 / 8</text>
+  <text x="424" y="154" fill="#F3F5F4" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Fiches d'agents</text>
+  <text x="424" y="172" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">PM, UX, Sec, Dev, Ops, QA, Data, Mem</text>
 
-  <!-- Bar backgrounds -->
-  <rect x="200" y="95" width="500" height="28" rx="6" fill="#1a2940" opacity="0.6"/>
-  <rect x="200" y="145" width="500" height="28" rx="6" fill="#1a2940" opacity="0.6"/>
-  <rect x="200" y="195" width="500" height="28" rx="6" fill="#1a2940" opacity="0.6"/>
-  <rect x="200" y="245" width="500" height="28" rx="6" fill="#1a2940" opacity="0.6"/>
-  <rect x="200" y="295" width="500" height="28" rx="6" fill="#1a2940" opacity="0.6"/>
-  <rect x="200" y="345" width="500" height="28" rx="6" fill="#1a2940" opacity="0.6"/>
-  <rect x="200" y="395" width="500" height="28" rx="6" fill="#1a2940" opacity="0.6"/>
-
-  <!-- Bars (filled) -->
-  <!-- Architecture 89/100 -->
-  <rect x="200" y="95" width="445" height="28" rx="6" fill="url(#bar-gold)" filter="url(#shadow)">
-    <animate attributeName="width" from="0" to="445" dur="0.8s" fill="freeze"/>
-  </rect>
-  <text x="655" y="114" fill="#0d1b2a" font-size="14" font-weight="700">89/100</text>
-
-  <!-- Skills catalogue 37/37 -->
-  <rect x="200" y="145" width="500" height="28" rx="6" fill="url(#bar-green)" filter="url(#shadow)">
-    <animate attributeName="width" from="0" to="500" dur="0.8s" fill="freeze"/>
-  </rect>
-  <text x="655" y="164" fill="#0d1b2a" font-size="14" font-weight="700">37/37</text>
-
-  <!-- Skills installés 51/51 -->
-  <rect x="200" y="195" width="500" height="28" rx="6" fill="url(#bar-green)" filter="url(#shadow)">
-    <animate attributeName="width" from="0" to="500" dur="0.8s" fill="freeze"/>
-  </rect>
-  <text x="655" y="214" fill="#0d1b2a" font-size="14" font-weight="700">51/51</text>
-
-  <!-- Agents 8/8 -->
-  <rect x="200" y="245" width="500" height="28" rx="6" fill="url(#bar-blue)" filter="url(#shadow)">
-    <animate attributeName="width" from="0" to="500" dur="0.8s" fill="freeze"/>
-  </rect>
-  <text x="655" y="264" fill="#0d1b2a" font-size="14" font-weight="700">8/8</text>
-
-  <!-- Onboarding 100% -->
-  <rect x="200" y="295" width="500" height="28" rx="6" fill="url(#bar-green)" filter="url(#shadow)">
-    <animate attributeName="width" from="0" to="500" dur="0.8s" fill="freeze"/>
-  </rect>
-  <text x="655" y="314" fill="#0d1b2a" font-size="14" font-weight="700">100%</text>
-
-  <!-- Mémoire 100% -->
-  <rect x="200" y="345" width="500" height="28" rx="6" fill="url(#bar-green)" filter="url(#shadow)">
-    <animate attributeName="width" from="0" to="500" dur="0.8s" fill="freeze"/>
-  </rect>
-  <text x="655" y="364" fill="#0d1b2a" font-size="14" font-weight="700">100%</text>
-
-  <!-- Sécurité 100% -->
-  <rect x="200" y="395" width="500" height="28" rx="6" fill="url(#bar-green)" filter="url(#shadow)">
-    <animate attributeName="width" from="0" to="500" dur="0.8s" fill="freeze"/>
-  </rect>
-  <text x="655" y="414" fill="#0d1b2a" font-size="14" font-weight="700">AGPL-3.0</text>
-
-  <!-- Summary boxes -->
-  <rect x="40" y="450" width="160" height="52" rx="10" fill="#162234" stroke="#E39A2D" stroke-width="1.5"/>
-  <text x="120" y="471" text-anchor="middle" fill="#E39A2D" font-size="20" font-weight="700">89/100</text>
-  <text x="120" y="490" text-anchor="middle" fill="#8899AA" font-size="11">Score global</text>
-
-  <rect x="230" y="450" width="160" height="52" rx="10" fill="#162234" stroke="#2ECC71" stroke-width="1.5"/>
-  <text x="310" y="471" text-anchor="middle" fill="#2ECC71" font-size="20" font-weight="700">3 bugs</text>
-  <text x="310" y="490" text-anchor="middle" fill="#8899AA" font-size="11">Corrigés</text>
-
-  <rect x="420" y="450" width="160" height="52" rx="10" fill="#162234" stroke="#3498DB" stroke-width="1.5"/>
-  <text x="500" y="471" text-anchor="middle" fill="#3498DB" font-size="20" font-weight="700">8 agents</text>
-  <text x="500" y="490" text-anchor="middle" fill="#8899AA" font-size="11">Opérationnels</text>
-
-  <rect x="610" y="450" width="160" height="52" rx="10" fill="#162234" stroke="#F5C563" stroke-width="1.5"/>
-  <text x="690" y="471" text-anchor="middle" fill="#F5C563" font-size="20" font-weight="700">51 skills</text>
-  <text x="690" y="490" text-anchor="middle" fill="#8899AA" font-size="11">Synchronisés</text>
+  <rect x="596" y="92" width="172" height="96" rx="8" fill="#183242" stroke="#38BDF8" stroke-width="1.5"/>
+  <text x="612" y="130" fill="#38BDF8" font-family="system-ui, sans-serif" font-size="26" font-weight="700">89 / 100</text>
+  <text x="612" y="154" fill="#F3F5F4" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Architecture (Niveau 1)</text>
+  <text x="612" y="172" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="11">Grille docs/EVALUATION.md</text>
 </svg>
