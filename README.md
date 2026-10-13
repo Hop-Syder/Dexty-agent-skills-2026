@@ -22,10 +22,12 @@ Chaque pôle possède un rôle clair et porte un jeu de compétences réelles (*
 | ③ | **Security Lead** | La sûreté globale (modèle de menaces, audit, garde-fous) | [Fiche Agent](agents/03-security-lead.md) |
 | ④ | **Build / Dev Lead** | Le code testé et fonctionnel (TDD, implémentation, debug) | [Fiche Agent](agents/04-build-dev-lead.md) |
 | ⑤ | **DevOps / Release** | L'industrialisation (CI/CD, déploiement, observabilité SRE) | [Fiche Agent](agents/05-devops-release.md) |
+| ⑥ | **QA / Evaluator** | La mesure : note les agents et les livrables (juge séparé) | [Fiche Agent](agents/06-qa-evaluator.md) |
 
 Chaque agent principal porte **~5 skills de pilotage** et délègue à des **sous-agents** qui portent les skills d'exécution technique. L'orchestration multi-agents (délégation, worktrees, parallélisme) est motorisée par les patterns de `obra/superpowers`.
 
-➡️ **Le livrable central d'architecture est le tableau maître : [`docs/MAPPING.md`](docs/MAPPING.md).**
+➡️ **Le livrable central d'architecture est le tableau maître : [`docs/MAPPING.md`](docs/MAPPING.md).**  
+➡️ **Le cadre d'évaluation et de notation (85/100) : [`docs/EVALUATION.md`](docs/EVALUATION.md).**
 
 ---
 
@@ -56,13 +58,15 @@ fullstack-agent-skills-2026/
 ├── README.md                          # Guide central Desty 3.0 & Nexus Partners
 ├── docs/
 │   ├── MAPPING.md                     # Tableau maître Agents → Sous-Agents → Skills
-│   └── SOURCES.md                     # Traçabilité des dépôts vérifiés
+│   ├── SOURCES.md                     # Traçabilité des dépôts vérifiés
+│   └── EVALUATION.md                  # Grille (85/100) et protocole d'évaluation
 ├── agents/                            # Fiches de mission et directives opérationnelles
 │   ├── 01-product-manager.md
 │   ├── 02-workflow-ux-owner.md
 │   ├── 03-security-lead.md
 │   ├── 04-build-dev-lead.md
-│   └── 05-devops-release.md
+│   ├── 05-devops-release.md
+│   └── 06-qa-evaluator.md             # Évaluation et notation de conformité
 └── skills/                            # Registre opérationnel des fichiers SKILL.md
     ├── addyosmani/                    # Les 25 skills du cycle DEFINE → SHIP
     └── superpowers/                   # Les skills d'orchestration multi-agents

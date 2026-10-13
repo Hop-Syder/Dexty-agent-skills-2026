@@ -28,8 +28,8 @@ pour le détail et l'avertissement sur les dépôts non confirmés.
           └──────┬────────┴──────┬────────┴──────────┬──────────────┘
                  │               │                   │
      ┌───────────┴───┐   ┌───────┴───────┐   ┌───────┴────────┐
-     │  Build / Dev   │   │ DevOps /      │   │ Sous-agents    │
-     │  (Lead Eng.)   │   │ Release       │   │ spécialisés    │
+     │  Build / Dev   │   │ DevOps /      │   │ QA /           │
+     │  (Lead Eng.)   │   │ Release       │   │ Evaluator      │
      └───────┬────────┘   └───────┬───────┘   └────────────────┘
              │                    │
    ┌─────────┴─────────┐  ┌───────┴─────────┐
@@ -39,10 +39,10 @@ pour le détail et l'avertissement sur les dépôts non confirmés.
    └───────────────────┘  └─────────────────┘
 ```
 
-**5 agents principaux**, chacun pilotant des **sous-agents** qui portent les
+**6 agents principaux**, chacun pilotant des **sous-agents** qui portent les
 skills d'exécution. Un agent principal porte des skills « de pilotage »
-(cadrage, décision, revue) ; ses sous-agents portent des skills « de
-production » (écrire du code, tester, déployer).
+(cadrage, décision, revue, évaluation) ; ses sous-agents portent des skills « de
+production » ou d'audit indépendant.
 
 ---
 
@@ -60,6 +60,7 @@ Légende des sources :
 | **③ Security Lead** | Possède la sûreté : menaces, revue, durcissement, conformité | `security-and-hardening` · `security-threat-model` · `security-best-practices` · `differential-review` · `security-awareness` | AO, TOB, TOB, TOB, TOB |
 | **④ Build / Dev Lead** | Transforme le plan en code qui marche | `incremental-implementation` · `test-driven-development` · `code-review-and-quality` · `code-simplification` · `debugging-and-error-recovery` | AO, AO, AO, AO, AO |
 | **⑤ DevOps / Release** | Emmène le code testé jusqu'en production | `ci-cd-and-automation` · `shipping-and-launch` · `observability-and-instrumentation` · `performance-optimization` · `vercel-deploy` | AO, AO, AO, AO, VL |
+| **⑥ QA / Evaluator** | Note la performance des agents et du résultat (juge séparé) | `skill-creator` · `claude plugin eval` · `requesting-code-review` · `code-review-and-quality` · `skillspector scan` | AN, Claude Code, SP, AO, NV |
 
 ---
 
@@ -106,10 +107,6 @@ auditer les diffs, sensibiliser. Travaille avec l'outil d'audit `SkillSpector`
 | Sous-agent | Code auditor | `differential-review`, `security-best-practices` | TOB, TOB |
 | Sous-agent | Supply-chain gate | **`SkillSpector` scan** (outil NVIDIA, Apache-2.0) | NV |
 
-> ⚠️ `SkillSpector` est un **scanner de sécurité**, pas un skill d'agent.
-> Il s'exécute dans la CI (`skillspector scan <repo>`) pour noter 0–100 tout
-> skill tiers avant adoption.
-
 ---
 
 ### ④ Build / Dev Lead
@@ -141,6 +138,19 @@ en production elle-même (incluant le déploiement Vercel pour les apps JS).
 
 ---
 
+### ⑥ QA / Evaluator
+
+**Mission** — Possède la **mesure**. Évalue la conformité des livrables et la performance des autres agents sans jamais exécuter les tâches qu'il évalue (juge séparé).
+
+| Niveau | Nom | Skills / Outils | Source |
+|--------|-----|-----------------|--------|
+| Agent | QA / Evaluator | `skill-creator`, `claude plugin eval`, `requesting-code-review`, `code-review-and-quality`, `skillspector scan` | AN, Claude Code, SP, AO, NV |
+| Sous-agent | Spec-compliance judge | `requesting-code-review` | SP |
+| Sous-agent | Code-quality judge | `code-review-and-quality` | AO |
+| Sous-agent | Skill eval runner | `skill-creator`, `claude plugin eval` | AN, Claude Code |
+
+---
+
 ## Orchestration (multi-agents)
 
 Le liant entre tous ces agents vient de **obra/superpowers**, dont les skills
@@ -158,7 +168,7 @@ déléguer proprement.
 
 ## Récapitulatif chiffré
 
-- **5 agents principaux**, **~5 skills chacun** = 25 rattachements de pilotage.
-- **16 sous-agents**, portant les skills d'exécution.
+- **6 agents principaux**, **~5 skills chacun** = 30 rattachements de pilotage et d'évaluation.
+- **19 sous-agents**, portant les skills d'exécution et de jugement.
 - **6 dépôts sources vérifiés** + 1 outil de sécurité (SkillSpector).
 - **~40 skills distincts** mobilisés, tous traçables à une source réelle.
