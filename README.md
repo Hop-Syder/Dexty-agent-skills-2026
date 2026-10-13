@@ -183,6 +183,12 @@ fullstack-agent-skills-2026/
 
 ## Benchmark — Version 3.5.0 (2026-10-13)
 
+<div align="center">
+  <img src="assets/benchmark-v3.5.0.svg" alt="Benchmark Dexty 3.5.0" width="800" />
+</div>
+
+<br />
+
 | Métrique | Résultat | Détail |
 |----------|---------|--------|
 | **Skills dans le catalogue** | 37 | Couvrant 8 agents spécialisés |
