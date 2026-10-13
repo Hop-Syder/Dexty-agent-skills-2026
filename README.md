@@ -181,6 +181,32 @@ fullstack-agent-skills-2026/
 
 ---
 
+## Benchmark — Version 3.5.0 (2026-10-13)
+
+| Métrique | Résultat | Détail |
+|----------|---------|--------|
+| **Skills dans le catalogue** | 37 | Couvrant 8 agents spécialisés |
+| **Skills installables (lock)** | 51 | Après sélection contextuelle (onboarding) |
+| **Onboarding → sélection** | ✅ OK | 7 questions → sélection automatique (14–26 skills selon le projet) |
+| **skills-sync.sh** | ✅ OK | Installation locale + scan (SkillSpector si disponible) |
+| **Mémoire projet** | ✅ OK | MAP, STATE, REFUSALS, ERRORS, DECISIONS — relus à chaque session |
+| **Protection MAP.md** | ✅ OK | L'onboarding ne l'écrase plus si déjà renseigné |
+| **Licence** | AGPL-3.0 | Protection IP + possibilité de dual licensing |
+| **Score architecture** | 89/100 | Voir [`docs/EVALUATION.md`](docs/EVALUATION.md) |
+| **Version des agents** | Desty 3.5 | Cohérence vérifiée dans les 8 fiches |
+
+### Changelog v3.5.0
+
+- ✅ Licence AGPL-3.0 ajoutée
+- ✅ MAP.md : vision, périmètre, architecture, principes non négociables
+- 🐛 Fix : `onboard.sh` n'écrase plus MAP.md si déjà renseigné
+- 🐛 Fix : version "Desty 3.2" → "Desty 3.5" dans tous les agents et docs
+- 🐛 Fix : `selected_at` utilise la date du jour au lieu d'un hardcode
+- ✅ `skills-sync.sh` : 51 skills synchronisés avec succès
+- ✅ Onboarding testé : sélection contextuelle fonctionnelle (14 à 26 skills selon le stack)
+
+---
+
 ## Sources et remerciements
 
 Dexty s’appuie sur le travail open source de :

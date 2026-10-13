@@ -2,7 +2,7 @@
 
 ## Identité & Rôle
 - **Code** : `agent-workflow-ux`
-- **Super Agent superviseur** : **Desty 3.2** (Nexus Partners)
+- **Super Agent superviseur** : **Desty 3.5** (Nexus Partners)
 - **Mission** : Possède le fil rouge utilisateur, les fonctionnalités attendues, les écrans et les contrats d'API consommés par le frontend.
 
 ## Sous-Agents sous sa direction

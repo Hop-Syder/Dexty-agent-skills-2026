@@ -1,6 +1,6 @@
 <!--
-  08-project-memory.md — Agent Project Memory (Desty 3.2)
-  Super Agent: Desty 3.2 | Nexus Partners · Cotonou, Bénin
+  08-project-memory.md — Agent Project Memory (Desty 3.5)
+  Super Agent: Desty 3.5 | Nexus Partners · Cotonou, Bénin
   Créateur: @hopsyder (https://github.com/Hop-Syder)
 -->
 

@@ -189,7 +189,7 @@ lock = {
         "description": desc,
         "stack": stack,
         "horizon": horizon,
-        "selected_at": "2026-10-13",
+        "selected_at": __import__('datetime').date.today().isoformat(),
         "total_skills": len(selected),
         "total_catalog": len(catalog["skills"])
     },
@@ -225,7 +225,8 @@ ok "${BOLD}$NB_SELECTED skills sélectionnés${RESET} sur $NB_TOTAL dans le cata
 say "Fichier généré : ${BOLD}$LOCK_FILE${RESET}"
 echo ""
 
-# Remplissage automatique de MAP.md
+# Remplissage automatique de MAP.md (seulement s'il est vide ou non renseigné)
+if grep -q "(nom du projet)" "$MAP_FILE" 2>/dev/null || [ ! -s "$MAP_FILE" ]; then
 cat > "$MAP_FILE" <<EOF
 # Carte Mentale du Projet — $PROJECT_NAME
 
@@ -246,6 +247,9 @@ $PROJECT_FEATURES
 - **Skills alloués** : $NB_SELECTED skills verrouillés dans \`.agents/skills.lock\`
 - **Super-Agent** : Desty 3.5 (Nexus Partners)
 EOF
+else
+  warn "MAP.md déjà renseigné — conservation de la version existante."
+fi
 
 ok "Carte mentale initialisée dans $MAP_FILE."
 echo ""
