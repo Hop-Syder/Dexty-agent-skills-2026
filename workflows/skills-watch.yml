@@ -1,0 +1,78 @@
+name: "Skills Watch & Security Gate"
+
+on:
+  schedule:
+    # Chaque lundi à 08:00 UTC
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-and-audit-skills:
+    name: "Audit Hebdomadaire des Skills"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout du projet"
+        uses: actions/checkout@v4
+
+      - name: "Configuration de Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: "Installation de SkillSpector (NVIDIA)"
+        run: |
+          pip install --upgrade pip
+          pip install git+https://github.com/NVIDIA/SkillSpector.git || true
+
+      - name: "Exécution de skills-check.sh"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x ./skills-check.sh ./skills-sync.sh
+          ./skills-check.sh
+
+      - name: "Évaluation de sécurité si mise à jour disponible"
+        id: check_diff
+        run: |
+          if [ -f ".project-memory/SKILLS_STATUS.json" ]; then
+            UPDATES=$(python3 -c "import json; d=json.load(open('.project-memory/SKILLS_STATUS.json')); print(d.get('updates_available', 0))")
+            echo "updates_count=$UPDATES" >> "$GITHUB_OUTPUT"
+            if [ "$UPDATES" -gt 0 ]; then
+              echo "has_updates=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "has_updates=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "has_updates=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: "Création automatique de la Pull Request de révision"
+        if: steps.check_diff.outputs.has_updates == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(skills): upstream updates detected (${{ steps.check_diff.outputs.updates_count }} skills)"
+          title: "🛡️ [Skills Watch] Mises à jour de skills détectées (${{ steps.check_diff.outputs.updates_count }})"
+          branch: "skills-update-watch"
+          delete-branch: true
+          body: |
+            ## 🛡️ Rapport hebdomadaire Skills Watch — Desty 3.2
+
+            Des modifications ont été détectées sur les dépôts sources des skills listés dans `skills.lock`.
+
+            ### 📋 Détails de l'audit
+            Consultez `.project-memory/SKILLS_UPDATE_REPORT.md` joint à cette PR pour le détail des commits.
+
+            ### 🔒 Règle de gouvernance
+            - **Aucun skill n'est mis à jour automatiquement sans fusion de cette PR.**
+            - Vérifiez les diffs et confirmez le passage du scanner SkillSpector avant tout merge.
+            - Une fois mergé, lancez `./skills-sync.sh` sur vos environnements locaux.
+          labels: |
+            dependencies
+            security
+            agent-skills
