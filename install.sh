@@ -1,72 +1,178 @@
 #!/usr/bin/env bash
-# install.sh — Installe le super-agent Desty 3.2 dans un projet existant
-# Usage : ./install.sh /chemin/vers/projet
+# install.sh — Installe Dexty 3.5.1 dans un projet cible (sans écraser l'existant)
+# Usage : ./install.sh /chemin/vers/mon-projet [--onboard|--skip-onboard]
+# @hopsyder — Nexus Partners
+
 set -euo pipefail
 
-TARGET="${1:-}"
+BOLD="\033[1m"
+CYAN="\033[36m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+RED="\033[31m"
+RESET="\033[0m"
 
-if [[ -z "$TARGET" || "$TARGET" == "--help" || "$TARGET" == "-h" ]]; then
-  echo "Usage: $0 /chemin/vers/projet"
-  echo "  Installe le super-agent Desty 3.2 sans écraser la configuration existante."
-  echo "  Pour synchroniser ensuite les skills verrouillés, lancez ./skills-sync.sh dans votre projet."
+say()  { echo -e "${CYAN}◈${RESET} $*"; }
+ok()   { echo -e "${GREEN}✓${RESET} $*"; }
+warn() { echo -e "${YELLOW}⚠${RESET} $*"; }
+err()  { echo -e "${RED}✗${RESET} $*" >&2; }
+
+KIT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERSION_STR="3.5.1"
+[ -f "$KIT_DIR/VERSION" ] && VERSION_STR="$(tr -d '[:space:]' < "$KIT_DIR/VERSION")"
+
+if ! command -v python3 &>/dev/null; then
+  err "Erreur : python3 est requis pour installer Dexty $VERSION_STR."
   exit 1
 fi
 
-SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-mkdir -p "$TARGET"
-TARGET="$(cd "$TARGET" && pwd)"
+TARGET="${1:-}"
+FLAG="${2:-}"
 
-echo "==> Installation du super-agent Desty 3.2 dans : $TARGET"
-
-# 1. Dossiers de base
-mkdir -p "$TARGET/docs/super-agent"
-mkdir -p "$TARGET/agents"
-mkdir -p "$TARGET/.project-memory/db"
-mkdir -p "$TARGET/.claude/hooks"
-mkdir -p "$TARGET/.claude/commands"
-mkdir -p "$TARGET/.agents/skills"
-mkdir -p "$TARGET/workflows"
-
-# 2. Copie non-destructrice des fiches, docs et scripts de synchronisation
-cp -rn "$SRC_DIR/agents/"* "$TARGET/agents/" 2>/dev/null || true
-cp -n "$SRC_DIR/docs/"*.md "$TARGET/docs/super-agent/" 2>/dev/null || true
-cp -rn "$SRC_DIR/.project-memory/"* "$TARGET/.project-memory/" 2>/dev/null || true
-cp -n "$SRC_DIR/.claude/commands/"* "$TARGET/.claude/commands/" 2>/dev/null || true
-cp -n "$SRC_DIR/.claude/hooks/"* "$TARGET/.claude/hooks/" 2>/dev/null || true
-chmod +x "$TARGET/.claude/hooks/"*.sh 2>/dev/null || true
-
-# Copie du système de verrouillage (skills.lock, skills-sync.sh, skills-check.sh)
-cp -n "$SRC_DIR/skills.lock" "$TARGET/skills.lock" 2>/dev/null || true
-cp -n "$SRC_DIR/skills-sync.sh" "$TARGET/skills-sync.sh" 2>/dev/null || true
-cp -n "$SRC_DIR/skills-check.sh" "$TARGET/skills-check.sh" 2>/dev/null || true
-chmod +x "$TARGET/skills-sync.sh" "$TARGET/skills-check.sh" 2>/dev/null || true
-
-# Copie du workflow de surveillance
-if [[ -f "$SRC_DIR/workflows/skills-watch.yml" ]]; then
-  cp -n "$SRC_DIR/workflows/skills-watch.yml" "$TARGET/workflows/skills-watch.yml" 2>/dev/null || true
+if [ -z "$TARGET" ]; then
+  err "Usage : ./install.sh /chemin/vers/mon-projet [--onboard|--skip-onboard]"
+  exit 1
 fi
 
-# 3. Lien symbolique vers les skills pour Claude Code
-if [[ ! -e "$TARGET/.claude/skills" ]]; then
-  ln -s ../.agents/skills "$TARGET/.claude/skills"
+if [ ! -d "$TARGET" ]; then
+  mkdir -p "$TARGET"
 fi
 
-# 4. Compléter AGENTS.md (sans écraser)
-if [[ ! -f "$TARGET/AGENTS.md" ]]; then
-  cp "$SRC_DIR/AGENTS.md" "$TARGET/AGENTS.md"
-elif ! grep -q "Super-agent : instructions de session" "$TARGET/AGENTS.md"; then
-  echo "" >> "$TARGET/AGENTS.md"
-  cat "$SRC_DIR/AGENTS.md" >> "$TARGET/AGENTS.md"
+TARGET_ABS="$(cd "$TARGET" && pwd)"
+cd "$TARGET_ABS"
+
+say "Installation de ${BOLD}Dexty $VERSION_STR${RESET} dans : ${BOLD}$TARGET_ABS${RESET}"
+echo ""
+
+copy_safe() {
+  local src="$1" dst="$2"
+  if [ ! -e "$src" ]; then
+    err "Fichier source manquant dans le kit : $src"
+    exit 1
+  fi
+  if [ -e "$dst" ]; then
+    echo "  = $dst (déjà présent, conservé)"
+  else
+    mkdir -p "$(dirname "$dst")"
+    cp -R "$src" "$dst"
+    ok "$dst"
+  fi
+}
+
+copy_safe "$KIT_DIR/VERSION"                          "VERSION"
+copy_safe "$KIT_DIR/agents"                           "agents"
+copy_safe "$KIT_DIR/docs"                             "docs/super-agent"
+copy_safe "$KIT_DIR/.project-memory"                  ".project-memory"
+copy_safe "$KIT_DIR/.claude/hooks/memory-wake.sh"     ".claude/hooks/memory-wake.sh"
+copy_safe "$KIT_DIR/.claude/commands/resume.md"       ".claude/commands/resume.md"
+copy_safe "$KIT_DIR/tools"                            "tools"
+copy_safe "$KIT_DIR/skills"                           "skills"
+copy_safe "$KIT_DIR/skills.catalog.json"              "skills.catalog.json"
+copy_safe "$KIT_DIR/skills.catalog.json"              ".agents/skills.catalog.json"
+
+if [ ! -e "skills-sync.sh" ]; then
+  cat > "skills-sync.sh" <<'EOF'
+#!/usr/bin/env bash
+exec "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/tools/skills-sync.sh" "$@"
+EOF
+  chmod +x "skills-sync.sh"
+  ok "skills-sync.sh (délégateur → tools/skills-sync.sh)"
 fi
 
-# 5. Compléter CLAUDE.md
-if [[ ! -f "$TARGET/CLAUDE.md" ]]; then
-  cp "$SRC_DIR/CLAUDE.md" "$TARGET/CLAUDE.md"
-elif ! grep -q "@AGENTS.md" "$TARGET/CLAUDE.md"; then
-  echo "" >> "$TARGET/CLAUDE.md"
-  echo "# Instructions du super-agent : lis @AGENTS.md" >> "$TARGET/CLAUDE.md"
+if [ ! -e "skills-check.sh" ]; then
+  cat > "skills-check.sh" <<'EOF'
+#!/usr/bin/env bash
+exec "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/tools/skills-check.sh" "$@"
+EOF
+  chmod +x "skills-check.sh"
+  ok "skills-check.sh (délégateur → tools/skills-check.sh)"
 fi
 
-echo "==> Installation des fichiers de base terminée !"
-echo "==> Pour installer vos skills locaux verrouillés et scannés, exécutez :"
-echo "    cd '$TARGET' && ./skills-sync.sh"
+if [ -f "AGENTS.md" ]; then
+  if grep -qE "(DEXTY_AGENTS_SESSION_RULES|Super-agent.*instructions de session)" "AGENTS.md"; then
+    echo "  = AGENTS.md (instructions Dexty déjà présentes, aucune duplication)"
+  else
+    printf '\n' >> "AGENTS.md"
+    cat "$KIT_DIR/AGENTS.md" >> "AGENTS.md"
+    ok "AGENTS.md (complété avec les instructions Dexty)"
+  fi
+else
+  copy_safe "$KIT_DIR/AGENTS.md" "AGENTS.md"
+fi
+
+if [ -f "CLAUDE.md" ]; then
+  if ! grep -q '^@AGENTS.md' "CLAUDE.md"; then
+    echo '@AGENTS.md' >> "CLAUDE.md"
+    ok "CLAUDE.md (complété)"
+  else
+    echo "  = CLAUDE.md (déjà configuré)"
+  fi
+else
+  copy_safe "$KIT_DIR/CLAUDE.md" "CLAUDE.md"
+fi
+
+mkdir -p ".claude"
+if [ ! -f ".claude/settings.json" ]; then
+  copy_safe "$KIT_DIR/.claude/settings.json" ".claude/settings.json"
+fi
+
+KIT_DIR_ENV="$KIT_DIR" python3 - <<'PY'
+import json, os, tempfile
+
+p = ".claude/settings.json"
+with open(p, "r", encoding="utf-8") as f:
+    s = json.load(f)
+
+hook = {"type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/memory-wake.sh"}
+starts = s.setdefault("hooks", {}).setdefault("SessionStart", [])
+if not any(hook in g.get("hooks", []) for g in starts):
+    starts.append({"hooks": [hook]})
+
+env = s.setdefault("env", {})
+env["AGENT_SKILLS_REGISTRY"] = os.environ["KIT_DIR_ENV"]
+
+fd, tmp_path = tempfile.mkstemp(dir=".claude", suffix=".tmp")
+with os.fdopen(fd, "w", encoding="utf-8") as tf:
+    json.dump(s, tf, indent=2, ensure_ascii=False)
+os.replace(tmp_path, p)
+PY
+ok ".claude/settings.json (hook SessionStart enregistré)"
+
+chmod +x ".claude/hooks/memory-wake.sh" "tools/onboard.sh" "tools/skills-sync.sh" "tools/skills-check.sh"
+
+mkdir -p ".agents/skills"
+if [ ! -e ".claude/skills" ] && [ ! -L ".claude/skills" ]; then
+  ln -s "../.agents/skills" ".claude/skills"
+  ok ".agents/skills ← .claude/skills (lien créé)"
+else
+  echo "  = .claude/skills (lien déjà présent)"
+fi
+
+echo ""
+say "Structure Dexty $VERSION_STR installée."
+
+case "$FLAG" in
+  --onboard)
+    say "Lancement de l'onboarding (--onboard)…"
+    echo ""
+    bash "$TARGET_ABS/tools/onboard.sh" "$TARGET_ABS"
+    ;;
+  --skip-onboard)
+    warn "Onboarding reporté (--skip-onboard)."
+    echo "   Pour configurer le projet : bash tools/onboard.sh $TARGET_ABS"
+    ;;
+  *)
+    if [ -t 0 ]; then
+      echo ""
+      read -rp "Lancer l'onboarding interactif maintenant (7 questions) ? [O/n] " LAUNCH_ONBOARD
+      LAUNCH_ONBOARD="${LAUNCH_ONBOARD:-O}"
+      if [[ "$LAUNCH_ONBOARD" =~ ^[OoYy] ]]; then
+        bash "$TARGET_ABS/tools/onboard.sh" "$TARGET_ABS"
+      else
+        warn "Onboarding reporté. Lance : bash tools/onboard.sh $TARGET_ABS"
+      fi
+    else
+      say "Mode non-interactif détecté : lance 'install.sh $TARGET_ABS --onboard' ou 'bash tools/onboard.sh $TARGET_ABS' pour configurer le projet."
+    fi
+    ;;
+esac

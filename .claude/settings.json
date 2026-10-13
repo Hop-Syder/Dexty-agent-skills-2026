@@ -2,8 +2,12 @@
   "hooks": {
     "SessionStart": [
       {
-        "type": "command",
-        "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/memory-wake.sh"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/memory-wake.sh"
+          }
+        ]
       }
     ]
   }
