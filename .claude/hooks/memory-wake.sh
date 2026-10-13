@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # memory-wake.sh — Hook SessionStart pour Claude Code
-# Injecte le réveil de la mémoire au démarrage de chaque session
+# Injecte le réveil de la mémoire et le statut de veille des skills au démarrage
 
 set -euo pipefail
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
@@ -28,4 +28,15 @@ if [[ -f "$MEM_DIR/REFUSALS.md" ]]; then
   cat "$MEM_DIR/REFUSALS.md"
   echo ""
 fi
+
+# Vérification de l'état des skills verrouillés
+if [[ -f "$MEM_DIR/SKILLS_STATUS.json" ]]; then
+  UPDATES=$(python3 -c "import json; d=json.load(open('$MEM_DIR/SKILLS_STATUS.json')); print(d.get('updates_available', 0))" 2>/dev/null || echo "0")
+  if [[ "$UPDATES" -gt 0 ]]; then
+    echo "⚠️ ALERTE SKILLS WATCH : $UPDATES mise(s) à jour de skills disponible(s) en attente de validation."
+    echo "   Consultez .project-memory/SKILLS_UPDATE_REPORT.md ou la PR GitHub pour examiner le diff."
+    echo ""
+  fi
+fi
+
 echo "=== FIN DU RÉVEIL — Prêt à démarrer ==="
