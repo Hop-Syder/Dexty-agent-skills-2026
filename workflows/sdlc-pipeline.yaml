@@ -1,0 +1,51 @@
+name: "SDLC Multi-Agent Pipeline 2026"
+orchestrator: "Testy 3.0"
+stages:
+  - id: "discovery_and_scoping"
+    name: "1. Cadrage Produit & Découpage"
+    lead_agent: "product_manager"
+    inputs: ["user_project_request"]
+    skills_used: ["idea-refine", "interview-me", "writing-plans"]
+    outputs: ["project_brief.md", "backlog_tasks.json"]
+
+  - id: "ux_and_architecture"
+    name: "2. Expérience Utilisateur & Schémas d'Architecture"
+    lead_agent: "workflow_ux_lead"
+    inputs: ["project_brief.md"]
+    skills_used: ["archify-diagrams", "open-design-prototype", "canvas-design"]
+    outputs: ["architecture_diagrams.svg", "design_tokens.json", "user_flows.md"]
+
+  - id: "security_pre_audit"
+    name: "3. Modélisation des Menaces & Audit Initial"
+    lead_agent: "security_lead"
+    inputs: ["project_brief.md", "architecture_diagrams.svg"]
+    skills_used: ["threat-modeling", "skillspector-scan"]
+    outputs: ["security_checklist.md"]
+
+  - id: "incremental_coding"
+    name: "4. Développement Incrémental Full Stack"
+    lead_agent: "fullstack_lead"
+    inputs: ["backlog_tasks.json", "design_tokens.json"]
+    skills_used: ["api-and-interface-design", "frontend-ui-engineering", "incremental-implementation"]
+    outputs: ["source_code/"]
+
+  - id: "testing_and_qa"
+    name: "5. Validation TDD & Tests Navigateur"
+    lead_agent: "qa_lead"
+    inputs: ["source_code/"]
+    skills_used: ["test-driven-development", "browser-testing-with-devtools"]
+    outputs: ["test_report.xml", "coverage_summary.md"]
+
+  - id: "security_gate"
+    name: "6. Audit Final de Sécurité (SAST & Secrets)"
+    lead_agent: "security_lead"
+    inputs: ["source_code/"]
+    skills_used: ["security-and-hardening", "secret-scanning", "rea-static-analysis"]
+    gate_rule: "blocking_if_high_or_critical_cve"
+
+  - id: "release_and_observability"
+    name: "7. Déploiement en Production & Surveillance"
+    lead_agent: "devops_lead"
+    inputs: ["source_code/", "test_report.xml"]
+    skills_used: ["ci-cd-and-automation", "shipping-and-launch", "observability-and-instrumentation"]
+    outputs: ["deployment_url", "telemetry_dashboard"]
