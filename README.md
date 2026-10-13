@@ -1,33 +1,32 @@
-# Desty 3.2 — Agent Skills Registry for Fullstack Delivery (2026)
+# Desty 3.5 — Agent Skills Registry for Fullstack Delivery (2026)
 
-> **Super Agent Orchestrateur** : **Desty 3.2**  
+> **Super Agent Orchestrateur** : **Desty 3.5**  
 > **Propulsé par** : [Nexus Partners](https://nexus-partners.xyz/) · Cotonou, Bénin  
 > **Créateur & Auteur** : [@hopsyder (Hop-Syder)](https://github.com/Hop-Syder)  
 
 ---
 
-## 🌟 Présentation de Desty 3.2
+## 🌟 Présentation de Desty 3.5
 
-Un registre **multi-agents souverain et déterministe** pour emmener un projet fullstack de l'idée à la production : **build → test → prod**.
-Il réunit l'excellence de l'orchestration multi-agents et la rigueur de la gestion des dépendances : **les skills sont installés en local, figés sur une version exacte dans `skills.lock`, audités par `SkillSpector`, et protégés contre toute mise à jour en douce.**
+Un registre **multi-agents souverain et contextuel** pour emmener un projet fullstack de l'idée à la production : **build → test → prod**.
+Desty 3.5 introduit **l'accueil interactif et la sélection intelligente** : au lieu de choisir des skills au hasard ou de charger l'intégralité du catalogue, **l'agent analyse le projet que vous lui décrivez via un questionnaire guidé (7 questions) et sélectionne sur mesure les compétences indispensables.**
 
 ---
 
-## 🔒 Le Système en 4 Pièces (Lock, Sync, Check & Watch)
+## 🧭 Le Nouveau Flow en 6 Pièces
 
 | Pièce | Rôle |
 |---|---|
-| **`skills.lock`** | La liste des ~40 skills de `MAPPING.md`. Pour chacun : dépôt, commit exact (SHA) et score de sécurité. **Seule source de vérité.** |
-| **`skills-sync.sh`** | **Remplace `--with-skills`.** Installe uniquement les skills du lock dans `.agents/skills/`. Valide chaque skill avec SkillSpector. |
-| **`skills-check.sh`** | Compare le lock avec les dépôts GitHub : à jour (`UP_TO_DATE`), mise à jour disponible (`UPDATE_AVAILABLE`) ou supprimé (`DELETED`). |
-| **Workflow Hebdomadaire** (`workflows/skills-watch.yml`) | Vérifie les dépôts amont chaque semaine. Ouvre une Pull Request documentée si un changement est détecté avec score de sécurité. |
-
-> 🧠 **Au démarrage de chaque session**, l'agent **Project Memory** lit l'état de la veille :  
-> *« 2 mises à jour de skills en attente de validation, voir PR #12 »*.
+| **`tools/onboard.sh`** | **Le cœur de Desty 3.5.** Démarre dès la détection d'un nouveau projet. Pose 7 questions clés (nom, description, stack, features, horizon, app publique, données sensibles) et génère un `.agents/skills.lock` sur-mesure. |
+| **`skills.catalog.json`** | **Le cerveau de la sélection.** Catalogue des 37 skills de référence avec leurs déclencheurs sémantiques (*triggers*). |
+| **`tools/skills-sync.sh`** | **Installation propre.** Installe uniquement les skills du lock dans `.agents/skills/`. Soumet chaque skill au scanner `SkillSpector` et refuse les DNI. |
+| **`tools/skills-check.sh`** | **Surveillance non intrusive.** Compare chaque skill par son SHA via l'API GitHub. Consigne le résultat dans `.agents/.last-check.json`. |
+| **Workflow Hebdomadaire** (`workflows/skills-update.yml`) | Chaque lundi 08h UTC : vérification upstream + PR documentée avec diff et score de sécurité. Jamais de merge automatique. |
+| **`memory-wake.sh`** | **Réveil intelligent.** Détecte 3 états : (a) mémoire absente (affiche les instructions d'install), (b) MAP vide/template (déclenche l'onboarding), (c) session normale (charge le contexte et alerte si des PRs sont en attente). |
 
 ---
 
-## 🏛️ Les 8 Agents de la Chaîne
+## 🏛️ Les 8 Pôles d'Agents de Desty 3.5
 
 | # | Agent Principal | Mission Principale | Fiche Détaillée |
 |---|-----------------|-------------------|-----------------|
@@ -42,50 +41,25 @@ Il réunit l'excellence de l'orchestration multi-agents et la rigueur de la gest
 
 ---
 
-## 🔄 Votre quotidien avec ce système
+## 🚀 Démarrer un projet avec Desty 3.5
 
-1. **Installation (une seule fois)** :
-   ```bash
-   ./install.sh /chemin/vers/mon-projet
-   cd /chemin/vers/mon-projet && ./skills-sync.sh
-   ```
-2. **Au travail quotidien** :
-   L'agent tourne 100% hors ligne sur les skills locaux scannés. Aucun appel réseau inutile, stabilité maximale.
-3. **Chaque semaine (veille automatique)** :
-   Une PR arrive en cas d'évolution amont. Vous examinez le diff et le score de sécurité, puis fusionnez ou refusez.
-4. **Ajout d'un skill** :
-   Déclaration dans `skills.lock` -> `./skills-sync.sh` (scan obligatoire avant adoption).
+```bash
+# 1. Cloner le registre hôte
+git clone https://github.com/Hop-Syder/fullstack-agent-skills-2026.git ~/fullstack-agent-skills-2026
 
----
-
-## 🛡️ Les Règles d'Or
-
-- **Rien n'est mis à jour sans votre validation explicite.**
-- **Aucun skill n'est installé sans scan réussi.**
-- **Rien d'autre que ce qui est consigné dans `skills.lock`.**
-
----
-
-## 📂 Structure du Répertoire
-
-```text
-fullstack-agent-skills-2026/
-├── README.md                          # Guide central Desty 3.2
-├── skills.lock                        # Source de vérité des versions figées et scores
-├── skills-sync.sh                     # Script d'installation locale et audit sécurité
-├── skills-check.sh                    # Audit de conformité face aux dépôts amont
-├── install.sh                         # Script d'installation idempotent de projet
-├── INSTALL.md                         # Guide d'installation pas-à-pas multi-outils
-├── AGENTS.md                          # Instructions universelles de session
-├── CLAUDE.md                          # Configuration Claude Code
-├── workflows/
-│   ├── skills-watch.yml               # Surveillance hebdomadaire & création de PR
-│   └── sdlc-pipeline.yaml             # Pipeline d'orchestration SDLC multi-agents
-├── .project-memory/                   # Mémoire vive (MAP, STATE, REFUSALS, DECISIONS...)
-├── agents/                            # Fiches opérationnelles des 8 agents
-├── docs/                              # MAPPING (cartographie), SOURCES, EVALUATION (89/100)
-└── skills/                            # Registre de référence (Addy Osmani & Superpowers)
+# 2. Installer dans votre projet cible
+~/fullstack-agent-skills-2026/install.sh /chemin/vers/mon-projet --onboard
 ```
+
+L'onboarding interactif se lance immédiatement, analyse votre stack, configure `.agents/skills.lock`, remplit `MAP.md`, et lance la synchronisation locale.
+
+---
+
+## 🛡️ Règles de gouvernance strictes
+
+- **Zéro mise à jour en douce** : rien n'est modifié sans votre accord explicite sur une PR.
+- **Zéro composant non scanné** : tout skill tiers passe obligatoirement par SkillSpector.
+- **Sélection contextuelle** : l'agent n'embarque que ce qui est utile à la mission.
 
 ---
 
