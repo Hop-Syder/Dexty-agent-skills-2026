@@ -1,0 +1,173 @@
+version: "3.0"
+super_agent:
+  name: "Testy 3.0"
+  organization: "Nexus Partner"
+  creator: "Hop-Syder"
+  creator_url: "https://github.com/Hop-Syder"
+  framework: "Autonomous Multi-Agent Full Stack SDLC 2026"
+
+orchestration:
+  delegation_model: "hierarchical-subagent-driven"
+  coordination_protocol: "event-driven-asynchronous"
+  verification_gate: "mandatory-before-merge"
+
+agents:
+  - id: "product_manager"
+    role: "Product Manager Lead"
+    delegates_to: ["task_planner", "spec_architect"]
+    skills_allocated:
+      - "subagent-driven-development"
+      - "writing-plans"
+      - "idea-refine"
+      - "executing-plans"
+      - "interview-me"
+
+  - id: "task_planner"
+    role: "Sprint & Task Breakdown Sub-Agent"
+    parent: "product_manager"
+    skills_allocated:
+      - "planning-and-task-breakdown"
+      - "dispatching-parallel-agents"
+      - "constraint-driven-development"
+      - "using-git-worktrees"
+      - "finishing-a-development-branch"
+
+  - id: "spec_architect"
+    role: "Spec & ADR Documentation Sub-Agent"
+    parent: "product_manager"
+    skills_allocated:
+      - "documentation-and-adrs"
+      - "spec-driven-development"
+      - "doc-coauthoring"
+      - "source-driven-development"
+      - "doubt-driven-development"
+
+  - id: "workflow_ux_lead"
+    role: "Workflow & UX Partner Lead"
+    delegates_to: ["ui_designer", "user_journey_modeler"]
+    skills_allocated:
+      - "brainstorming"
+      - "canvas-design"
+      - "web-artifacts-builder"
+      - "brand-guidelines"
+      - "theme-factory"
+
+  - id: "ui_designer"
+    role: "UI Design & Prototyping Sub-Agent"
+    parent: "workflow_ux_lead"
+    skills_allocated:
+      - "open-design-prototype"
+      - "frontend-design"
+      - "interactive-wireframing"
+      - "component-tokens"
+      - "responsive-layouts"
+
+  - id: "user_journey_modeler"
+    role: "User Journey & Flow Modeling Sub-Agent"
+    parent: "workflow_ux_lead"
+    skills_allocated:
+      - "archify-diagrams"
+      - "sequence-flow-mapping"
+      - "user-flow-generation"
+      - "system-design-viz"
+      - "context-engineering"
+
+  - id: "security_lead"
+    role: "DevSecOps & Application Security Lead"
+    delegates_to: ["code_auditor", "skill_inspector"]
+    skills_allocated:
+      - "security-and-hardening"
+      - "rea-static-analysis"
+      - "secret-scanning"
+      - "threat-modeling"
+      - "verification-before-completion"
+
+  - id: "code_auditor"
+    role: "Code & Dependency Security Auditor Sub-Agent"
+    parent: "security_lead"
+    skills_allocated:
+      - "vulnerability-detection"
+      - "audit-workflows"
+      - "dependency-vetting"
+      - "binary-analysis"
+      - "cryptographic-checks"
+
+  - id: "skill_inspector"
+    role: "Skill, Prompt Injection & MCP Guard Sub-Agent"
+    parent: "security_lead"
+    skills_allocated:
+      - "skillspector-scan"
+      - "prompt-injection-defense"
+      - "mcp-permission-guard"
+      - "supply-chain-sanitization"
+      - "data-exfiltration-prevention"
+
+  - id: "fullstack_lead"
+    role: "Full Stack Tech Lead"
+    delegates_to: ["code_reviewer", "debug_perf_specialist"]
+    skills_allocated:
+      - "api-and-interface-design"
+      - "frontend-ui-engineering"
+      - "incremental-implementation"
+      - "mcp-builder"
+      - "code-simplification"
+
+  - id: "code_reviewer"
+    role: "Code Quality, YAGNI & Refactoring Sub-Agent"
+    parent: "fullstack_lead"
+    skills_allocated:
+      - "ponytail-yagni"
+      - "code-review-and-quality"
+      - "receiving-code-review"
+      - "requesting-code-review"
+      - "deprecation-and-migration"
+
+  - id: "debug_perf_specialist"
+    role: "Debugging & Performance Optimization Sub-Agent"
+    parent: "fullstack_lead"
+    skills_allocated:
+      - "systematic-debugging"
+      - "debugging-and-error-recovery"
+      - "performance-optimization"
+      - "memory-leak-detection"
+      - "query-optimization"
+
+  - id: "qa_lead"
+    role: "Quality Assurance & Test Automation Lead"
+    delegates_to: ["browser_e2e_tester"]
+    skills_allocated:
+      - "test-driven-development"
+      - "webapp-testing"
+      - "test-matrix-design"
+      - "edge-case-generation"
+      - "mocking-and-fixtures"
+
+  - id: "browser_e2e_tester"
+    role: "Browser & E2E Testing Sub-Agent"
+    parent: "qa_lead"
+    skills_allocated:
+      - "browser-testing-with-devtools"
+      - "dom-interaction-testing"
+      - "visual-regression-check"
+      - "network-interception"
+      - "accessibility-audit"
+
+  - id: "devops_lead"
+    role: "CI/CD & Production Delivery Lead"
+    delegates_to: ["sre_observability"]
+    skills_allocated:
+      - "ci-cd-and-automation"
+      - "shipping-and-launch"
+      - "git-workflow-and-versioning"
+      - "release-notes-generation"
+      - "container-hardening"
+
+  - id: "sre_observability"
+    role: "SRE, Observability & Incident Response Sub-Agent"
+    parent: "devops_lead"
+    skills_allocated:
+      - "observability-and-instrumentation"
+      - "incident-response-playbook"
+      - "healthcheck-synthetics"
+      - "alerting-rule-generator"
+      - "rollback-orchestration"
