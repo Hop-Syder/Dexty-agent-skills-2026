@@ -1,0 +1,57 @@
+name: "Weekly Skills Watch & Update Check"
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-and-audit:
+    name: "Vérification hebdomadaire des skills"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: "Installer SkillSpector"
+        run: |
+          pip install --upgrade pip
+          pip install git+https://github.com/NVIDIA/SkillSpector.git || true
+
+      - name: "Exécuter skills-check.sh"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x ./tools/*.sh
+          ./tools/skills-check.sh .
+
+      - name: "Créer PR si mises à jour disponibles"
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(skills): upstream updates detected"
+          title: "🛡️ [Skills Watch] Mises à jour amont détectées"
+          branch: "skills-update-watch"
+          delete-branch: true
+          body: |
+            ## 🛡️ Rapport hebdomadaire Skills Watch — Desty 3.5
+
+            Des modifications amont ont été repérées sur les dépôts des skills verrouillés.
+
+            ### Règle absolue
+            - **Aucun merge automatique.**
+            - Relisez le diff et vérifiez le score SkillSpector avant toute validation.
+            - Lancez `./tools/skills-sync.sh` après fusion.
+          labels: |
+            dependencies
+            security
+            agent-skills
