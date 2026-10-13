@@ -1,5 +1,5 @@
 <!--
-  SOURCES.md — Dépôts sources vérifiés (Desty 3.2)
+  SOURCES.md — Dépôts sources vérifiés (Desty 3.5)
   Nexus Partners · Cotonou, Bénin
   Créateur: @hopsyder (https://github.com/Hop-Syder)
 -->

@@ -1,10 +1,10 @@
 <!--
-  EVALUATION.md — Évaluer le super-agent Desty 3.2
+  EVALUATION.md — Évaluer le super-agent Desty 3.5
   Nexus Partners · Cotonou, Bénin
   Créateur: @hopsyder (https://github.com/Hop-Syder)
 -->
 
-# Évaluer le super-agent Desty 3.2
+# Évaluer le super-agent Desty 3.5
 
 Ce document couvre les **trois niveaux d'évaluation** du super-agent conçu
 dans ce registre, du plus immédiat au plus exigeant :

@@ -1,10 +1,10 @@
 <!--
-  MAPPING.md — Cartographie Agents -> Skills (Desty 3.2)
-  Super Agent: Desty 3.2 | Nexus Partners · Cotonou, Bénin
+  MAPPING.md — Cartographie Agents -> Skills (Desty 3.5)
+  Super Agent: Desty 3.5 | Nexus Partners · Cotonou, Bénin
   Créateur: @hopsyder (https://github.com/Hop-Syder)
 -->
 
-# Cartographie Desty 3.2 — Agents → Skills
+# Cartographie Desty 3.5 — Agents → Skills
 
 > **But du document** : pour chaque agent et sous-agent de la chaîne
 > *build → test → production*, lister les skills qui le composent, avec
@@ -17,7 +17,7 @@ pour le détail et l'avertissement sur les dépôts non confirmés.
 
 ---
 
-## Vue d'ensemble de la chaîne Desty 3.2
+## Vue d'ensemble de la chaîne Desty 3.5
 
 ```text
           ┌─────────────────────────────────────────────────────────┐

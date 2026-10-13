@@ -1,6 +1,6 @@
 <!--
-  07-data-ml.md — Agent Data / ML (Desty 3.2)
-  Super Agent: Desty 3.2 | Nexus Partners · Cotonou, Bénin
+  07-data-ml.md — Agent Data / ML (Desty 3.5)
+  Super Agent: Desty 3.5 | Nexus Partners · Cotonou, Bénin
   Créateur: @hopsyder (https://github.com/Hop-Syder)
 -->
 
