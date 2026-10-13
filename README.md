@@ -8,67 +8,83 @@
 
 ## 🌟 Présentation de Desty 3.2
 
-Un registre **multi-agents** pour emmener un projet fullstack de l'idée à la
-production : **build → test → prod**. Chaque agent possède un rôle clair et
-porte un jeu de *skills* réels, issus de dépôts GitHub publics **vérifiés**.
+Un registre **multi-agents souverain et déterministe** pour emmener un projet fullstack de l'idée à la production : **build → test → prod**.
+Il réunit l'excellence de l'orchestration multi-agents et la rigueur de la gestion des dépendances : **les skills sont installés en local, figés sur une version exacte dans `skills.lock`, audités par `SkillSpector`, et protégés contre toute mise à jour en douce.**
 
-> **État actuel : cartographie & mémoire active.** Ce dépôt contient l'architecture,
-> le tableau agent → skills, les outils d'installation universels et le système de mémoire vive.
+---
 
-## La chaîne en un coup d'œil
+## 🔒 Le Système en 4 Pièces (Lock, Sync, Check & Watch)
 
-| # | Agent | Possède… | Fiche |
-|---|-------|----------|-------|
-| ① | **Product Manager** | le *quoi* et le *pourquoi* (spec, backlog) | [fiche](agents/01-product-manager.md) |
-| ② | **Workflow / UX Owner** | le fil rouge utilisateur (parcours, API, UI) | [fiche](agents/02-workflow-ux-owner.md) |
-| ③ | **Security Lead** | la sûreté (menaces, revue, durcissement) | [fiche](agents/03-security-lead.md) |
-| ④ | **Build / Dev Lead** | le code qui marche (impl, tests, debug) | [fiche](agents/04-build-dev-lead.md) |
-| ⑤ | **DevOps / Release** | la mise en prod (CI/CD, observabilité) | [fiche](agents/05-devops-release.md) |
-| ⑥ | **QA / Evaluator** | la mesure : note les autres agents et le résultat | [fiche](agents/06-qa-evaluator.md) |
-| ⑦ | **Data / ML** | les données et modèles (ML, NLP, pipelines) | [fiche](agents/07-data-ml.md) |
-| ⑧ | **Project Memory** | la mémoire vive + gardien de la vision | [fiche](agents/08-project-memory.md) |
+| Pièce | Rôle |
+|---|---|
+| **`skills.lock`** | La liste des ~40 skills de `MAPPING.md`. Pour chacun : dépôt, commit exact (SHA) et score de sécurité. **Seule source de vérité.** |
+| **`skills-sync.sh`** | **Remplace `--with-skills`.** Installe uniquement les skills du lock dans `.agents/skills/`. Valide chaque skill avec SkillSpector. |
+| **`skills-check.sh`** | Compare le lock avec les dépôts GitHub : à jour (`UP_TO_DATE`), mise à jour disponible (`UPDATE_AVAILABLE`) ou supprimé (`DELETED`). |
+| **Workflow Hebdomadaire** (`workflows/skills-watch.yml`) | Vérifie les dépôts amont chaque semaine. Ouvre une Pull Request documentée si un changement est détecté avec score de sécurité. |
 
-Chaque agent principal porte **~5 skills de pilotage** et délègue à des
-**sous-agents** qui portent les skills d'exécution. L'orchestration
-(délégation, parallélisme) vient de `obra/superpowers`.
+> 🧠 **Au démarrage de chaque session**, l'agent **Project Memory** lit l'état de la veille :  
+> *« 2 mises à jour de skills en attente de validation, voir PR #12 »*.
 
-➡️ **Le livrable central est le tableau complet : [`docs/MAPPING.md`](docs/MAPPING.md).**  
-➡️ **Le cadre d'évaluation (score : 89/100) : [`docs/EVALUATION.md`](docs/EVALUATION.md).**  
-➡️ **Installer le kit dans n'importe quel projet : [`INSTALL.md`](INSTALL.md) ou `./install.sh <projet>`.**
+---
 
-## Installer dans un projet
+## 🏛️ Les 8 Agents de la Chaîne
 
-```bash
-git clone https://github.com/Hop-Syder/fullstack-agent-skills-2026.git ~/fullstack-agent-skills-2026
-~/fullstack-agent-skills-2026/install.sh /chemin/vers/mon-projet
-```
-Fonctionne avec **Claude Code, Codex, Cursor, VS Code (Copilot), OpenClaw**.
+| # | Agent Principal | Mission Principale | Fiche Détaillée |
+|---|-----------------|-------------------|-----------------|
+| ① | **Product Manager** | Le *quoi* et le *pourquoi* (spécifications, backlog, ADR) | [Fiche Agent](agents/01-product-manager.md) |
+| ② | **Workflow / UX Owner** | Le fil rouge utilisateur (parcours, API front, UI tokens) | [Fiche Agent](agents/02-workflow-ux-owner.md) |
+| ③ | **Security Lead** | La sûreté globale (modèle de menaces, audit, garde-fous) | [Fiche Agent](agents/03-security-lead.md) |
+| ④ | **Build / Dev Lead** | Le code testé et fonctionnel (TDD, implémentation, debug) | [Fiche Agent](agents/04-build-dev-lead.md) |
+| ⑤ | **DevOps / Release** | L'industrialisation (CI/CD, déploiement, observabilité SRE) | [Fiche Agent](agents/05-devops-release.md) |
+| ⑥ | **QA / Evaluator** | La mesure : note les autres agents et le résultat (juge séparé) | [Fiche Agent](agents/06-qa-evaluator.md) |
+| ⑦ | **Data / ML** | Les données et modèles (ML, NLP, pipelines) | [Fiche Agent](agents/07-data-ml.md) |
+| ⑧ | **Project Memory** | La mémoire vive persistante + gardien de la vision | [Fiche Agent](agents/08-project-memory.md) |
 
-## Sources vérifiées
+---
 
-6 dépôts confirmés réels (étoiles/forks vérifiés le 13/10/2026) :
-`addyosmani/agent-skills` · `anthropics/skills` · `obra/superpowers` ·
-`trailofbits/skills` · `vercel-labs/agent-skills` · `NVIDIA/SkillSpector` (outil).
+## 🔄 Votre quotidien avec ce système
 
-## Sécurité de la supply-chain
+1. **Installation (une seule fois)** :
+   ```bash
+   ./install.sh /chemin/vers/mon-projet
+   cd /chemin/vers/mon-projet && ./skills-sync.sh
+   ```
+2. **Au travail quotidien** :
+   L'agent tourne 100% hors ligne sur les skills locaux scannés. Aucun appel réseau inutile, stabilité maximale.
+3. **Chaque semaine (veille automatique)** :
+   Une PR arrive en cas d'évolution amont. Vous examinez le diff et le score de sécurité, puis fusionnez ou refusez.
+4. **Ajout d'un skill** :
+   Déclaration dans `skills.lock` -> `./skills-sync.sh` (scan obligatoire avant adoption).
 
-En 2026, une part notable des skills publics contient des vulnérabilités.
-**Règle du registre** : tout skill tiers passe `skillspector scan` (NVIDIA)
-avant d'être adopté. C'est le rôle du sous-agent *Supply-chain gate*.
+---
 
-## Structure du dépôt
+## 🛡️ Les Règles d'Or
 
-```
+- **Rien n'est mis à jour sans votre validation explicite.**
+- **Aucun skill n'est installé sans scan réussi.**
+- **Rien d'autre que ce qui est consigné dans `skills.lock`.**
+
+---
+
+## 📂 Structure du Répertoire
+
+```text
 fullstack-agent-skills-2026/
-├── README.md
-├── AGENTS.md           ← point d'entrée universel multi-outils
-├── CLAUDE.md           ← configuration Claude Code
-├── INSTALL.md          ← guide complet d'installation
-├── install.sh          ← script d'installation idempotent
-├── .project-memory/    ← mémoire persistante (MAP, STATE, REFUSALS…)
-├── agents/             ← 8 fiches d'agents spécialisés
-├── docs/               ← MAPPING, SOURCES, EVALUATION
-└── skills/             ← registre opérationnel des skills (Addy Osmani & Superpowers)
+├── README.md                          # Guide central Desty 3.2
+├── skills.lock                        # Source de vérité des versions figées et scores
+├── skills-sync.sh                     # Script d'installation locale et audit sécurité
+├── skills-check.sh                    # Audit de conformité face aux dépôts amont
+├── install.sh                         # Script d'installation idempotent de projet
+├── INSTALL.md                         # Guide d'installation pas-à-pas multi-outils
+├── AGENTS.md                          # Instructions universelles de session
+├── CLAUDE.md                          # Configuration Claude Code
+├── workflows/
+│   ├── skills-watch.yml               # Surveillance hebdomadaire & création de PR
+│   └── sdlc-pipeline.yaml             # Pipeline d'orchestration SDLC multi-agents
+├── .project-memory/                   # Mémoire vive (MAP, STATE, REFUSALS, DECISIONS...)
+├── agents/                            # Fiches opérationnelles des 8 agents
+├── docs/                              # MAPPING (cartographie), SOURCES, EVALUATION (89/100)
+└── skills/                            # Registre de référence (Addy Osmani & Superpowers)
 ```
 
 ---

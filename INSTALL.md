@@ -1,94 +1,66 @@
 <!-- INSTALL.md — Installer et démarrer le super-agent · @hopsyder (https://github.com/Hop-Syder) — Nexus Partners (https://nexus-partners.xyz/) -->
 
-# Installer et démarrer le super-agent Desty 3.2
+# Installer et utiliser le super-agent Desty 3.2
 
-## Comment c'est construit (à lire une fois)
-
-Le kit repose sur trois éléments, et chaque outil en lit une partie :
-
-| Élément | Rôle | Lu par |
-|---------|------|--------|
-| `AGENTS.md` | Instructions de session : réveil, gardien de la vision, journal | Codex, OpenClaw, Copilot (VS Code), Cursor ; Claude Code via `CLAUDE.md` |
-| `.project-memory/` | La mémoire du projet (MAP, STATE, REFUSALS…) | Tous (ce sont de simples fichiers) |
-| `.agents/skills/` | Les skills, en un seul exemplaire | Codex, OpenClaw, Copilot ; Claude Code via le lien `.claude/skills` |
-
-**Le réveil automatique (hook) n'existe que dans Claude Code.** Ailleurs, c'est la section 1 d'`AGENTS.md` qui demande à l'agent de relire la mémoire au début de chaque session. Le résultat est le même, mais il dépend de l'agent qui suit ses instructions.
+Un système complet et sécurisé : **on installe en local uniquement les skills choisis, figés sur une version exacte dans `skills.lock`, et on est prévenu quand ils changent, sans jamais rien mettre à jour en douce.**
 
 ---
 
-## Feuille de route d'installation (tous outils)
+## 🏛️ Les 4 pièces maîtresses du système
 
-### Étape 1 : récupérer le kit
-```bash
-git clone https://github.com/Hop-Syder/fullstack-agent-skills-2026.git ~/fullstack-agent-skills-2026
-```
+| Pièce | Rôle |
+|---|---|
+| **`skills.lock`** | La liste de tous les skills certifiés de `docs/MAPPING.md`. Pour chacun : le dépôt d'origine, le chemin, la version exacte (commit SHA) et la date du dernier scan. **C'est la seule et unique source de vérité.** |
+| **`skills-sync.sh`** | **Remplace `--with-skills`.** Il télécharge/installe uniquement les skills listés dans le lock, à la version fixée, dans `.agents/skills/`. Il les soumet à SkillSpector et refuse immédiatement ceux qui échouent. |
+| **`skills-check.sh`** | Compare votre `skills.lock` avec GitHub, skill par skill : à jour (`UP_TO_DATE`), mise à jour disponible (`UPDATE_AVAILABLE`), ou supprimé en amont (`DELETED`). |
+| **Workflow de veille hebdomadaire** (`workflows/skills-watch.yml`) | Exécute la vérification chaque semaine (le lundi). Si un skill a changé, il ouvre une Pull Request détaillée avec le diff et le score de sécurité. |
 
-### Étape 2 : l'installer dans ton projet
-```bash
-~/fullstack-agent-skills-2026/install.sh /chemin/vers/mon-projet
-```
-Le script n'écrase jamais l'existant : un `AGENTS.md`, un `CLAUDE.md` ou un `.claude/settings.json` déjà présent est **complété**, pas remplacé. Tu peux le relancer sans risque.
-
-### Étape 3 : installer les skills (optionnel, recommandé)
-```bash
-~/fullstack-agent-skills-2026/install.sh /chemin/vers/mon-projet --with-skills
-```
-Cette option demande Node.js. Elle télécharge les skills des dépôts vérifiés dans `.agents/skills/`.
-
-### Étape 4 : scanner les skills avant de t'en servir
-```bash
-uv tool install git+https://github.com/NVIDIA/SkillSpector.git
-skillspector scan .agents/skills/<nom-du-skill>
-```
-Supprime tout skill classé *Do Not Install*.
-
-### Étape 5 : remplir la carte mentale
-Ouvre `.project-memory/MAP.md` et écris la vision, la cible, la finalité et ce qui est hors périmètre. **Sans cela, le gardien de la vision n'a rien pour juger.**
-
-### Étape 6 : premier démarrage
-Lance ton outil (voir ci-dessous). L'agent te demande une fois : fichiers (1) ou base de données (2). Ensuite il annonce où on en est.
-
-### Étape 7 : committer
-```bash
-git add AGENTS.md CLAUDE.md agents docs .project-memory .agents .claude
-git commit -m "chore: installe le super-agent"
-```
-La mémoire voyage avec le repo : toute personne qui clone le projet récupère la même carte mentale.
+> 🧠 **Au démarrage**, l'agent **Project Memory** vérifie le statut : *« 2 mises à jour de skills en attente, voir PR #12 »*.
 
 ---
 
-## Par outil
+## 🔄 Votre quotidien avec ce système
+
+1. **Installation (une seule fois)** :
+   ```bash
+   ~/fullstack-agent-skills-2026/install.sh /chemin/vers/mon-projet
+   cd /chemin/vers/mon-projet && ./skills-sync.sh
+   ```
+   Vous disposez de vos skills scannés et validés en local dans `.agents/skills/`. Ils fonctionnent **à 100% hors ligne sans latence réseau**.
+2. **Au travail quotidien** :
+   L'agent utilise les skills locaux. Pas de réseau, pas de tokens gaspillés, stabilité totale.
+3. **Chaque semaine (veille automatisée)** :
+   Une PR automatique arrive s'il y a du nouveau sur les dépôts officiels. Vous lisez le diff et le score de sécurité SkillSpector, puis vous fusionnez ou refusez. Si vous fusionnez, le lock est mis à jour et toute l'équipe reçoit la même version.
+4. **Ajouter un skill** :
+   Vous ajoutez l'entrée dans `skills.lock`, vous relancez `./skills-sync.sh`. Il est scanné avant d'être accepté.
+
+---
+
+## 🛡️ Les règles absolues
+
+- **Rien n'est mis à jour sans votre validation explicite** (zéro surprise en douce).
+- **Aucun skill n'est installé sans scan réussi** (politique stricte SkillSpector).
+- **Rien d'autre que ce qui est listé dans le lock.**
+
+---
+
+## 🚀 Guide par outil de développement
 
 ### Claude Code (terminal)
-Rien de plus à faire après `install.sh`.
 ```bash
 cd mon-projet && claude
 ```
-- **Réveil automatique** : le hook `SessionStart` charge la mémoire à l'ouverture.
-- **Réveil manuel** : tape `/resume`.
-- La première fois, Claude Code te demande d'approuver le hook du projet. Accepte-le.
+- Le hook `SessionStart` charge la mémoire et vous alerte si des mises à jour de skills sont en attente.
+- Réveil manuel disponible via la commande `/resume`.
 
-### VS Code
-Deux cas, selon l'extension :
-- **Extension Claude Code** : même comportement que dans le terminal (hook, `/resume`, `.claude/skills`). Ouvre le dossier du projet, puis le panneau Claude.
-- **GitHub Copilot (mode agent)** : Copilot lit `AGENTS.md`. Le réveil passe donc par ces instructions, sans hook. Au premier message, écris « reprends le projet » pour le déclencher.
+### VS Code (GitHub Copilot mode agent)
+- Copilot lit `AGENTS.md`. Le réveil et la politique de lock sont appliqués au premier échange.
 
-### Codex (CLI / IDE)
-Codex lit `AGENTS.md` à la racine du projet et charge les skills depuis `.agents/skills/` : `install.sh` met tout en place.
+### Codex (CLI)
 ```bash
 cd mon-projet && codex
 ```
+- Lit `AGENTS.md` à la racine et charge les skills verrouillés depuis `.agents/skills/`.
 
-### OpenClaw
-OpenClaw charge les skills depuis `<workspace>/skills` et `<workspace>/.agents/skills`. Le dossier créé par `install.sh` est donc reconnu tel quel.
-
-### Cursor, Windsurf, JetBrains et autres
-La plupart lisent `AGENTS.md` et le format `SKILL.md` en 2026. Même principe que Codex : instructions dans `AGENTS.md`, skills dans `.agents/skills/`.
-
----
-
-## Vérifier que ça marche (2 minutes)
-
-1. Écris une ligne dans `REFUSALS.md`, par exemple `- 2026-10-13 | ajouter un mode sombre | pas prioritaire pour la cible`.
-2. Ouvre une nouvelle session et demande : « ajoute un mode sombre ».
-3. **Réussi** si l'agent te rappelle le refus et demande ce qui a changé. **Échoué** s'il code directement.
+### Cursor & OpenClaw
+- Chargent automatiquement les instructions de session d'`AGENTS.md` et les skills scannés de `.agents/skills/`.
