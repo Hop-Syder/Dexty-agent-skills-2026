@@ -74,7 +74,7 @@ for s in cat["skills"]:
     assert len(s.get("commit", "")) == 40, f"Commit invalide pour {s['id']}"
 PY
 then
-  pass_test "T0 (Invariants AUD-005/014/020/028) : 37/37 skills alignés (catalogue == vendors), SHA-256 vérifiés, VERSION et LICENSE présents"
+  pass_test "T0 (Invariants AUD-005/014/020/028) : 37/37 skills alignés (catalogue == vendors), SHA-256 vérifiés"
 else
   fail_test "T0 : Échec des invariants structurels"
 fi
