@@ -1,10 +1,10 @@
 <!--
-  EVALUATION.md — Évaluer le super-agent Desty 3.0
+  EVALUATION.md — Évaluer le super-agent Desty 3.1
   Nexus Partners · Cotonou, Bénin
   Créateur: @hopsyder (https://github.com/Hop-Syder)
 -->
 
-# Évaluer le super-agent Desty 3.0
+# Évaluer le super-agent Desty 3.1
 
 Ce document couvre les **trois niveaux d'évaluation** du super-agent conçu
 dans ce registre, du plus immédiat au plus exigeant :
@@ -22,28 +22,32 @@ dans ce registre, du plus immédiat au plus exigeant :
 ## Niveau 1 — Évaluation de l'architecture (notée)
 
 Grille sur **100 points**, 5 axes de 20. Notes attribuées à l'architecture
-actuelle (v0.1, cartographie), avec justification honnête.
+actuelle (v0.2, cartographie), avec justification honnête.
 
 | Axe | Ce qu'on vérifie | /20 | Justification |
 |-----|------------------|-----|---------------|
-| **Couverture** | Toutes les phases build→test→prod sont-elles couvertes ? | **18** | DEFINE→PLAN→BUILD→VERIFY→REVIEW→SHIP couverts. −2 : pas d'agent data/ML explicite (pertinent vu votre profil). |
-| **Séparation des rôles** | Chaque agent a-t-il un périmètre net, sans chevauchement flou ? | **16** | Rôles distincts et handoffs définis. −4 : `code-review-and-quality` apparaît chez Build **et** QA → risque de doublon à arbitrer. |
+| **Couverture** | Toutes les phases build→test→prod sont-elles couvertes ? | **20** | DEFINE→PLAN→BUILD→VERIFY→REVIEW→SHIP + agent Data/ML (⑦) ajouté. Couverture complète. |
+| **Séparation des rôles** | Chaque agent a-t-il un périmètre net, sans chevauchement flou ? | **20** | Doublon résolu : QA garde `code-review-and-quality`, Build ne fait que `requesting-code-review`. Juge ≠ exécutant. |
 | **Orchestration** | La délégation multi-agents est-elle réelle et cohérente ? | **17** | Ancrée sur obra/superpowers (dispatching, subagent-driven). −3 : l'ancre `using-superpowers` doit être présente pour que le reste s'active. |
-| **Traçabilité des skills** | Chaque skill pointe-t-il vers une source réelle vérifiée ? | **20** | 6 dépôts vérifiés, dépôts douteux écartés et documentés. Point fort du repo. |
+| **Traçabilité des skills** | Chaque skill pointe-t-il vers une source réelle vérifiée ? | **18** | 6 dépôts vérifiés + dépôts douteux écartés. −2 : agent Data/ML a 2 skills marqués « à sourcer » (assumé, non inventé). |
 | **Évaluabilité** | Peut-on mesurer la performance de l'agent plus tard ? | **14** | Ce document + agent QA le permettent. −6 : tant que les `SKILL.md` ne sont pas installés, aucune éval *en action* n'est possible. |
 
-### Score total : **85 / 100** — « Architecture solide, prête à passer à l'implémentation »
+### Score total : **89 / 100** — « Architecture solide, prête à passer à l'implémentation »
+
+> **Évolution** : v0.1 = 85 → v0.2 = 89 (doublon résolu +4, couverture Data/ML +2,
+> traçabilité −2 pour les skills « à sourcer »). Le plafond réel tant qu'on reste
+> en cartographie est ~89 : les 11 points restants (évaluabilité −6, orchestration −3,
+> sourcing data −2) ne se gagnent qu'en **installant les vrais skills** et en montant l'agent.
 
 **Lecture du score :**
 - **90–100** : prêt à industrialiser.
-- **75–89** : solide, corriger 1–2 points avant d'implémenter. ← *nous sommes ici*
+- **75–89** : solide, corriger 1–2 points avant d'implémenter. ← *nous sommes ici (89/100)*
 - **60–74** : des trous à combler.
 - **< 60** : re-concevoir.
 
 ### Actions correctives recommandées (pour viser 90+)
-1. Trancher le doublon `code-review-and-quality` : il reste chez **QA**, Build garde seulement `requesting-code-review`.
-2. Ajouter (optionnel, vu votre profil data) un agent **Data/ML** ou un sous-agent dédié.
-3. Installer l'ancre `using-superpowers` dès le départ.
+1. Sourcer ou formaliser avec `skill-creator` les 2 skills data (`data-pipeline`, `ml-training-eval`).
+2. Déployer l'ancre `using-superpowers`.
 
 ---
 
@@ -53,7 +57,7 @@ Pour noter l'agent **à chaque version**, deux briques :
 
 ### a) La grille (ci-dessus) versionnée
 Copier le tableau du Niveau 1 dans un fichier daté à chaque release :
-`docs/evals/2026-10-13-v0.1.md`, etc. On suit l'évolution du score dans le temps.
+`docs/evals/2026-10-13-v0.2.md`, etc. On suit l'évolution du score dans le temps.
 
 ### b) Le harness technique (voie officielle, fiable)
 On s'appuie sur les outils **officiels**, pas sur un harness tiers non vérifié :
@@ -97,5 +101,6 @@ spec, **puis** qualité du code.
 
 | Date | Version | Niveau | Score | Note |
 |------|---------|--------|-------|------|
-| 2026-10-13 | v0.1 | Architecture | 85/100 | Cartographie validée |
+| 2026-10-13 | v0.1 | Architecture | 85/100 | Cartographie initiale (6 agents) |
+| 2026-10-13 | v0.2 | Architecture | 89/100 | Doublon résolu + agent Data/ML (7 agents) |
 | … | … | … | … | (à compléter) |
