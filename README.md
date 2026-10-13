@@ -1,20 +1,19 @@
-# Desty 3.1 — Agent Skills Registry for Fullstack Delivery (2026)
+# Desty 3.2 — Agent Skills Registry for Fullstack Delivery (2026)
 
-> **Super Agent Orchestrateur** : **Desty 3.1**  
+> **Super Agent Orchestrateur** : **Desty 3.2**  
 > **Propulsé par** : [Nexus Partners](https://nexus-partners.xyz/) · Cotonou, Bénin  
 > **Créateur & Auteur** : [@hopsyder (Hop-Syder)](https://github.com/Hop-Syder)  
 
 ---
 
-## 🌟 Présentation de Desty 3.1
+## 🌟 Présentation de Desty 3.2
 
 Un registre **multi-agents** pour emmener un projet fullstack de l'idée à la
 production : **build → test → prod**. Chaque agent possède un rôle clair et
 porte un jeu de *skills* réels, issus de dépôts GitHub publics **vérifiés**.
 
-> **État actuel : cartographie.** Ce dépôt contient l'architecture et le
-> tableau agent → skills, avec la source exacte de chaque skill. Le **contenu**
-> des skills (dossiers `SKILL.md`) est disponible sous `skills/`.
+> **État actuel : cartographie & mémoire active.** Ce dépôt contient l'architecture,
+> le tableau agent → skills, les outils d'installation universels et le système de mémoire vive.
 
 ## La chaîne en un coup d'œil
 
@@ -27,21 +26,29 @@ porte un jeu de *skills* réels, issus de dépôts GitHub publics **vérifiés**
 | ⑤ | **DevOps / Release** | la mise en prod (CI/CD, observabilité) | [fiche](agents/05-devops-release.md) |
 | ⑥ | **QA / Evaluator** | la mesure : note les autres agents et le résultat | [fiche](agents/06-qa-evaluator.md) |
 | ⑦ | **Data / ML** | les données et modèles (ML, NLP, pipelines) | [fiche](agents/07-data-ml.md) |
+| ⑧ | **Project Memory** | la mémoire vive + gardien de la vision | [fiche](agents/08-project-memory.md) |
 
 Chaque agent principal porte **~5 skills de pilotage** et délègue à des
 **sous-agents** qui portent les skills d'exécution. L'orchestration
 (délégation, parallélisme) vient de `obra/superpowers`.
 
 ➡️ **Le livrable central est le tableau complet : [`docs/MAPPING.md`](docs/MAPPING.md).**  
-➡️ **Le cadre d'évaluation (score : 89/100) : [`docs/EVALUATION.md`](docs/EVALUATION.md).**
+➡️ **Le cadre d'évaluation (score : 89/100) : [`docs/EVALUATION.md`](docs/EVALUATION.md).**  
+➡️ **Installer le kit dans n'importe quel projet : [`INSTALL.md`](INSTALL.md) ou `./install.sh <projet>`.**
+
+## Installer dans un projet
+
+```bash
+git clone https://github.com/Hop-Syder/fullstack-agent-skills-2026.git ~/fullstack-agent-skills-2026
+~/fullstack-agent-skills-2026/install.sh /chemin/vers/mon-projet
+```
+Fonctionne avec **Claude Code, Codex, Cursor, VS Code (Copilot), OpenClaw**.
 
 ## Sources vérifiées
 
 6 dépôts confirmés réels (étoiles/forks vérifiés le 13/10/2026) :
 `addyosmani/agent-skills` · `anthropics/skills` · `obra/superpowers` ·
 `trailofbits/skills` · `vercel-labs/agent-skills` · `NVIDIA/SkillSpector` (outil).
-
-Détail et avertissement sur les dépôts non confirmés : [`docs/SOURCES.md`](docs/SOURCES.md).
 
 ## Sécurité de la supply-chain
 
@@ -54,18 +61,13 @@ avant d'être adopté. C'est le rôle du sous-agent *Supply-chain gate*.
 ```
 fullstack-agent-skills-2026/
 ├── README.md
-├── agents/
-│   ├── 01-product-manager.md
-│   ├── 02-workflow-ux-owner.md
-│   ├── 03-security-lead.md
-│   ├── 04-build-dev-lead.md
-│   ├── 05-devops-release.md
-│   ├── 06-qa-evaluator.md   ← note la performance des agents
-│   └── 07-data-ml.md        ← données & modèles (ML, NLP)
-├── docs/
-│   ├── MAPPING.md      ← tableau maître agent → skills
-│   ├── SOURCES.md      ← dépôts vérifiés + vérifications
-│   └── EVALUATION.md   ← grille + protocole d'évaluation du super-agent
+├── AGENTS.md           ← point d'entrée universel multi-outils
+├── CLAUDE.md           ← configuration Claude Code
+├── INSTALL.md          ← guide complet d'installation
+├── install.sh          ← script d'installation idempotent
+├── .project-memory/    ← mémoire persistante (MAP, STATE, REFUSALS…)
+├── agents/             ← 8 fiches d'agents spécialisés
+├── docs/               ← MAPPING, SOURCES, EVALUATION
 └── skills/             ← registre opérationnel des skills (Addy Osmani & Superpowers)
 ```
 

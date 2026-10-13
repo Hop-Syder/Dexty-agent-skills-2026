@@ -1,0 +1,5 @@
+.claude/
+.agents/skills/
+node_modules/
+.DS_Store
+*.log
