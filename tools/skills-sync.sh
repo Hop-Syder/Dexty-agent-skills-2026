@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# tools/skills-sync.sh — Installe les skills définis dans skills.lock
-# Ne télécharge QUE les skills listés dans le lock, refuse sans scan SkillSpector propre
-# Jamais d'auto-update — diff + scan + validation manuelle uniquement
+# tools/skills-sync.sh — Synchronisation déterministe et sécurisée des skills (Dexty 3.5.1)
+# - Aucun os.system : subprocess.run(..., shell=False) + validation stricte par liste blanche (AUD-003)
+# - Zéro faux SKILL.md en cas d'échec réseau/téléchargement : échoue explicitement avec exit 1 (AUD-001)
+# - Vérification obligatoire de l'empreinte SHA-256 ou scan SkillSpector réel avec score >= min_security_score (AUD-002, AUD-011, AUD-013)
+# - Codes de sortie et messages stricts : exit 1 dès le moindre refus ou échec (AUD-016)
 # @hopsyder — Nexus Partners
 
 set -euo pipefail
@@ -13,117 +15,271 @@ YELLOW="\033[33m"
 RED="\033[31m"
 RESET="\033[0m"
 
-say()  { echo -e "${CYAN}◈${RESET} $*"; }
-ok()   { echo -e "${GREEN}✓${RESET} $*"; }
-warn() { echo -e "${YELLOW}⚠${RESET} $*"; }
-err()  { echo -e "${RED}✗${RESET} $*"; }
-hr()   { echo -e "${CYAN}$(printf '─%.0s' {1..60})${RESET}"; }
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REGISTRY_DIR="$(dirname "$SCRIPT_DIR")"
-PROJECT_DIR="${1:-$(pwd)}"
-LOCK_FILE="$PROJECT_DIR/.agents/skills.lock"
-[ -f "$LOCK_FILE" ] || LOCK_FILE="$PROJECT_DIR/skills.lock"
-SKILLS_DIR="$PROJECT_DIR/.agents/skills"
 
-if [ ! -f "$LOCK_FILE" ]; then
-  err "skills.lock introuvable dans $PROJECT_DIR"
-  err "Lance d'abord : bash tools/onboard.sh $PROJECT_DIR"
-  exit 1
-fi
+PROJECT_DIR="."
+NO_VENDOR="0"
 
-if ! command -v python3 &>/dev/null; then
-  err "python3 requis."
-  exit 1
-fi
+for arg in "$@"; do
+  case "$arg" in
+    --no-vendor|--remote-only)
+      NO_VENDOR="1"
+      ;;
+    *)
+      PROJECT_DIR="$arg"
+      ;;
+  esac
+done
 
-SKILLSPECTOR_AVAILABLE=false
-if command -v skillspector &>/dev/null; then
-  SKILLSPECTOR_AVAILABLE=true
-  ok "SkillSpector détecté : $(skillspector --version 2>/dev/null || echo 'actif')"
+PROJECT_DIR="$(cd "$PROJECT_DIR" && pwd)"
+
+if [ -f "$PROJECT_DIR/.agents/skills.lock" ]; then
+  LOCK_FILE="$PROJECT_DIR/.agents/skills.lock"
+elif [ -f "$PROJECT_DIR/skills.lock" ]; then
+  LOCK_FILE="$PROJECT_DIR/skills.lock"
 else
-  warn "SkillSpector non installé dans le PATH : vérification basée sur les scores certifiés de $LOCK_FILE."
+  echo -e "${RED}✗${RESET} Erreur : aucun fichier skills.lock trouvé dans $PROJECT_DIR/.agents/ ni $PROJECT_DIR/" >&2
+  exit 1
 fi
 
-hr
-say "${BOLD}Synchronisation des skills depuis $LOCK_FILE${RESET}"
-say "Destination : ${BOLD}$SKILLS_DIR${RESET}"
-echo ""
+if [ -f "$PROJECT_DIR/skills.catalog.json" ]; then
+  CATALOG_FILE="$PROJECT_DIR/skills.catalog.json"
+elif [ -f "$PROJECT_DIR/.agents/skills.catalog.json" ]; then
+  CATALOG_FILE="$PROJECT_DIR/.agents/skills.catalog.json"
+else
+  CATALOG_FILE="$REGISTRY_DIR/skills.catalog.json"
+fi
 
-mkdir -p "$SKILLS_DIR"
+export DEXTY_PROJECT_DIR="$PROJECT_DIR"
+export DEXTY_REGISTRY_DIR="$REGISTRY_DIR"
+export DEXTY_LOCK_FILE="$LOCK_FILE"
+export DEXTY_CATALOG_FILE="$CATALOG_FILE"
+export DEXTY_NO_VENDOR="$NO_VENDOR"
 
-python3 - <<EOF
-import json, os, shutil, sys
+python3 - <<'PYEOF'
+import hashlib, json, os, re, shutil, subprocess, sys, tempfile, fcntl
+from datetime import datetime, timezone
 
-with open("$LOCK_FILE") as f:
+project_dir  = os.environ["DEXTY_PROJECT_DIR"]
+registry_dir = os.environ["DEXTY_REGISTRY_DIR"]
+lock_file    = os.environ["DEXTY_LOCK_FILE"]
+catalog_file = os.environ["DEXTY_CATALOG_FILE"]
+no_vendor    = os.environ.get("DEXTY_NO_VENDOR", "0") == "1"
+
+os.makedirs(os.path.join(project_dir, ".agents"), exist_ok=True)
+flock_path = os.path.join(project_dir, ".agents", ".sync.flock")
+flock_fd = open(flock_path, "w")
+try:
+    fcntl.flock(flock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+except IOError:
+    print("✗ Une autre synchronisation est déjà en cours sur ce projet.", file=sys.stderr)
+    sys.exit(1)
+
+with open(lock_file, "r", encoding="utf-8") as f:
     lock = json.load(f)
 
-skills = lock.get("skills", {})
-target_base = "$SKILLS_DIR"
-has_scanner = "$SKILLSPECTOR_AVAILABLE" == "true"
+policy = lock.get("policy", {})
+min_score = int(policy.get("min_security_score", 85))
+skills_dir = os.path.join(project_dir, policy.get("target_directory", ".agents/skills"))
+os.makedirs(skills_dir, exist_ok=True)
 
-print(f"[i] {len(skills)} skills configurés dans $LOCK_FILE")
+trusted_catalog = {}
+if os.path.isfile(catalog_file):
+    try:
+        with open(catalog_file, "r", encoding="utf-8") as cf:
+            cat_data = json.load(cf)
+        for cs in cat_data.get("skills", []):
+            if "id" in cs and "sha256" in cs and "repo" in cs:
+                trusted_catalog[cs["id"]] = cs
+    except Exception:
+        pass
 
-success = 0
-rejected = 0
+raw_skills = lock.get("skills", [])
+normalized = []
+if isinstance(raw_skills, dict):
+    for sid, meta in raw_skills.items():
+        entry = dict(meta)
+        entry["id"] = sid
+        normalized.append(entry)
+elif isinstance(raw_skills, list):
+    for item in raw_skills:
+        normalized.append(dict(item))
+else:
+    print("✗ Format skills.lock invalide.", file=sys.stderr)
+    sys.exit(1)
 
-for sid, meta in skills.items():
-    repo = meta.get("repo")
-    path = meta.get("path")
-    dest_dir = os.path.join(target_base, sid)
-    os.makedirs(dest_dir, exist_ok=True)
-    dest_file = os.path.join(dest_dir, "SKILL.md")
+ID_RE     = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$")
+REPO_RE   = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
+PATH_RE   = re.compile(r"^[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*$")
+COMMIT_RE = re.compile(r"^[0-9a-fA-F]{40}$")
 
-    # Copie locale si déjà présente dans le repo du super-agent
-    local_ao = os.path.join("$REGISTRY_DIR/skills/addyosmani", sid, "SKILL.md")
-    local_sp = os.path.join("$REGISTRY_DIR/skills/superpowers", sid, "SKILL.md")
+scanner_path = shutil.which("skillspector")
 
-    copied = False
-    if os.path.isfile(local_ao):
-        shutil.copy2(local_ao, dest_file)
-        copied = True
-    elif os.path.isfile(local_sp):
-        shutil.copy2(local_sp, dest_file)
-        copied = True
+print(f"◈ Synchronisation Dexty 3.5.1 depuis {os.path.relpath(lock_file, project_dir)} ({len(normalized)} skill(s))")
 
-    if not copied and not os.path.isfile(dest_file):
-        raw_url = f"https://raw.githubusercontent.com/{repo}/main/{path}/SKILL.md"
-        os.system(f"curl -sSL -f '{raw_url}' -o '{dest_file}' 2>/dev/null || true")
+installed = 0
+failed = 0
+blocked = 0
+today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-    if not os.path.isfile(dest_file) or os.path.getsize(dest_file) == 0:
-        with open(dest_file, "w") as sf:
-            sf.write(f"""---
-name: {sid}
-description: Skill certifié pour Desty 3.5 ({repo})
-metadata:
-  repo: {repo}
-  status: APPROVED
----
+for entry in normalized:
+    sid  = str(entry.get("id", "")).strip()
+    repo = str(entry.get("repo", "")).strip()
+    path = str(entry.get("path", "")).strip()
+    commit = entry.get("commit") or entry.get("sha")
+    commit = str(commit).strip() if commit else ""
 
-# {sid}
-Synchronisé pour {repo}.
-""")
+    if (not ID_RE.match(sid)
+        or not REPO_RE.match(repo)
+        or not PATH_RE.match(path)
+        or ".." in path
+        or path.startswith("/")):
+        print(f"✗ [{sid or 'INCONNU'}] REFUS SÉCURITÉ : paramètres repo/path/id invalides ou suspects ({repo!r}, {path!r}).", file=sys.stderr)
+        entry["scan_status"] = "REJECTED_INVALID_INPUT"
+        blocked += 1
+        continue
 
-    if has_scanner:
-        res = os.system(f"skillspector scan '{dest_dir}' >/dev/null 2>&1")
-        if res != 0:
-            print(f"[-] REJETÉ : {sid} a échoué au scan de sécurité.")
-            shutil.rmtree(dest_dir, ignore_errors=True)
-            rejected += 1
+    declared_score = entry.get("scan_score")
+    if declared_score is None:
+        declared_score = entry.get("skillspector_score")
+    if declared_score is not None:
+        try:
+            if int(declared_score) < min_score:
+                print(f"✗ [{sid}] REFUSÉ par la politique de sécurité : score {declared_score}/100 < seuil requis ({min_score}/100).", file=sys.stderr)
+                entry["scan_status"] = "REJECTED_LOW_SCORE"
+                blocked += 1
+                continue
+        except (ValueError, TypeError):
+            print(f"✗ [{sid}] REFUSÉ : score de sécurité invalide ({declared_score!r}).", file=sys.stderr)
+            blocked += 1
             continue
 
-    success += 1
+    if str(entry.get("scan_status", "")).upper() in ("REJECTED", "DNI", "BLOCKED"):
+        print(f"✗ [{sid}] REFUSÉ : statut de sécurité {entry.get('scan_status')}.", file=sys.stderr)
+        blocked += 1
+        continue
 
-print(f"\n[+] {success} skills synchronisés et vérifiés avec succès.")
-if rejected > 0:
-    print(f"[!] {rejected} skills rejetés par le scanner.")
-EOF
+    dest_dir = os.path.join(skills_dir, sid)
+    dest_file = os.path.join(dest_dir, "SKILL.md")
 
-if [ -d "$PROJECT_DIR/.claude" ]; then
-  rm -f "$PROJECT_DIR/.claude/skills"
-  ln -s "../.agents/skills" "$PROJECT_DIR/.claude/skills" 2>/dev/null || true
-  ok "Lien .claude/skills -> .agents/skills actualisé."
-fi
+    cat_entry = trusted_catalog.get(sid)
+    used_vendor = False
+    skill_bytes = None
 
-echo ""
-ok "${BOLD}Synchronisation terminée. Les skills locaux sont prêts et figés.${RESET}"
+    if not no_vendor and cat_entry and cat_entry.get("repo") == repo:
+        for base_dir in (project_dir, registry_dir):
+            cand = os.path.join(base_dir, "skills", sid, "SKILL.md")
+            if os.path.isfile(cand):
+                with open(cand, "rb") as vf:
+                    data = vf.read()
+                actual_sha256 = hashlib.sha256(data).hexdigest()
+                expected_sha256 = entry.get("sha256") or cat_entry.get("sha256")
+                if expected_sha256 and actual_sha256 == expected_sha256:
+                    skill_bytes = data
+                    used_vendor = True
+                    commit = cat_entry.get("commit", commit)
+                    break
+
+    if not used_vendor:
+        if not COMMIT_RE.match(commit):
+            print(f"✗ [{sid}] ÉCHEC : commit SHA déterministe (40 hex) requis pour télécharger depuis {repo} (reçu : {commit!r}).", file=sys.stderr)
+            entry["scan_status"] = "FAILED_UNPINNED_COMMIT"
+            failed += 1
+            continue
+
+        raw_url = f"https://raw.githubusercontent.com/{repo}/{commit}/{path}/SKILL.md"
+        fd, tmp_dl = tempfile.mkstemp(prefix=f"dexty_{sid}_", suffix=".md")
+        os.close(fd)
+        try:
+            proc = subprocess.run(
+                ["curl", "-sSL", "-f", "--max-time", "15", raw_url, "-o", tmp_dl],
+                shell=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False
+            )
+            if proc.returncode != 0 or not os.path.isfile(tmp_dl) or os.path.getsize(tmp_dl) == 0:
+                print(f"✗ [{sid}] ÉCHEC de téléchargement depuis {raw_url} (code {proc.returncode}). Aucun fichier factice généré.", file=sys.stderr)
+                entry["scan_status"] = "DOWNLOAD_FAILED"
+                failed += 1
+                if os.path.exists(dest_dir) and not os.path.isfile(dest_file):
+                    shutil.rmtree(dest_dir, ignore_errors=True)
+                continue
+
+            with open(tmp_dl, "rb") as df:
+                skill_bytes = df.read()
+        finally:
+            if os.path.exists(tmp_dl):
+                os.remove(tmp_dl)
+
+        actual_sha256 = hashlib.sha256(skill_bytes).hexdigest()
+        expected_sha256 = entry.get("sha256")
+        if expected_sha256 and actual_sha256 != expected_sha256:
+            print(f"✗ [{sid}] REFUS SÉCURITÉ : empreinte SHA-256 non conforme (attendu {expected_sha256[:12]}…, reçu {actual_sha256[:12]}…).", file=sys.stderr)
+            entry["scan_status"] = "REJECTED_HASH_MISMATCH"
+            blocked += 1
+            continue
+
+        if not scanner_path:
+            print(f"✗ [{sid}] REFUS SÉCURITÉ : dépôt externe non vérifié ({repo}) et scanner 'skillspector' absent. Auto-déclaration du lock ignorée.", file=sys.stderr)
+            entry["scan_status"] = "REJECTED_UNSCANNED"
+            blocked += 1
+            continue
+
+    if scanner_path:
+        fd, tmp_scan = tempfile.mkstemp(prefix=f"scan_{sid}_", suffix=".md")
+        with os.fdopen(fd, "wb") as sf:
+            sf.write(skill_bytes)
+        try:
+            sproc = subprocess.run(
+                [scanner_path, "scan", tmp_scan],
+                shell=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                check=False
+            )
+            if sproc.returncode != 0 or "DO NOT INSTALL" in sproc.stdout.upper():
+                print(f"✗ [{sid}] REFUSÉ par SkillSpector.", file=sys.stderr)
+                entry["scan_status"] = "REJECTED_BY_SCANNER"
+                blocked += 1
+                continue
+        finally:
+            if os.path.exists(tmp_scan):
+                os.remove(tmp_scan)
+
+    os.makedirs(dest_dir, exist_ok=True)
+    fd, tmp_dest = tempfile.mkstemp(dir=dest_dir, suffix=".tmp")
+    with os.fdopen(fd, "wb") as out_f:
+        out_f.write(skill_bytes)
+    os.replace(tmp_dest, dest_file)
+
+    actual_sha256 = hashlib.sha256(skill_bytes).hexdigest()
+    entry["commit"] = commit
+    entry["sha256"] = actual_sha256
+    entry["installed_at"] = today
+    entry["scan_status"] = "VERIFIED_SHA256" if used_vendor and not scanner_path else "SCANNED_OK"
+    print(f"✓ [{sid}] installé et vérifié (SHA-256 : {actual_sha256[:12]}…)")
+    installed += 1
+
+if isinstance(raw_skills, dict):
+    for item in normalized:
+        sid = item.pop("id")
+        raw_skills[sid] = item
+else:
+    lock["skills"] = normalized
+
+fd, tmp_lock = tempfile.mkstemp(dir=os.path.dirname(lock_file), suffix=".tmp")
+with os.fdopen(fd, "w", encoding="utf-8") as tf:
+    json.dump(lock, tf, ensure_ascii=False, indent=2)
+os.replace(tmp_lock, lock_file)
+
+print("─" * 60)
+if failed > 0 or blocked > 0:
+    print(f"✗ Synchronisation EN ÉCHEC : {installed} installé(s), {failed} erreur(s), {blocked} refus de sécurité.", file=sys.stderr)
+    sys.exit(1)
+
+print(f"✓ Synchronisation terminée : {installed}/{len(normalized)} skill(s) vérifiés et installés.")
+sys.exit(0)
+PYEOF
