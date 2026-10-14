@@ -60,8 +60,16 @@ copy_safe() {
 }
 
 copy_safe "$KIT_DIR/VERSION"                          "VERSION"
-copy_safe "$KIT_DIR/agents"                           "agents"
-copy_safe "$KIT_DIR/docs"                             "docs/super-agent"
+
+# Copie uniquement les 8 fiches d'agents canoniques (01 à 08, AUD-019)
+mkdir -p "agents"
+for f in "$KIT_DIR"/agents/0[1-8]-*.md; do
+  [ -f "$f" ] && copy_safe "$f" "agents/$(basename "$f")"
+done
+
+copy_safe "$KIT_DIR/docs/MAPPING.md"                  "docs/super-agent/MAPPING.md"
+copy_safe "$KIT_DIR/docs/SOURCES.md"                  "docs/super-agent/SOURCES.md"
+copy_safe "$KIT_DIR/docs/EVALUATION.md"               "docs/super-agent/EVALUATION.md"
 copy_safe "$KIT_DIR/.project-memory"                  ".project-memory"
 copy_safe "$KIT_DIR/.claude/hooks/memory-wake.sh"     ".claude/hooks/memory-wake.sh"
 copy_safe "$KIT_DIR/.claude/commands/resume.md"       ".claude/commands/resume.md"

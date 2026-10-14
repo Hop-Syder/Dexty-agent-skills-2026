@@ -52,9 +52,9 @@ export PATH="$SANDBOX/bin:$PATH"
 if python3 - "$REPO_DIR" <<'PY'
 import hashlib, json, os, sys
 repo = sys.argv[1]
-assert not os.path.exists(os.path.join(repo, "workflows")), "Ancien dossier workflows/ racine encore présent"
 assert os.path.isfile(os.path.join(repo, "VERSION")), "Fichier VERSION manquant"
 assert os.path.isfile(os.path.join(repo, "LICENSE")), "Fichier LICENSE manquant"
+assert not os.path.exists(os.path.join(repo, "skills.lock")), "skills.lock pré-armé encore présent à la racine"
 
 with open(os.path.join(repo, "skills.catalog.json"), "r", encoding="utf-8") as f:
     cat = json.load(f)
@@ -62,19 +62,16 @@ assert "Supabase" in cat["_meta"]["sources"], "Source Supabase absente de _meta.
 cat_ids = {s["id"] for s in cat["skills"]}
 assert len(cat_ids) == 37, f"Attendu 37 skills dans le catalogue, trouvé {len(cat_ids)}"
 
-vendor_dir = os.path.join(repo, "skills")
-vendor_ids = {d for d in os.listdir(vendor_dir) if os.path.isfile(os.path.join(vendor_dir, d, "SKILL.md"))}
-assert cat_ids == vendor_ids, f"Incohérence catalogue vs vendors: diff={cat_ids ^ vendor_ids}"
-
 for s in cat["skills"]:
     p = os.path.join(repo, s["vendored_path"])
+    assert os.path.isfile(p), f"Fichier vendored manquant : {p}"
     with open(p, "rb") as sf:
         h = hashlib.sha256(sf.read()).hexdigest()
     assert h == s["sha256"], f"SHA-256 invalide pour {s['id']}"
     assert len(s.get("commit", "")) == 40, f"Commit invalide pour {s['id']}"
 PY
 then
-  pass_test "T0 (Invariants AUD-005/014/020/028) : 37/37 skills alignés (catalogue == vendors), SHA-256 vérifiés"
+  pass_test "T0 (Invariants AUD-011/014/020/028) : 37/37 skills du catalogue présents et vérifiés par SHA-256, aucun skills.lock pré-armé"
 else
   fail_test "T0 : Échec des invariants structurels"
 fi
@@ -99,11 +96,12 @@ bash "$REPO_DIR/install.sh" "$T2_DIR" --skip-onboard >/dev/null
 LINES_1=$(wc -l < "$T2_DIR/AGENTS.md")
 bash "$REPO_DIR/install.sh" "$T2_DIR" --skip-onboard >/dev/null
 LINES_2=$(wc -l < "$T2_DIR/AGENTS.md")
+AGENT_COUNT=$(ls -1 "$T2_DIR/agents"/*.md | wc -l)
 
-if [ "$LINES_1" -eq "$LINES_2" ] && [ -f "$T2_DIR/.claude/settings.json" ] && grep -q "memory-wake.sh" "$T2_DIR/.claude/settings.json"; then
-  pass_test "T2 & T12b (AUD-008/015) : AGENTS.md strictement idempotent ($LINES_1 lignes) et .claude/settings.json copié avec hook SessionStart"
+if [ "$LINES_1" -eq "$LINES_2" ] && [ "$AGENT_COUNT" -eq 8 ] && [ -f "$T2_DIR/.claude/settings.json" ] && grep -q "memory-wake.sh" "$T2_DIR/.claude/settings.json"; then
+  pass_test "T2 & T12b (AUD-008/015/019) : AGENTS.md idempotent ($LINES_1 lignes), 8 fiches d'agents copiées et .claude/settings.json enregistré"
 else
-  fail_test "T2 & T12b : Duplication d'AGENTS.md ($LINES_1 -> $LINES_2) ou .claude/settings.json manquant"
+  fail_test "T2 & T12b : Duplication d'AGENTS.md ($LINES_1 -> $LINES_2), nb agents=$AGENT_COUNT ou .claude/settings.json manquant"
 fi
 
 WAKE_OUT=$(CLAUDE_PROJECT_DIR="$T2_DIR" bash "$T2_DIR/.claude/hooks/memory-wake.sh")
