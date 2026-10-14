@@ -34,9 +34,30 @@ bash /chemin/vers/mon-projet/tools/onboard.sh /chemin/vers/mon-projet
 ## 3. Activation par éditeur / agent CLI
 
 - **Claude Code** : ouvre le dossier du projet et lance `claude`. Le hook `SessionStart` déclaré dans `.claude/settings.json` exécute automatiquement `.claude/hooks/memory-wake.sh`.
-- **OpenAI Codex CLI / Cursor / Windsurf / VS Code** : lisent automatiquement `AGENTS.md` à la racine du projet.
+- **OpenAI Codex CLI / Cursor / Windsurf / VS Code / Antigravity** : lisent automatiquement `AGENTS.md` à la racine du projet.
 
-## 4. Activer le workflow GitHub Actions dans votre dépôt
+## 4. Comment appeler les 8 Agents Chefs avec `@`
+
+Une fois installé, mentionnez directement la fiche de l'agent dans le chat de votre IDE :
+
+| Agent Chef | Tag direct `@` | Rôle clé |
+| :--- | :--- | :--- |
+| **① Product Manager** | `@agents/01-product-manager.md` | Spécifications, backlog & cadrage (délègue à l'équipe) |
+| **② Workflow / UX Owner** | `@agents/02-workflow-ux-owner.md` | Parcours utilisateur & design UI |
+| **③ Security Lead** | `@agents/03-security-lead.md` | Audit menaces & garde-fous |
+| **④ Build / Dev Lead** | `@agents/04-build-dev-lead.md` | Développement incrémental & TDD |
+| **⑤ DevOps / Release** | `@agents/05-devops-release.md` | CI/CD, observabilité & mise en prod |
+| **⑥ QA / Evaluator** | `@agents/06-qa-evaluator.md` | Juge indépendant (évalue sans coder) |
+| **⑦ Data / ML** | `@agents/07-data-ml.md` | Schémas BDD PostgreSQL & pipelines données |
+| **⑧ Project Memory** | `@agents/08-project-memory.md` | Gardien de la vision & reprise de session |
+
+💡 **Workflow recommandé :** Commencez toujours par le Product Manager :
+```text
+@agents/01-product-manager.md Voici mon besoin : [décrire l'idée ou la fonctionnalité].
+Étudie la tâche, rédige la spec et prépare le découpage pour le dev et la sécurité.
+```
+
+## 5. Activer le workflow GitHub Actions dans votre dépôt
 
 Pour activer la suite de tests CI (`tests/run_audit_tests.sh`) et la veille hebdomadaire sur GitHub Actions :
 
