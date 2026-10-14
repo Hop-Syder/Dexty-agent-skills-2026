@@ -158,6 +158,19 @@ fi
 
 echo ""
 say "Structure Dexty $VERSION_STR installée."
+echo ""
+echo -e "${BOLD}${CYAN}Équipe des 8 Agents Chefs installée dans ${GREEN}agents/${RESET} :${RESET}"
+echo -e "  ${BOLD}① Product Manager${RESET}      → ${GREEN}@agents/01-product-manager.md${RESET}  (Besoin, spec, découpage MVP)"
+echo -e "  ${BOLD}② Workflow / UX Owner${RESET}  → ${GREEN}@agents/02-workflow-ux-owner.md${RESET}  (Parcours, UI & contrats API)"
+echo -e "  ${BOLD}③ Security Lead${RESET}        → ${GREEN}@agents/03-security-lead.md${RESET}        (Menaces, revue & durcissement)"
+echo -e "  ${BOLD}④ Build / Dev Lead${RESET}     → ${GREEN}@agents/04-build-dev-lead.md${RESET}       (Code TDD, implémentation)"
+echo -e "  ${BOLD}⑤ DevOps / Release${RESET}     → ${GREEN}@agents/05-devops-release.md${RESET}       (CI/CD, déploiement & perf)"
+echo -e "  ${BOLD}⑥ QA / Evaluator${RESET}       → ${GREEN}@agents/06-qa-evaluator.md${RESET}         (Évaluation neutre & indépendante)"
+echo -e "  ${BOLD}⑦ Data / ML${RESET}            → ${GREEN}@agents/07-data-ml.md${RESET}              (BDD PostgreSQL, SQL, ML)"
+echo -e "  ${BOLD}⑧ Project Memory${RESET}       → ${GREEN}@agents/08-project-memory.md${RESET}       (Gardien vision & mémoire)"
+echo ""
+echo -e "${BOLD}${YELLOW}Astuce Dexty :${RESET} Pour déléguer une tâche, commence par : ${CYAN}@agents/01-product-manager.md voici mon idée...${RESET}"
+echo ""
 
 case "$FLAG" in
   --onboard)

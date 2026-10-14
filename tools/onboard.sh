@@ -334,3 +334,22 @@ if [[ "$CONFIRM" =~ ^[oOyY] ]]; then
 else
   say "Synchronisation reportée. Lance : bash tools/skills-sync.sh $PROJECT_DIR"
 fi
+
+echo ""
+hr
+say "${BOLD}${GREEN}Félicitations ! Votre environnement Dexty 3.5.1 est prêt.${RESET}"
+echo ""
+echo -e "${BOLD}${CYAN}Vos 8 Agents Chefs sont prêts à être appelés avec @ :${RESET}"
+echo -e "  ${BOLD}① Product Manager${RESET}      → ${GREEN}@agents/01-product-manager.md${RESET}  (Spécifications & cadrage)"
+echo -e "  ${BOLD}② Workflow / UX Owner${RESET}  → ${GREEN}@agents/02-workflow-ux-owner.md${RESET}  (Parcours & design)"
+echo -e "  ${BOLD}③ Security Lead${RESET}        → ${GREEN}@agents/03-security-lead.md${RESET}        (Garde-fous & menaces)"
+echo -e "  ${BOLD}④ Build / Dev Lead${RESET}     → ${GREEN}@agents/04-build-dev-lead.md${RESET}       (Code & TDD)"
+echo -e "  ${BOLD}⑤ DevOps / Release${RESET}     → ${GREEN}@agents/05-devops-release.md${RESET}       (CI/CD & performance)"
+echo -e "  ${BOLD}⑥ QA / Evaluator${RESET}       → ${GREEN}@agents/06-qa-evaluator.md${RESET}         (Juge indépendant)"
+echo -e "  ${BOLD}⑦ Data / ML${RESET}            → ${GREEN}@agents/07-data-ml.md${RESET}              (Données & BDD)"
+echo -e "  ${BOLD}⑧ Project Memory${RESET}       → ${GREEN}@agents/08-project-memory.md${RESET}       (Vision & mémoire)"
+echo ""
+echo -e "${BOLD}${YELLOW}Pour démarrer une tâche :${RESET}"
+echo -e "  ${CYAN}@agents/01-product-manager.md Voici mon besoin : [votre idée]${RESET}"
+hr
+echo ""

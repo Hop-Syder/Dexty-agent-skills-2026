@@ -38,16 +38,18 @@ Les agents de code actuels (Claude Code, Codex, Cursor, VS Code Copilot) sont ef
 
 ## Les 8 agents spécialisés
 
-| Agent | Fiche | Rôle principal | Mémoire & outils consultés |
+| Agent | Fiche & Tag `@` | Rôle principal | Mémoire & outils consultés |
 | :--- | :--- | :--- | :--- |
-| **① Product Manager** | [`agents/01-product-manager.md`](agents/01-product-manager.md) | Spécifications, périmètre MVP & décisions (ADR) | `.project-memory/MAP.md`, `DECISIONS.md` |
-| **② Workflow / UX Owner** | [`agents/02-workflow-ux-owner.md`](agents/02-workflow-ux-owner.md) | Parcours utilisateur, composants UI & contrats d'API | `skills.catalog.json` |
-| **③ Security Lead** | [`agents/03-security-lead.md`](agents/03-security-lead.md) | Modélisation des menaces, revue de diffs & garde-fous | `.project-memory/ERRORS.md`, `REFUSALS.md` |
-| **④ Build / Dev Lead** | [`agents/04-build-dev-lead.md`](agents/04-build-dev-lead.md) | Implémentation incrémentale, TDD & débogage | `.agents/skills.lock` |
-| **⑤ DevOps / Release** | [`agents/05-devops-release.md`](agents/05-devops-release.md) | CI/CD, observabilité, performance & déploiement | `.github/workflows/skills-update.yml` |
-| **⑥ QA / Evaluator** | [`agents/06-qa-evaluator.md`](agents/06-qa-evaluator.md) | Évaluation indépendante (le juge ne code jamais) | `docs/EVALUATION.md`, `ERRORS.md` |
-| **⑦ Data / ML** | [`agents/07-data-ml.md`](agents/07-data-ml.md) | Modélisation SQL/PostgreSQL, données tabulaires & pipelines | `skills.catalog.json` |
-| **⑧ Project Memory** | [`agents/08-project-memory.md`](agents/08-project-memory.md) | Gardien de la vision et reprise de session | `.project-memory/*`, `.claude/hooks/memory-wake.sh` |
+| **① Product Manager** | `@agents/01-product-manager.md` ([fiche](agents/01-product-manager.md)) | Spécifications, périmètre MVP & décisions (ADR) | `.project-memory/MAP.md`, `DECISIONS.md` |
+| **② Workflow / UX Owner** | `@agents/02-workflow-ux-owner.md` ([fiche](agents/02-workflow-ux-owner.md)) | Parcours utilisateur, composants UI & contrats d'API | `skills.catalog.json` |
+| **③ Security Lead** | `@agents/03-security-lead.md` ([fiche](agents/03-security-lead.md)) | Modélisation des menaces, revue de diffs & garde-fous | `.project-memory/ERRORS.md`, `REFUSALS.md` |
+| **④ Build / Dev Lead** | `@agents/04-build-dev-lead.md` ([fiche](agents/04-build-dev-lead.md)) | Implémentation incrémentale, TDD & débogage | `.agents/skills.lock` |
+| **⑤ DevOps / Release** | `@agents/05-devops-release.md` ([fiche](agents/05-devops-release.md)) | CI/CD, observabilité, performance & déploiement | `.github/workflows/skills-update.yml` |
+| **⑥ QA / Evaluator** | `@agents/06-qa-evaluator.md` ([fiche](agents/06-qa-evaluator.md)) | Évaluation indépendante (le juge ne code jamais) | `docs/EVALUATION.md`, `ERRORS.md` |
+| **⑦ Data / ML** | `@agents/07-data-ml.md` ([fiche](agents/07-data-ml.md)) | Modélisation SQL/PostgreSQL, données tabulaires & pipelines | `skills.catalog.json` |
+| **⑧ Project Memory** | `@agents/08-project-memory.md` ([fiche](agents/08-project-memory.md)) | Gardien de la vision et reprise de session | `.project-memory/*`, `.claude/hooks/memory-wake.sh` |
+
+> 💡 **Comment invoquer un agent dans votre chat :** Mentionnez directement son fichier avec `@` (ex: `@agents/01-product-manager.md voici mon idée...`). Le Product Manager analysera votre tâche et la déléguera aux autres agents.
 
 ## Démarrage rapide
 
