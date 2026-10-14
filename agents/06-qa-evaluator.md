@@ -1,10 +1,10 @@
+# Agent ⑥ — QA / Evaluator
+
 <!--
   06-qa-evaluator.md — Agent QA / Evaluator (Desty 3.5)
   Super Agent: Desty 3.5 | Nexus Partners · Cotonou, Bénin
   Créateur: @hopsyder (https://github.com/Hop-Syder)
 -->
-
-# Agent ⑥ — QA / Evaluator
 
 > Possède la **mesure**. Note la performance des autres agents et du résultat produit. N'exécute pas le travail qu'il évalue.
 

@@ -1,10 +1,10 @@
+# Agent ④ — Build / Dev Lead
+
 <!--
   04-build-dev-lead.md — Agent Build / Dev Lead (Desty 3.5)
   Super Agent: Desty 3.5 | Nexus Partners · Cotonou, Bénin
   Créateur: @hopsyder (https://github.com/Hop-Syder)
 -->
-
-# Agent ④ — Build / Dev Lead
 
 > Transforme le plan en code qui marche. Ne juge pas sa propre copie (délègue la revue à QA / Evaluator).
 

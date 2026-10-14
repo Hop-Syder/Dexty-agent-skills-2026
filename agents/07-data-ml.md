@@ -1,10 +1,10 @@
+# Agent ⑦ — Data / ML
+
 <!--
   07-data-ml.md — Agent Data / ML (Desty 3.5)
   Super Agent: Desty 3.5 | Nexus Partners · Cotonou, Bénin
   Créateur: @hopsyder (https://github.com/Hop-Syder)
 -->
-
-# Agent ⑦ — Data / ML
 
 > Possède la **donnée et les modèles** : pipelines data, ML, NLP. Ajouté pour coller au profil data scientist du registre.
 
