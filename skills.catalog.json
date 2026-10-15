@@ -535,6 +535,45 @@
       "commit": "49dd158d1076134a641b33efb035946536778336",
       "sha256": "9be7b478c389605a24517d27752f278933588da97a1b5921b165f455edf4c5b7",
       "vendored_path": "skills/wayfinder/SKILL.md"
+    },
+    {
+      "id": "codebase-design",
+      "agent": "build-dev-lead",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/codebase-design",
+      "tags": ["architecture", "deep-modules", "interfaces", "seams"],
+      "description": "Concevoir des modules profonds avec interfaces compactes et coutures (seams) propres",
+      "triggers": ["deep module", "seam", "interface", "codebase design", "architecture modulaire", "refactoring profond"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "2c20617f87ec8af6a434859f381b2f061a69b530444e74eb39e78bb016a6d1e2",
+      "vendored_path": "skills/codebase-design/SKILL.md"
+    },
+    {
+      "id": "diagnosing-bugs",
+      "agent": "build-dev-lead",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/diagnosing-bugs",
+      "tags": ["debugging", "feedback-loop", "bisect", "root-cause"],
+      "description": "Discipline méthodique pour traquer les bugs ardus en construisant une boucle de feedback rouge",
+      "triggers": ["diagnostiquer", "bug difficile", "enquête bug", "diagnose", "flaky", "reproduction bug"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "849198df88cdb65fd0d97236604c1fca7ff2f22d2f705f9724a800d0266b118d",
+      "vendored_path": "skills/diagnosing-bugs/SKILL.md"
+    },
+    {
+      "id": "improve-codebase-architecture",
+      "agent": "build-dev-lead",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/improve-codebase-architecture",
+      "tags": ["architecture", "refactoring", "html-report", "visual"],
+      "description": "Scanner les frictions architecturales et produire un rapport visuel d'approfondissement modulaire",
+      "triggers": ["ameliorer architecture", "architecture review", "deepening", "rapport architecture", "dette technique structurelle"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "552240a5ab5cec6b67c15dd1ad6e9f6962b1bca6ce870059a8c2713760c20392",
+      "vendored_path": "skills/improve-codebase-architecture/SKILL.md"
     }
   ]
 }

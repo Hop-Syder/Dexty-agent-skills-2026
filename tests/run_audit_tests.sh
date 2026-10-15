@@ -61,7 +61,7 @@ with open(os.path.join(repo, "skills.catalog.json"), "r", encoding="utf-8") as f
 assert "Supabase" in cat["_meta"]["sources"], "Source Supabase absente de _meta.sources"
 assert "MP" in cat["_meta"]["sources"], "Source MP absente de _meta.sources"
 cat_ids = {s["id"] for s in cat["skills"]}
-assert len(cat_ids) == 40, f"Attendu 40 skills dans le catalogue, trouvé {len(cat_ids)}"
+assert len(cat_ids) == 43, f"Attendu 43 skills dans le catalogue, trouvé {len(cat_ids)}"
 
 for s in cat["skills"]:
     p = os.path.join(repo, s["vendored_path"])
@@ -72,7 +72,7 @@ for s in cat["skills"]:
     assert len(s.get("commit", "")) == 40, f"Commit invalide pour {s['id']}"
 PY
 then
-  pass_test "T0 (Invariants AUD-011/014/020/028) : 40/40 skills du catalogue présents et vérifiés par SHA-256, aucun skills.lock pré-armé"
+  pass_test "T0 (Invariants AUD-011/014/020/028) : 43/43 skills du catalogue présents et vérifiés par SHA-256, aucun skills.lock pré-armé"
 else
   fail_test "T0 : Échec des invariants structurels"
 fi
