@@ -12,7 +12,8 @@
       "VL": "https://github.com/vercel-labs/agent-skills",
       "NV": "https://github.com/NVIDIA/SkillSpector",
       "Supabase": "https://github.com/supabase/agent-skills",
-      "MP": "https://github.com/mattpocock/skills"
+      "MP": "https://github.com/mattpocock/skills",
+      "NEXUS": "https://nexus-partners.xyz"
     }
   },
   "skills": [
@@ -574,6 +575,58 @@
       "commit": "49dd158d1076134a641b33efb035946536778336",
       "sha256": "552240a5ab5cec6b67c15dd1ad6e9f6962b1bca6ce870059a8c2713760c20392",
       "vendored_path": "skills/improve-codebase-architecture/SKILL.md"
+    },
+    {
+      "id": "seo-referencing",
+      "agent": "workflow-ux",
+      "source": "NEXUS",
+      "repo": "Hop-Syder/Dexty-agent-skills-2026",
+      "path": "docs/seo-referencing",
+      "tags": ["seo", "referencing", "google", "metadata", "schema", "sitemap"],
+      "description": "Expert SEO technique et éditorial pour l'audit, l'indexation, Schema.org et la visibilité Google",
+      "triggers": ["seo", "referencement", "google search", "schema.org", "sitemap", "meta description", "robots.txt"],
+      "commit": "d5bdb95642d99c43d8a9fbe6bb3d5ebce1a9bdfb",
+      "sha256": "f1d3b11059a09e31b1d39bdaf6a8a716c6ca93fb4b004f1c09aefa16813e9377",
+      "vendored_path": "skills/seo-referencing/SKILL.md"
+    },
+    {
+      "id": "no-ai-design-slop",
+      "agent": "workflow-ux",
+      "source": "NEXUS",
+      "repo": "Hop-Syder/Dexty-agent-skills-2026",
+      "path": "docs/Skills-main/agent-skills/ui/no-ai-design-slop",
+      "tags": ["ui", "design", "anti-slop", "quality-gate", "art-direction"],
+      "description": "Garde-fou contre le design générique IA, suppression du slop visuel et préservation de la direction artistique",
+      "triggers": ["anti-slop", "design slop", "ui quality", "direction artistique", "design propre", "clean design"],
+      "commit": "d5bdb95642d99c43d8a9fbe6bb3d5ebce1a9bdfb",
+      "sha256": "a433154b01f99eed1f0c0744cee557451c898253dd7abc5f1921f234ff592998",
+      "vendored_path": "skills/no-ai-design-slop/SKILL.md"
+    },
+    {
+      "id": "build-awwwards-quality-sites",
+      "agent": "workflow-ux",
+      "source": "NEXUS",
+      "repo": "Hop-Syder/Dexty-agent-skills-2026",
+      "path": "docs/Skills-main/agent-skills/web-design/build-awwwards-quality-sites",
+      "tags": ["ui", "web-design", "awwwards", "motion", "gsap", "threejs", "cinematic"],
+      "description": "Direction artistique et implémentation de sites marketing d'exception avec GSAP, scroll fluide et WebGL",
+      "triggers": ["awwwards", "site premium", "motion design", "cinematic", "gsap storytelling", "threejs shader"],
+      "commit": "d5bdb95642d99c43d8a9fbe6bb3d5ebce1a9bdfb",
+      "sha256": "1568e003d112e72df0ea2ec925829a5039b762c27174e063c192d7ccf7f4f9e6",
+      "vendored_path": "skills/build-awwwards-quality-sites/SKILL.md"
+    },
+    {
+      "id": "workflow-ship-change",
+      "agent": "devops-release",
+      "source": "NEXUS",
+      "repo": "Hop-Syder/Dexty-agent-skills-2026",
+      "path": "docs/Skills-main/agent-skills/workflow/workflow-ship-change",
+      "tags": ["workflow", "ship", "release", "commit-guardrails", "screenshots"],
+      "description": "Livraison rigoureuse avec captures avant/après, journal des modifications, tests complets et publication sûre",
+      "triggers": ["ship", "livraison", "release change", "deploy prod", "workflow livraison", "publier"],
+      "commit": "d5bdb95642d99c43d8a9fbe6bb3d5ebce1a9bdfb",
+      "sha256": "88de94f7919d69252b18bde500aa41547ee4c865c2e097f9b45730a9d9016b80",
+      "vendored_path": "skills/workflow-ship-change/SKILL.md"
     }
   ]
 }

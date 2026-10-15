@@ -21,6 +21,7 @@ confirmé.
 | **TOB** | [`trailofbits/skills`](https://github.com/trailofbits/skills) | Skills de sécurité par Trail of Bits (audit, threat model) | ~5k ★ / ~436 forks | Pilier de l'agent Sécurité |
 | **VL** | [`vercel-labs/agent-skills`](https://github.com/vercel-labs/agent-skills) | Skills Vercel (React, déploiement, composition) | Officiel Vercel | Front JS + déploiement |
 | **MP** | [`mattpocock/skills`](https://github.com/mattpocock/skills) | Discipline d'ingénierie stricte (grilling, domain modeling, wayfinder) | ~290k ★ (très populaire) | Questionnement impitoyable, modèles de domaine et découpage |
+| **NEXUS** | [`nexus-partners.xyz`](https://nexus-partners.xyz) | Registre propriétaire Nexus Partners (SEO, Anti-slop UI, Awwwards, Ship-change) | Interne / certifié | Référencement Google, excellence visuelle sans slop et livraison |
 | **NV** | [`NVIDIA/SkillSpector`](https://github.com/NVIDIA/SkillSpector) | **Outil** : scanner de sécurité de skills (0–100) | ~991 ★ | Garde-fou CI (voir note ci-dessous) |
 
 ### Sources complémentaires repérées (non centrales, disponibles au besoin)
