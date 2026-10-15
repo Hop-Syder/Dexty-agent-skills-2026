@@ -4,3 +4,14 @@ node_modules/
 *.log
 .DS_Store
 .dexty/
+
+# Fichiers et dossiers volumineux conservés en local
+docs/Skills-main/
+docs/seo-referencing/
+
+# Environnement et fichiers personnels
+.env
+.env.*
+*.local
+personal/
+scratch/
