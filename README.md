@@ -13,7 +13,7 @@
   <p>
     <a href="LICENSE"><img src="https://img.shields.io/badge/licence-AGPL--3.0-blue.svg" alt="Licence AGPL-3.0" /></a>
     <a href="VERSION"><img src="https://img.shields.io/badge/version-3.5.1-10232E.svg" alt="Version 3.5.1" /></a>
-    <a href="skills.catalog.json"><img src="https://img.shields.io/badge/skills_catalogue-37_v%C3%A9rifi%C3%A9s-E39A2D.svg" alt="37 skills dans le catalogue" /></a>
+    <a href="skills.catalog.json"><img src="https://img.shields.io/badge/skills_catalogue-40_v%C3%A9rifi%C3%A9s-E39A2D.svg" alt="40 skills dans le catalogue" /></a>
     <a href="agents/"><img src="https://img.shields.io/badge/agents-8_sp%C3%A9cialis%C3%A9s-orange.svg" alt="8 agents" /></a>
   </p>
 </div>
@@ -115,7 +115,7 @@ bash tests/run_audit_tests.sh
 
 | Vérification | Résultat | Preuve / Mécanisme |
 | :--- | :--- | :--- |
-| **Cohérence catalogue ↔ `skills/`** | **37 / 37** | Invariant vérifié par `tests/run_audit_tests.sh` (`commit` + `sha256` présents sur chaque entrée) |
+| **Cohérence catalogue ↔ `skills/`** | **40 / 40** | Invariant vérifié par `tests/run_audit_tests.sh` (`commit` + `sha256` présents sur chaque entrée) |
 | **Parcours `install.sh --onboard` (`T1`, `T4`)** | **Testé** | Génère `.agents/skills.lock` et initialise `.project-memory/MAP.md` avec les réponses du projet |
 | **Idempotence & hook (`T2`, `T3`, `T12b`)** | **Testé** | Aucune duplication de `AGENTS.md` ; `.claude/settings.json` copié ; template vierge détecté au réveil |
 | **Protection contre injections (`T5`, `T11`)** | **Testé** | Aucun `os.system` (`subprocess.run(..., shell=False)`) ; passage par `os.environ` et heredoc quoté |

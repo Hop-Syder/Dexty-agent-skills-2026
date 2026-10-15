@@ -11,7 +11,8 @@
       "TOB": "https://github.com/trailofbits/skills",
       "VL": "https://github.com/vercel-labs/agent-skills",
       "NV": "https://github.com/NVIDIA/SkillSpector",
-      "Supabase": "https://github.com/supabase/agent-skills"
+      "Supabase": "https://github.com/supabase/agent-skills",
+      "MP": "https://github.com/mattpocock/skills"
     }
   },
   "skills": [
@@ -495,6 +496,45 @@
       "commit": "5a47e1992014bcf088a209867909ebdf7a5223c9",
       "sha256": "aecc3d74e94fc93f757c35d27c2f19cd2ae000c36476376a6c95b8625f562e77",
       "vendored_path": "skills/agentic-actions-auditor/SKILL.md"
+    },
+    {
+      "id": "grilling",
+      "agent": "product-manager",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/productivity/grilling",
+      "tags": ["planning", "interview", "design-tree", "edge-cases"],
+      "description": "Interroger sans relâche l'utilisateur pour éprouver les décisions avant d'écrire du code",
+      "triggers": ["grill", "grill-me", "stress-test", "interroger", "arbre de décision", "challenge"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "befdff1e27a1dfe2a294d5871169ac1afe16d983911daa4f32627514a48c1e15",
+      "vendored_path": "skills/grilling/SKILL.md"
+    },
+    {
+      "id": "domain-modeling",
+      "agent": "product-manager",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/domain-modeling",
+      "tags": ["architecture", "domain", "glossary", "adr"],
+      "description": "Construire et affiner le modèle de domaine, le glossaire et les ADRs au fil de la conception",
+      "triggers": ["domaine", "glossaire", "glossary", "adr", "terminologie", "modèle de données métier"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "7b925d7b1e341a2eeae33ad68a8a8c0ab889a38ddd22a7598e4c240e5a7556a3",
+      "vendored_path": "skills/domain-modeling/SKILL.md"
+    },
+    {
+      "id": "wayfinder",
+      "agent": "product-manager",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/wayfinder",
+      "tags": ["planning", "tickets", "map", "complex-features"],
+      "description": "Cartographier et découper de grands chantiers complexes en tickets de décision",
+      "triggers": ["wayfinder", "grand chantier", "chantier complexe", "carte de décision", "roadmap tickets"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "9be7b478c389605a24517d27752f278933588da97a1b5921b165f455edf4c5b7",
+      "vendored_path": "skills/wayfinder/SKILL.md"
     }
   ]
 }
