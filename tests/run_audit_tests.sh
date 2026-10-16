@@ -62,7 +62,7 @@ assert "Supabase" in cat["_meta"]["sources"], "Source Supabase absente de _meta.
 assert "MP" in cat["_meta"]["sources"], "Source MP absente de _meta.sources"
 assert "NEXUS" in cat["_meta"]["sources"], "Source NEXUS absente de _meta.sources"
 cat_ids = {s["id"] for s in cat["skills"]}
-assert len(cat_ids) == 47, f"Attendu 47 skills dans le catalogue, trouvé {len(cat_ids)}"
+assert len(cat_ids) == 48, f"Attendu 48 skills dans le catalogue, trouvé {len(cat_ids)}"
 
 for s in cat["skills"]:
     p = os.path.join(repo, s["vendored_path"])
@@ -73,7 +73,7 @@ for s in cat["skills"]:
     assert len(s.get("commit", "")) == 40, f"Commit invalide pour {s['id']}"
 PY
 then
-  pass_test "T0 (Invariants AUD-011/014/020/028) : 47/47 skills du catalogue présents et vérifiés par SHA-256, aucun skills.lock pré-armé"
+  pass_test "T0 (Invariants AUD-011/014/020/028) : 48/48 skills du catalogue présents et vérifiés par SHA-256, aucun skills.lock pré-armé"
 else
   fail_test "T0 : Échec des invariants structurels"
 fi
@@ -283,6 +283,57 @@ if [ ! -f "$T2_DIR/skills.lock" ] && [ ! -f "$T1_DIR/skills.lock" ] && bash "$T1
   pass_test "T12 (AUD-012/021) : Source de vérité unique (.agents/skills.lock uniquement) et parité ./skills-sync.sh == ./tools/skills-sync.sh"
 else
   fail_test "T12 : Divergence de locks ou échec du délégateur racine"
+fi
+
+if python3 - "$REPO_DIR" <<'PY'
+import glob, json, os, re, sys
+repo = sys.argv[1]
+
+# 1. Invariant Catalogue == 48
+with open(os.path.join(repo, "skills.catalog.json"), "r", encoding="utf-8") as f:
+    cat = json.load(f)
+cat_skills = {s["id"]: s for s in cat["skills"]}
+assert len(cat_skills) == 48, f"Le catalogue doit contenir exactement 48 skills, trouvé {len(cat_skills)}"
+
+# 2. Invariant Disque -> Catalogue (aucun sous-dossier orphelin dans skills/)
+disk_dirs = [d for d in os.listdir(os.path.join(repo, "skills")) if os.path.isdir(os.path.join(repo, "skills", d))]
+orphans_on_disk = set(disk_dirs) - set(cat_skills.keys())
+assert not orphans_on_disk, f"Dossiers orphelins non catalogués sur le disque : {orphans_on_disk}"
+missing_on_disk = set(cat_skills.keys()) - set(disk_dirs)
+assert not missing_on_disk, f"Skills du catalogue absents du disque : {missing_on_disk}"
+
+# 3. Invariant Fiches Agents -> Catalogue
+# Tout skill assigné dans la section principale de chaque agent doit exister dans le catalogue (ou être documenté 'à sourcer')
+agent_files = glob.glob(os.path.join(repo, "agents", "*.md"))
+unknown_agent_skills = set()
+for af in agent_files:
+    content = open(af, "r", encoding="utf-8").read()
+    m = re.search(r"## (?:Skills Clés Assignés|Skills de pilotage|Skills / outils).*?\n(.*?)(?:\n##|\Z)", content, re.DOTALL)
+    if m:
+        section = m.group(1)
+        for line in section.strip().splitlines():
+            # Si la ligne est explicitement marquée comme 'à sourcer', c'est assumé et documenté
+            if "à sourcer" in line:
+                continue
+            skills = re.findall(r"`([a-z0-9]+(?:-[a-z0-9]+)+)`", line)
+            for s in skills:
+                if s not in cat_skills:
+                    unknown_agent_skills.add(f"{os.path.basename(af)}:{s}")
+
+assert not unknown_agent_skills, f"Skills assignés dans les agents mais absents du catalogue : {unknown_agent_skills}"
+
+# 4. Invariant README.md & INSTALL.md cohérents
+readme = open(os.path.join(repo, "README.md"), "r", encoding="utf-8").read()
+install = open(os.path.join(repo, "INSTALL.md"), "r", encoding="utf-8").read()
+assert "48_vérifiés" in readme or "48_v%C3%A9rifi%C3%A9s" in readme, "Badge README non aligné sur 48"
+assert "48 du catalogue" in readme, "Mention du catalogue dans README non alignée sur 48"
+assert "48 résumés opérationnels" in install, "Mention dans INSTALL.md non alignée sur 48"
+assert "48 / 48" in readme, "Tableau de vérification README non aligné sur 48 / 48"
+PY
+then
+  pass_test "T13 (P0 Invariant Bidirectionnel) : Catalogue (48) == Disque == Fiches Agents == Docs (zéro orphelin, zéro référence fantôme)"
+else
+  fail_test "T13 : Rupture de l'invariant bidirectionnel entre catalogue, disque, agents et documentation"
 fi
 
 echo ""

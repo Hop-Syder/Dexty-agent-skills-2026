@@ -13,7 +13,7 @@
   <p>
     <a href="LICENSE"><img src="https://img.shields.io/badge/licence-AGPL--3.0-blue.svg" alt="Licence AGPL-3.0" /></a>
     <a href="VERSION"><img src="https://img.shields.io/badge/version-3.5.1-10232E.svg" alt="Version 3.5.1" /></a>
-    <a href="skills.catalog.json"><img src="https://img.shields.io/badge/skills_catalogue-47_v%C3%A9rifi%C3%A9s-E39A2D.svg" alt="47 skills dans le catalogue" /></a>
+    <a href="skills.catalog.json"><img src="https://img.shields.io/badge/skills_catalogue-48_v%C3%A9rifi%C3%A9s-E39A2D.svg" alt="48 skills dans le catalogue" /></a>
     <a href="agents/"><img src="https://img.shields.io/badge/agents-8_sp%C3%A9cialis%C3%A9s-orange.svg" alt="8 agents" /></a>
   </p>
 </div>
@@ -32,7 +32,7 @@ Les agents de code actuels (Claude Code, Codex, Cursor, VS Code Copilot) sont ef
 **Dexty Agent Skills** structure le cycle de développement autour de 4 mécanismes vérifiables :
 
 - **Mémoire persistante (`.project-memory/`)** — Livrée sous forme de templates vierges (`MAP.md`, `STATE.md`, `REFUSALS.md`, `ERRORS.md`, `DECISIONS.md`, `SUCCESSES.md`), remplie lors de l'onboarding et relue automatiquement au démarrage de session via `.claude/hooks/memory-wake.sh`.
-- **Sélection contextuelle (`tools/onboard.sh`)** — Un questionnaire en 7 questions sélectionne entre 14 et 26 skills pertinents parmi les 37 du catalogue (`skills.catalog.json`).
+- **Sélection contextuelle (`tools/onboard.sh`)** — Un questionnaire en 7 questions sélectionne entre 14 et 26 skills pertinents parmi les 48 du catalogue (`skills.catalog.json`).
 - **Verrouillage déterministe (`tools/skills-sync.sh`)** — Génère `.agents/skills.lock` avec le commit SHA amont (40 caractères) et l'empreinte cryptographique `SHA-256` de chaque skill. Tout échec de téléchargement, d'empreinte ou de politique de sécurité provoque un arrêt franc (`exit 1`), sans jamais fabriquer de fichier de substitution.
 - **Juge QA séparé (`agents/06-qa-evaluator.md`)** — Sépare strictement les rôles d'exécution et d'évaluation selon la grille de [`docs/EVALUATION.md`](docs/EVALUATION.md).
 
@@ -78,7 +78,7 @@ Dexty-agent-skills-2026/
 ├── CLAUDE.md               # point d'entrée Claude Code (@AGENTS.md)
 ├── INSTALL.md              # guide d'installation par éditeur/CLI
 ├── install.sh              # installateur idempotent (--onboard / --skip-onboard)
-├── skills.catalog.json     # catalogue des 37 skills (commit SHA + SHA-256)
+├── skills.catalog.json     # catalogue des 48 skills (commit SHA + SHA-256)
 ├── tools/
 │   ├── onboard.sh          # questionnaire en 7 étapes → MAP.md + .agents/skills.lock
 │   ├── skills-sync.sh      # installation atomique + vérification SHA-256 / SkillSpector
@@ -94,7 +94,7 @@ Dexty-agent-skills-2026/
 │   ├── MAPPING.md          # cartographie agents → skills
 │   ├── SOURCES.md          # dépôts amont documentés
 │   └── EVALUATION.md       # grille d'évaluation architecturale (Niveau 1 : 89/100 sur papier)
-├── skills/                 # 37 résumés opérationnels vendored (vérifiés par SHA-256)
+├── skills/                 # 48 résumés opérationnels vendored (vérifiés par SHA-256)
 ├── tests/
 │   └── run_audit_tests.sh  # suite de tests automatisés de non-régression (T1 à T12b)
 ├── assets/                 # logos SVG/PNG (Piste A), benchmark SVG et vidéo MP4 1080p
@@ -115,7 +115,7 @@ bash tests/run_audit_tests.sh
 
 | Vérification | Résultat | Preuve / Mécanisme |
 | :--- | :--- | :--- |
-| **Cohérence catalogue ↔ `skills/`** | **47 / 47** | Invariant vérifié par `tests/run_audit_tests.sh` (`commit` + `sha256` présents sur chaque entrée) |
+| **Cohérence catalogue ↔ `skills/`** | **48 / 48** | Invariant vérifié par `tests/run_audit_tests.sh` (`commit` + `sha256` présents sur chaque entrée) |
 | **Parcours `install.sh --onboard` (`T1`, `T4`)** | **Testé** | Génère `.agents/skills.lock` et initialise `.project-memory/MAP.md` avec les réponses du projet |
 | **Idempotence & hook (`T2`, `T3`, `T12b`)** | **Testé** | Aucune duplication de `AGENTS.md` ; `.claude/settings.json` copié ; template vierge détecté au réveil |
 | **Protection contre injections (`T5`, `T11`)** | **Testé** | Aucun `os.system` (`subprocess.run(..., shell=False)`) ; passage par `os.environ` et heredoc quoté |
@@ -128,11 +128,11 @@ bash tests/run_audit_tests.sh
 - **Sécurité P0 (`AUD-001` à `AUD-004`)** : suppression totale du fallback générant de faux `SKILL.md` « APPROVED » ; vérification stricte d'empreinte `SHA-256` ; remplacement de tous les appels `os.system` par `subprocess.run(..., shell=False)` avec validation regex ; élimination de l'interpolation Python dans `tools/onboard.sh` via `os.environ`.
 - **CI/CD P0 (`AUD-005`, `AUD-018`)** : workflow unifié dans `.github/workflows/skills-update.yml` avec actions épinglées par SHA et exécution automatique de `tests/run_audit_tests.sh`.
 - **Mémoire & Installation P1 (`AUD-006` à `AUD-008`, `AUD-015`, `AUD-021`)** : support effectif de `--onboard` dans `install.sh`, copie de `.claude/settings.json`, idempotence de `AGENTS.md`, templates `.project-memory/` vierges avec marqueur unifié `DEXTY_TEMPLATE_UNCONFIGURED`, et suppression du lock global pré-armé.
-- **Unification & Checker P1 (`AUD-009` à `AUD-014`, `AUD-016`, `AUD-017`)** : alignement strict `skills.catalog.json` ↔ `skills/` (37/37 skills avec `commit` et `sha256`), statut `UNKNOWN` (`exit 2`) en cas d'erreur réseau dans `tools/skills-check.sh`, et écriture atomique (`tempfile` + `os.replace`).
+- **Unification & Checker P1 (`AUD-009` à `AUD-014`, `AUD-016`, `AUD-017`)** : alignement strict `skills.catalog.json` ↔ `skills/` (48/48 skills avec `commit` et `sha256`), statut `UNKNOWN` (`exit 2`) en cas d'erreur réseau dans `tools/skills-check.sh`, et écriture atomique (`tempfile` + `os.replace`).
 
 ## Sources et crédits amont
 
-Les 37 résumés opérationnels du dossier `skills/` sont des adaptations condensées pour Dexty 3.5.1 basées sur les dépôts open source suivants :
+Les 48 résumés opérationnels du dossier `skills/` sont des adaptations condensées pour Dexty 3.5.1 basées sur les dépôts open source suivants :
 
 - [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — Addy Osmani
 - [obra/superpowers](https://github.com/obra/superpowers) — Jesse Vincent

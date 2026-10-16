@@ -96,6 +96,15 @@ EOF
   ok "skills-check.sh (délégateur → tools/skills-check.sh)"
 fi
 
+if [ ! -e "wake.sh" ]; then
+  cat > "wake.sh" <<'EOF'
+#!/usr/bin/env bash
+exec "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.claude/hooks/memory-wake.sh" "$@"
+EOF
+  chmod +x "wake.sh"
+  ok "wake.sh (délégateur universel → .claude/hooks/memory-wake.sh)"
+fi
+
 if [ -f "AGENTS.md" ]; then
   if grep -qE "(DEXTY_AGENTS_SESSION_RULES|Super-agent.*instructions de session)" "AGENTS.md"; then
     echo "  = AGENTS.md (instructions Dexty déjà présentes, aucune duplication)"

@@ -27,14 +27,14 @@ bash /chemin/vers/mon-projet/tools/onboard.sh /chemin/vers/mon-projet
    - `.project-memory/` (templates vierges avec marqueur `DEXTY_TEMPLATE_UNCONFIGURED` et règles de sécurité dans `ERRORS.md`)
    - `.claude/hooks/memory-wake.sh`, `.claude/commands/resume.md` et `.claude/settings.json`
    - `tools/` (`onboard.sh`, `skills-sync.sh`, `skills-check.sh`) et les délégateurs racine
-   - `skills/` (37 résumés opérationnels vérifiés par `SHA-256`) et `skills.catalog.json`
+   - `skills/` (48 résumés opérationnels vérifiés par `SHA-256`) et `skills.catalog.json`
 2. Complète `AGENTS.md` et `CLAUDE.md` de manière strictement idempotente (aucune duplication en cas de ré-exécution).
 3. Ne copie aucun `skills.lock` pré-armé : le fichier `.agents/skills.lock` du projet est généré exclusivement par `tools/onboard.sh`.
 
 ## 3. Activation par éditeur / agent CLI
 
 - **Claude Code** : ouvre le dossier du projet et lance `claude`. Le hook `SessionStart` déclaré dans `.claude/settings.json` exécute automatiquement `.claude/hooks/memory-wake.sh`.
-- **OpenAI Codex CLI / Cursor / Windsurf / VS Code / Antigravity** : lisent automatiquement `AGENTS.md` à la racine du projet.
+- **OpenAI Codex CLI / Cursor / Windsurf / VS Code / Antigravity** : lisent automatiquement `AGENTS.md` à la racine du projet. Vous pouvez également lancer directement `./wake.sh` au réveil pour charger la mémoire vive du projet.
 
 ## 4. Comment appeler les 8 Agents Chefs avec `@`
 

@@ -44,6 +44,19 @@
       "vendored_path": "skills/spec-driven-development/SKILL.md"
     },
     {
+      "id": "constraint-driven-development",
+      "agent": "product-manager",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/constraint-driven-development",
+      "tags": ["planning", "constraints", "requirements", "product", "performance"],
+      "description": "Appliquer des contraintes techniques, opérationnelles et de performance strictes",
+      "triggers": ["contraintes", "limites", "budget", "performance", "sla", "slo", "constraints", "boundaries"],
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "sha256": "e444341f9674cad1faada50258e18391684f44cf0bb8a4f2ad2dce5622800bca",
+      "vendored_path": "skills/constraint-driven-development/SKILL.md"
+    },
+    {
       "id": "planning-and-task-breakdown",
       "agent": "product-manager",
       "source": "AO",
