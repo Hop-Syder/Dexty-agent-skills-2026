@@ -11,7 +11,9 @@
       "TOB": "https://github.com/trailofbits/skills",
       "VL": "https://github.com/vercel-labs/agent-skills",
       "NV": "https://github.com/NVIDIA/SkillSpector",
-      "Supabase": "https://github.com/supabase/agent-skills"
+      "Supabase": "https://github.com/supabase/agent-skills",
+      "MP": "https://github.com/mattpocock/skills",
+      "NEXUS": "https://nexus-partners.xyz"
     }
   },
   "skills": [
@@ -40,6 +42,19 @@
       "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
       "sha256": "20fa4e391523dc33eb9a4ea89f5d107e1452d4e55b908374869302a4d099b8a8",
       "vendored_path": "skills/spec-driven-development/SKILL.md"
+    },
+    {
+      "id": "constraint-driven-development",
+      "agent": "product-manager",
+      "source": "AO",
+      "repo": "addyosmani/agent-skills",
+      "path": "skills/constraint-driven-development",
+      "tags": ["planning", "constraints", "requirements", "product", "performance"],
+      "description": "Appliquer des contraintes techniques, opérationnelles et de performance strictes",
+      "triggers": ["contraintes", "limites", "budget", "performance", "sla", "slo", "constraints", "boundaries"],
+      "commit": "1be8e34187e34647bb83adc3a1323b26ae6f6abe",
+      "sha256": "e444341f9674cad1faada50258e18391684f44cf0bb8a4f2ad2dce5622800bca",
+      "vendored_path": "skills/constraint-driven-development/SKILL.md"
     },
     {
       "id": "planning-and-task-breakdown",
@@ -495,6 +510,136 @@
       "commit": "5a47e1992014bcf088a209867909ebdf7a5223c9",
       "sha256": "aecc3d74e94fc93f757c35d27c2f19cd2ae000c36476376a6c95b8625f562e77",
       "vendored_path": "skills/agentic-actions-auditor/SKILL.md"
+    },
+    {
+      "id": "grilling",
+      "agent": "product-manager",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/productivity/grilling",
+      "tags": ["planning", "interview", "design-tree", "edge-cases"],
+      "description": "Interroger sans relâche l'utilisateur pour éprouver les décisions avant d'écrire du code",
+      "triggers": ["grill", "grill-me", "stress-test", "interroger", "arbre de décision", "challenge"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "befdff1e27a1dfe2a294d5871169ac1afe16d983911daa4f32627514a48c1e15",
+      "vendored_path": "skills/grilling/SKILL.md"
+    },
+    {
+      "id": "domain-modeling",
+      "agent": "product-manager",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/domain-modeling",
+      "tags": ["architecture", "domain", "glossary", "adr"],
+      "description": "Construire et affiner le modèle de domaine, le glossaire et les ADRs au fil de la conception",
+      "triggers": ["domaine", "glossaire", "glossary", "adr", "terminologie", "modèle de données métier"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "7b925d7b1e341a2eeae33ad68a8a8c0ab889a38ddd22a7598e4c240e5a7556a3",
+      "vendored_path": "skills/domain-modeling/SKILL.md"
+    },
+    {
+      "id": "wayfinder",
+      "agent": "product-manager",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/wayfinder",
+      "tags": ["planning", "tickets", "map", "complex-features"],
+      "description": "Cartographier et découper de grands chantiers complexes en tickets de décision",
+      "triggers": ["wayfinder", "grand chantier", "chantier complexe", "carte de décision", "roadmap tickets"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "9be7b478c389605a24517d27752f278933588da97a1b5921b165f455edf4c5b7",
+      "vendored_path": "skills/wayfinder/SKILL.md"
+    },
+    {
+      "id": "codebase-design",
+      "agent": "build-dev-lead",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/codebase-design",
+      "tags": ["architecture", "deep-modules", "interfaces", "seams"],
+      "description": "Concevoir des modules profonds avec interfaces compactes et coutures (seams) propres",
+      "triggers": ["deep module", "seam", "interface", "codebase design", "architecture modulaire", "refactoring profond"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "2c20617f87ec8af6a434859f381b2f061a69b530444e74eb39e78bb016a6d1e2",
+      "vendored_path": "skills/codebase-design/SKILL.md"
+    },
+    {
+      "id": "diagnosing-bugs",
+      "agent": "build-dev-lead",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/diagnosing-bugs",
+      "tags": ["debugging", "feedback-loop", "bisect", "root-cause"],
+      "description": "Discipline méthodique pour traquer les bugs ardus en construisant une boucle de feedback rouge",
+      "triggers": ["diagnostiquer", "bug difficile", "enquête bug", "diagnose", "flaky", "reproduction bug"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "849198df88cdb65fd0d97236604c1fca7ff2f22d2f705f9724a800d0266b118d",
+      "vendored_path": "skills/diagnosing-bugs/SKILL.md"
+    },
+    {
+      "id": "improve-codebase-architecture",
+      "agent": "build-dev-lead",
+      "source": "MP",
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/improve-codebase-architecture",
+      "tags": ["architecture", "refactoring", "html-report", "visual"],
+      "description": "Scanner les frictions architecturales et produire un rapport visuel d'approfondissement modulaire",
+      "triggers": ["ameliorer architecture", "architecture review", "deepening", "rapport architecture", "dette technique structurelle"],
+      "commit": "49dd158d1076134a641b33efb035946536778336",
+      "sha256": "552240a5ab5cec6b67c15dd1ad6e9f6962b1bca6ce870059a8c2713760c20392",
+      "vendored_path": "skills/improve-codebase-architecture/SKILL.md"
+    },
+    {
+      "id": "seo-referencing",
+      "agent": "workflow-ux",
+      "source": "NEXUS",
+      "repo": "Hop-Syder/Dexty-agent-skills-2026",
+      "path": "docs/seo-referencing",
+      "tags": ["seo", "referencing", "google", "metadata", "schema", "sitemap"],
+      "description": "Expert SEO technique et éditorial pour l'audit, l'indexation, Schema.org et la visibilité Google",
+      "triggers": ["seo", "referencement", "google search", "schema.org", "sitemap", "meta description", "robots.txt"],
+      "commit": "d5bdb95642d99c43d8a9fbe6bb3d5ebce1a9bdfb",
+      "sha256": "f1d3b11059a09e31b1d39bdaf6a8a716c6ca93fb4b004f1c09aefa16813e9377",
+      "vendored_path": "skills/seo-referencing/SKILL.md"
+    },
+    {
+      "id": "no-ai-design-slop",
+      "agent": "workflow-ux",
+      "source": "NEXUS",
+      "repo": "Hop-Syder/Dexty-agent-skills-2026",
+      "path": "docs/Skills-main/agent-skills/ui/no-ai-design-slop",
+      "tags": ["ui", "design", "anti-slop", "quality-gate", "art-direction"],
+      "description": "Garde-fou contre le design générique IA, suppression du slop visuel et préservation de la direction artistique",
+      "triggers": ["anti-slop", "design slop", "ui quality", "direction artistique", "design propre", "clean design"],
+      "commit": "d5bdb95642d99c43d8a9fbe6bb3d5ebce1a9bdfb",
+      "sha256": "a433154b01f99eed1f0c0744cee557451c898253dd7abc5f1921f234ff592998",
+      "vendored_path": "skills/no-ai-design-slop/SKILL.md"
+    },
+    {
+      "id": "build-awwwards-quality-sites",
+      "agent": "workflow-ux",
+      "source": "NEXUS",
+      "repo": "Hop-Syder/Dexty-agent-skills-2026",
+      "path": "docs/Skills-main/agent-skills/web-design/build-awwwards-quality-sites",
+      "tags": ["ui", "web-design", "awwwards", "motion", "gsap", "threejs", "cinematic"],
+      "description": "Direction artistique et implémentation de sites marketing d'exception avec GSAP, scroll fluide et WebGL",
+      "triggers": ["awwwards", "site premium", "motion design", "cinematic", "gsap storytelling", "threejs shader"],
+      "commit": "d5bdb95642d99c43d8a9fbe6bb3d5ebce1a9bdfb",
+      "sha256": "1568e003d112e72df0ea2ec925829a5039b762c27174e063c192d7ccf7f4f9e6",
+      "vendored_path": "skills/build-awwwards-quality-sites/SKILL.md"
+    },
+    {
+      "id": "workflow-ship-change",
+      "agent": "devops-release",
+      "source": "NEXUS",
+      "repo": "Hop-Syder/Dexty-agent-skills-2026",
+      "path": "docs/Skills-main/agent-skills/workflow/workflow-ship-change",
+      "tags": ["workflow", "ship", "release", "commit-guardrails", "screenshots"],
+      "description": "Livraison rigoureuse avec captures avant/après, journal des modifications, tests complets et publication sûre",
+      "triggers": ["ship", "livraison", "release change", "deploy prod", "workflow livraison", "publier"],
+      "commit": "d5bdb95642d99c43d8a9fbe6bb3d5ebce1a9bdfb",
+      "sha256": "88de94f7919d69252b18bde500aa41547ee4c865c2e097f9b45730a9d9016b80",
+      "vendored_path": "skills/workflow-ship-change/SKILL.md"
     }
   ]
 }
